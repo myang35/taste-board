@@ -13,58 +13,79 @@ yarn
 git config core.hooksPath .git-hooks
 ```
 
-## Development server
+## Development notes
 
-To start a local development server, run:
+### Git Commit Messages
 
-```bash
-ng serve
+Reference: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+
+Use the imperative, present tense: "change", not "changed" nor "changes".
+
+#### Format
+
+```
+<type>(<optional scope>): <description>
+
+<optional body>
+
+<optional footer>
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+#### Types
 
-## Code scaffolding
+- `feat` Add or remove a feature
+- `fix` Fix a bug
+- `refactor` Rewrite/restructure code, but does not change any behavior
+- `perf` Improve performance (subtype of `refactor`)
+- `style` White-space, formatting, missing semi-colons, etc
+- `test` Add or update existing tests
+- `docs` Add or update documentation
+- `build` Change to build components like build tool, ci pipeline, dependencies, project version, etc
+- `ops` Change to operational components like infrastructure, deployment, backup, recovery, etc
+- `chore` Miscellaneous e.g. modifying `.gitignore`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+#### Examples
 
-```bash
-ng generate component component-name
-```
+- ```
+  feat: add email notifications on new direct messages
+  ```
+- ```
+  feat(shopping cart): add the amazing button
+  ```
+- ```
+  feat!: remove ticket list endpoint
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+  refers to JIRA-1337
 
-```bash
-ng generate --help
-```
+  BREAKING CHANGES: ticket endpoints no longer support list all entities.
+  ```
 
-## Building
+- ```
+  fix(shopping-cart): prevent order an empty shopping cart
+  ```
+- ```
+  fix(api): fix wrong calculation of request body checksum
+  ```
+- ```
+  fix: add missing parameter to service call
 
-To build the project run:
+  The error occurred because of <reasons>.
+  ```
 
-```bash
-ng build
-```
+- ```
+  perf: decrease memory footprint for determine unique visitors by using HyperLogLog
+  ```
+- ```
+  build: update dependencies
+  ```
+- ```
+  build(release): bump version to 1.0.0
+  ```
+- ```
+  refactor: implement fibonacci number calculation as recursion
+  ```
+- ```
+  style: remove empty line
+  ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
