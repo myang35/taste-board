@@ -2,6 +2,17 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
 
+## Installation
+
+Run the following to clone the repository, install dependencies, and setup git hooks:
+
+```bash
+git clone https://github.com/myang35/taste-board.git
+cd taste-board
+yarn
+git config core.hooksPath .git-hooks
+```
+
 ## Development server
 
 To start a local development server, run:
