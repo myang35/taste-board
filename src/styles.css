@@ -6,7 +6,7 @@
   --color-primary-200: #ffd395;
   --color-primary-300: #ffcd85;
   --color-primary-400: #ffc676;
-  --color-primary-500: #ffc067;
+  --color-primary-500: #fcc679;
   --color-primary-600: #e6ad5d;
   --color-primary-700: #cc9a52;
   --color-primary-800: #b38648;
@@ -18,20 +18,24 @@
   --color-secondary-200: #d1e5cd;
   --color-secondary-300: #acd0a5;
   --color-secondary-400: #7db375;
-  --color-secondary-500: #66a65c;
+  --color-secondary-500: #417d38;
   --color-secondary-600: #477a3f;
   --color-secondary-700: #3a6134;
   --color-secondary-800: #314e2d;
   --color-secondary-900: #294126;
   --color-secondary-950: #132211;
 
-  --color-light-500: #e1e8f4;
+  --color-light-500: #f8faf7;
 
-  --color-dark-500: #0f1829;
+  --color-dark-500: #2e1d05;
 }
 
 @layer base {
   body {
-    @apply bg-primary-100 text-dark-500;
+    @apply bg-light-500 text-dark-500;
+  }
+
+  button {
+    @apply not-disabled:cursor-pointer;
   }
 }
