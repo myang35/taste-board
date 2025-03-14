@@ -17,6 +17,9 @@ export class AuthService {
       })
       .pipe(catchError(this.handleError));
   }
+  signup(data: { fullName: string; email: string; password: string }) {
+    return this.http.post('/api/signup', data); // Update with your actual API endpoint
+  }
 
   private handleError(error: HttpErrorResponse) {
     return throwError(() => new Error(error.error.message));
