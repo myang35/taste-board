@@ -57,6 +57,10 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
+  get token() {
+    return localStorage.getItem('token');
+  }
+
   private storeData(value: AuthResponse) {
     this.user.set(value.user);
     localStorage.setItem('token', value.token);
