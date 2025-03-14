@@ -1,7 +1,17 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '@env';
-import { catchError, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
+
+export interface User {
+  id: string;
+  email: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -9,19 +19,52 @@ import { catchError, throwError } from 'rxjs';
 export class AuthService {
   private http = inject(HttpClient);
 
+  user = signal<User | undefined>(undefined);
+
   login(credentials: { email: string; password: string }) {
     return this.http
-      .post(`${environment.apiUrl}/auth/login`, {
+      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, {
         email: credentials.email,
         password: credentials.password,
       })
+      .pipe(
+        tap({
+          next: (value) => this.storeData(value),
+        }),
+      )
       .pipe(catchError(this.handleError));
   }
+
   signup(data: { fullName: string; email: string; password: string }) {
-    return this.http.post('/api/signup', data); // Update with your actual API endpoint
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, data)
+      .pipe(
+        tap({
+          next: (value) => this.storeData(value),
+        }),
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  refresh() {
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, null)
+      .pipe(
+        tap({
+          next: (value) => this.storeData(value),
+        }),
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  private storeData(value: AuthResponse) {
+    this.user.set(value.user);
+    localStorage.setItem('token', value.token);
   }
 
   private handleError(error: HttpErrorResponse) {
-    return throwError(() => new Error(error.error.message));
+    return throwError(
+      () => new Error(error.error?.message || error.message || 'Unknown error'),
+    );
   }
 }

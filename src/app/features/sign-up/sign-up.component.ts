@@ -38,9 +38,16 @@ export class SignUpComponent {
     this.confirmPasswordErrorMessage = '';
     this.formErrorMessage = '';
 
-    const { fullName, email, password, confirmPassword } = this.signupForm.controls;
+    const { fullName, email, password, confirmPassword } =
+      this.signupForm.controls;
 
-    if (!this.signupForm.valid || !fullName.value || !email.value || !password.value || !confirmPassword.value) {
+    if (
+      !this.signupForm.valid ||
+      !fullName.value ||
+      !email.value ||
+      !password.value ||
+      !confirmPassword.value
+    ) {
       if (fullName.hasError('required')) {
         this.fullNameErrorMessage = 'Required';
       }
