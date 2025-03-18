@@ -19,10 +19,16 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }) {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, {
-        email: credentials.email,
-        password: credentials.password,
-      })
+      .post<AuthResponse>(
+        `${environment.apiUrl}/auth/login`,
+        {
+          email: credentials.email,
+          password: credentials.password,
+        },
+        {
+          withCredentials: true,
+        },
+      )
       .pipe(
         tap({
           next: (value) => this.storeData(value),
@@ -33,7 +39,9 @@ export class AuthService {
 
   signup(data: { fullName: string; email: string; password: string }) {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, data)
+      .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, data, {
+        withCredentials: true,
+      })
       .pipe(
         tap({
           next: (value) => this.storeData(value),
@@ -44,7 +52,9 @@ export class AuthService {
 
   refresh() {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, null)
+      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, null, {
+        withCredentials: true,
+      })
       .pipe(
         tap({
           next: (value) => this.storeData(value),
