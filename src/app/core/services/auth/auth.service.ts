@@ -53,6 +53,11 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
+  logout() {
+    localStorage.removeItem('token');
+    this.user.set(undefined);
+  }
+
   get token() {
     return localStorage.getItem('token');
   }

@@ -8,8 +8,62 @@
     >
   </div>
   <div>
-    <a href="/login" class="border-dark-500 rounded-full border px-4 py-1"
-      >Login</a
-    >
+    @if (user(); as user) {
+      <button
+        [cdkMenuTriggerFor]="accountMenu"
+        class="inline rounded px-2 py-1 transition hover:bg-black/10 aria-expanded:bg-black/10"
+      >
+        {{ user.email.split("@")[0] }}
+      </button>
+      <ng-template #accountMenu>
+        <div
+          cdkMenu
+          class="bg-light-500 flex w-full flex-col gap-2 rounded p-2 shadow shadow-black/50"
+        >
+          <button
+            cdkMenuItem
+            class="flex items-center gap-2 rounded px-2 py-1 text-start transition hover:bg-black/10"
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Account icon"
+              fontIcon="person"
+              class="scale-75"
+            ></mat-icon>
+            Account
+          </button>
+          <button
+            cdkMenuItem
+            class="flex items-center gap-2 rounded px-2 py-1 text-start transition hover:bg-black/10"
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Recipes icon"
+              fontIcon="menu_book"
+              class="scale-75"
+            ></mat-icon>
+            Recipes
+          </button>
+          <div class="border-dark-500/50 border-b"></div>
+          <button
+            cdkMenuItem
+            (click)="logout()"
+            class="flex items-center gap-2 rounded px-2 py-1 transition hover:bg-black/10"
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Logout icon"
+              fontIcon="logout"
+              class="scale-75"
+            ></mat-icon>
+            Logout
+          </button>
+        </div>
+      </ng-template>
+    } @else {
+      <a href="/login" class="border-dark-500 rounded-full border px-4 py-1"
+        >Login</a
+      >
+    }
   </div>
 </div>
