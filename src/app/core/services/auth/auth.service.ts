@@ -1,12 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { User } from '@core/types/user';
 import { environment } from '@env';
 import { catchError, tap, throwError } from 'rxjs';
-
-export interface User {
-  id: string;
-  email: string;
-}
 
 export interface AuthResponse {
   user: User;

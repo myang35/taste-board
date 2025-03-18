@@ -1,0 +1,59 @@
+<div class="p-4 space-y-6">
+  <h1 class="text-3xl border-b-2 border-secondary-500 pb-2">Browse Recipes</h1>
+
+  <div class="max-w-7xl mx-auto space-y-6">
+    <section class="flex gap-8 items-center justify-between">
+      <div class="flex gap-8">
+        <button class="text-lg border-b-2 border-s-secondary-500">
+          Popular
+        </button>
+        <button class="text-lg text-dark-500/75 hover:text-dark-500 transition">
+          Most Viewed
+        </button>
+        <button class="text-lg text-dark-500/75 hover:text-dark-500 transition">
+          Newest
+        </button>
+      </div>
+      <div
+        class="px-4 py-2 rounded-full border border-dark-500 w-fit flex gap-2"
+      >
+        <input type="text" placeholder="Search..." class="outline-none" />
+        <button class="flex items-center">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Search icon"
+            fontIcon="search"
+          ></mat-icon>
+        </button>
+      </div>
+    </section>
+    <section class="flex gap-8">
+      @if (recipes$ | async; as recipes) {
+        <ul class="border rounded-lg border-dark-500">
+          @for (recipe of recipes; track recipe.id) {
+            <li
+              class="flex gap-4 p-4"
+              [class]="{
+                'border-b': !$last,
+                'border-b-dark-500/50': !$last,
+              }"
+            >
+              @if (recipe.imageUrl) {
+                <img
+                  [src]="recipe.imageUrl"
+                  class="size-40 object-cover rounded"
+                />
+              }
+              <div>
+                <h1 class="font-bold">{{ recipe.name }}</h1>
+                <p>{{ recipe.description }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>Error fetching data</p>
+      }
+    </section>
+  </div>
+</div>
