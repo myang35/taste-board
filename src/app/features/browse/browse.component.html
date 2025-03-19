@@ -1,21 +1,21 @@
-<div class="p-4 space-y-6">
-  <h1 class="text-3xl border-b-2 border-secondary-500 pb-2">Browse Recipes</h1>
+<div class="space-y-6 p-4">
+  <h1 class="border-secondary-500 border-b-2 pb-2 text-3xl">Browse Recipes</h1>
 
-  <div class="max-w-7xl mx-auto space-y-6">
-    <section class="flex gap-8 items-center justify-between">
+  <div class="mx-auto max-w-7xl space-y-6">
+    <section class="flex items-center justify-between gap-8">
       <div class="flex gap-8">
-        <button class="text-lg border-b-2 border-s-secondary-500">
+        <button class="border-s-secondary-500 border-b-2 text-lg">
           Popular
         </button>
-        <button class="text-lg text-dark-500/75 hover:text-dark-500 transition">
+        <button class="text-dark-500/75 hover:text-dark-500 text-lg transition">
           Most Viewed
         </button>
-        <button class="text-lg text-dark-500/75 hover:text-dark-500 transition">
+        <button class="text-dark-500/75 hover:text-dark-500 text-lg transition">
           Newest
         </button>
       </div>
       <div
-        class="px-4 py-2 rounded-full border border-dark-500 w-fit flex gap-2"
+        class="border-dark-500 flex w-fit gap-2 rounded-full border px-4 py-2"
       >
         <input type="text" placeholder="Search..." class="outline-none" />
         <button class="flex items-center">
@@ -29,7 +29,7 @@
     </section>
     <section class="flex gap-8">
       @if (recipes$ | async; as recipes) {
-        <ul class="border rounded-lg border-dark-500">
+        <ul class="border-dark-500 rounded-lg border">
           @for (recipe of recipes; track recipe.id) {
             <li
               class="flex gap-4 p-4"
@@ -41,18 +41,35 @@
               @if (recipe.imageUrl) {
                 <img
                   [src]="recipe.imageUrl"
-                  class="size-40 object-cover rounded"
+                  class="size-40 rounded object-cover"
                 />
               }
-              <div>
-                <h1 class="font-bold">{{ recipe.name }}</h1>
-                <p>{{ recipe.description }}</p>
+              <div class="flex flex-col justify-between">
+                <div>
+                  <div class="flex gap-4">
+                    <h1 class="font-bold">{{ recipe.name }}</h1>
+                    @for (tag of recipe.tags; track tag) {
+                      <p
+                        class="text-light-500 bg-secondary-500 rounded-full px-2"
+                      >
+                        {{ tag }}
+                      </p>
+                    }
+                  </div>
+                  <p>{{ recipe.description }}</p>
+                </div>
+                <div>
+                  <p>Prep time: {{ recipe.prepMinutes }} minutes</p>
+                  <p>Calories: {{ recipe.calories }}</p>
+                </div>
               </div>
             </li>
           }
         </ul>
+      } @else if (errorMessage()) {
+        <p>{{ errorMessage() }}</p>
       } @else {
-        <p>Error fetching data</p>
+        <p>Loading...</p>
       }
     </section>
   </div>

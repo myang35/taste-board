@@ -6,4 +6,7 @@ export interface Recipe {
   name: string;
   description: string;
   imageUrl: string;
+  prepMinutes: number;
+  calories: number;
+  tags: string[];
 }
