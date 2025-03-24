@@ -1,0 +1,27 @@
+<div>
+  <div class="mx-auto w-fit space-x-4">
+    @for (tab of tabs(); track $index) {
+      @let selected = selectedIndex() === $index;
+      <button
+        (click)="selectedIndex.set($index)"
+        [disabled]="selected"
+        [class]="{
+          'px-4': true,
+          'py-1': true,
+          rounded: true,
+          'border-b-4': true,
+          'border-b-secondary-500': selected,
+          'border-b-secondary-500/0': !selected,
+          'hover:border-b-secondary-500/50': !selected,
+          transition: !selected,
+          'duration-200': !selected,
+        }"
+      >
+        {{ tab.label() }}
+      </button>
+    }
+  </div>
+  <div>
+    <ng-content></ng-content>
+  </div>
+</div>

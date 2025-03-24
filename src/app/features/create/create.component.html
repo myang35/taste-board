@@ -1,0 +1,177 @@
+<div class="p-4">
+  <form [formGroup]="form" class="mx-auto max-w-3xl">
+    <app-tab-group #tabGroup>
+      <app-tab label="Info">
+        <div formGroupName="info" class="space-y-4 py-4">
+          <div class="flex flex-col">
+            <label for="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              maxlength="128"
+              class="border-dark-500 rounded border p-2"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="description">Description:</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              maxlength="1024"
+              class="border-dark-500 rounded border p-2"
+            ></textarea>
+          </div>
+          <div class="flex flex-col">
+            <label for="prepMinutes">Prep time (minutes):</label>
+            <input
+              type="number"
+              id="prepMinutes"
+              formControlName="prepMinutes"
+              min="0"
+              max="999"
+              class="border-dark-500 w-20 rounded border p-2"
+            />
+          </div>
+        </div>
+      </app-tab>
+      <app-tab label="Ingredients">
+        <div formArrayName="ingredients" class="space-y-4 py-4">
+          <h2 class="text-lg">Ingredients:</h2>
+          <div
+            class="border-dark-500 divide-dark-500/50 space-y-4 divide-y rounded-lg border p-4"
+          >
+            @for (ingredient of ingredients.controls; track ingredient) {
+              <div [formGroupName]="$index" class="flex items-end gap-4 pb-4">
+                <div class="flex flex-col">
+                  <label for="ingredient-name-{{ $index }}" class="w-60 text-xs"
+                    >Name:</label
+                  >
+                  <input
+                    type="text"
+                    id="ingredient-name-{{ $index }}"
+                    formControlName="name"
+                    class="border-dark-500 rounded border px-2 py-1"
+                  />
+                </div>
+                <div class="flex flex-col">
+                  <label for="ingredient-amount-{{ $index }}" class="text-xs"
+                    >Amount:</label
+                  >
+                  <input
+                    type="number"
+                    id="ingredient-amount-{{ $index }}"
+                    max="9999"
+                    formControlName="amount"
+                    class="border-dark-500 w-24 rounded border px-2 py-1"
+                  />
+                </div>
+                <div class="flex flex-col">
+                  <label for="ingredient-unit-{{ $index }}" class="text-xs"
+                    >Unit:</label
+                  >
+                  <input
+                    type="text"
+                    id="ingredient-unit-{{ $index }}"
+                    formControlName="unit"
+                    class="border-dark-500 w-20 rounded border px-2 py-1"
+                  />
+                </div>
+                <button (click)="deleteIngredient($index)" class="text-red-700">
+                  <mat-icon
+                    aria-hidden="false"
+                    aria-label="Delete icon"
+                    fontIcon="close"
+                  ></mat-icon>
+                </button>
+              </div>
+            }
+            <button
+              (click)="addIngredient()"
+              class="border-dark-500 flex items-center rounded border px-2 py-1"
+            >
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Add icon"
+                fontIcon="add"
+              ></mat-icon>
+              Add Ingredient
+            </button>
+          </div>
+        </div>
+      </app-tab>
+      <app-tab label="Steps">
+        <div formArrayName="steps" class="space-y-4 py-4">
+          @for (step of steps.controls; track step) {
+            <div class="flex flex-col">
+              <label for="description">Step {{ $index + 1 }}.</label>
+              <div class="flex gap-2">
+                <textarea
+                  id="description"
+                  [formControlName]="$index"
+                  maxlength="1024"
+                  class="border-dark-500 w-full rounded border p-2"
+                ></textarea>
+                <button (click)="deleteStep($index)" class="text-red-700">
+                  <mat-icon
+                    aria-hidden="false"
+                    aria-label="Delete icon"
+                    fontIcon="close"
+                  ></mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+          <button
+            (click)="addStep()"
+            class="border-dark-500 flex items-center rounded border px-2 py-1"
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Add icon"
+              fontIcon="add"
+            ></mat-icon>
+            Add Step
+          </button>
+        </div>
+      </app-tab>
+      <app-tab label="Notes">
+        <div class="py-4">
+          <h2 class="text-lg">Notes</h2>
+          <textarea
+            id="notes"
+            formControlName="notes"
+            maxlength="4096"
+            rows="8"
+            class="border-dark-500 w-full rounded border p-2"
+          ></textarea>
+        </div>
+      </app-tab>
+    </app-tab-group>
+
+    <div class="flex justify-between gap-8">
+      @if (tabGroup.selectedIndex() !== 0) {
+        <button
+          class="border-dark-500 bg-dark-500/10 hover:bg-dark-500/20 rounded-lg border px-4 py-2 transition"
+        >
+          Back
+        </button>
+      } @else {
+        <div></div>
+      }
+      @if (tabGroup.selectedIndex() < tabGroup.tabs().length - 1) {
+        <button
+          class="border-dark-500 bg-primary-500/25 hover:bg-primary-500/50 rounded-lg border px-4 py-2 transition"
+        >
+          Next
+        </button>
+      } @else {
+        <button
+          class="bg-primary-500/75 border-dark-500 hover:bg-primary-500 rounded-lg border px-4 py-2 transition"
+        >
+          Finish
+        </button>
+      }
+    </div>
+  </form>
+</div>
