@@ -64,8 +64,19 @@ export class AuthService {
   }
 
   logout() {
-    sessionStorage.removeItem('token');
-    this.user.set(undefined);
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/logout`, null, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap({
+          next: () => {
+            sessionStorage.removeItem('token');
+            this.user.set(undefined);
+          },
+        }),
+      )
+      .pipe(catchError(this.handleError));
   }
 
   get token() {

@@ -15,6 +15,6 @@ export class HeaderComponent {
   user = this.authService.user;
 
   logout() {
-    this.authService.logout();
+    this.authService.logout().subscribe();
   }
 }
