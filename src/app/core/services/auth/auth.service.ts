@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.user.set(undefined);
   }
 
@@ -74,7 +74,7 @@ export class AuthService {
 
   private storeData(value: AuthResponse) {
     this.user.set(value.user);
-    localStorage.setItem('token', value.token);
+    sessionStorage.setItem('token', value.token);
   }
 
   private handleError(error: HttpErrorResponse) {
