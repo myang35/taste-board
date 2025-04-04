@@ -3,11 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { SearchBarComponent } from './ui/search-bar/search-bar.component';
 import { SortButtonComponent } from './ui/sort-button/sort-button.component';
 
 @Component({
   selector: 'app-browse',
-  imports: [MatIconModule, SortButtonComponent],
+  imports: [MatIconModule, SortButtonComponent, SearchBarComponent],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.css',
 })
@@ -22,13 +23,24 @@ export class BrowseComponent implements OnInit {
     this.route.queryParamMap.subscribe({
       next: (paramMap) => {
         const sort = paramMap.get('sort');
-        if (sort) {
-          this.recipeService.getAll({ sort }).subscribe({
+        const search = paramMap.get('search');
+
+        if (sort && !['most_viewed', 'newest', 'trending'].includes(sort)) {
+          this.errorMessage.set('Invalid sort option');
+          this.recipes.set(undefined);
+          return;
+        }
+
+        this.recipeService
+          .getAll({
+            sort: sort || undefined,
+            search: search || undefined,
+          })
+          .subscribe({
             next: (recipes) => {
               this.recipes.set(recipes);
             },
           });
-        }
       },
     });
   }

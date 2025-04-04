@@ -8,18 +8,7 @@
         <app-sort-button value="newest"> Newest </app-sort-button>
         <app-sort-button value="trending"> Trending </app-sort-button>
       </div>
-      <div
-        class="border-dark-500 flex w-fit gap-2 rounded-full border px-4 py-2"
-      >
-        <input type="text" placeholder="Search..." class="outline-none" />
-        <button class="flex items-center">
-          <mat-icon
-            aria-hidden="false"
-            aria-label="Search icon"
-            fontIcon="search"
-          ></mat-icon>
-        </button>
-      </div>
+      <app-search-bar></app-search-bar>
     </section>
     <section class="flex gap-8">
       @if (recipes()) {

@@ -21,6 +21,7 @@ export class SortButtonComponent {
   onClick() {
     this.router.navigate([], {
       queryParams: { sort: this.value() },
+      queryParamsHandling: 'merge',
     });
   }
 }
