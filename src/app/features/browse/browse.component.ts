@@ -1,28 +1,35 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
-import { catchError, Observable } from 'rxjs';
+import { SortButtonComponent } from './ui/sort-button/sort-button.component';
 
 @Component({
   selector: 'app-browse',
-  imports: [AsyncPipe, MatIconModule],
+  imports: [MatIconModule, SortButtonComponent],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.css',
 })
 export class BrowseComponent implements OnInit {
+  private route = inject(ActivatedRoute);
   private recipeService = inject(RecipeService);
 
-  recipes$?: Observable<Recipe[]>;
+  recipes = signal<Recipe[] | undefined>(undefined);
   errorMessage = signal('');
 
   ngOnInit(): void {
-    this.recipes$ = this.recipeService.getAll().pipe(
-      catchError((error) => {
-        this.errorMessage.set(error.message);
-        return [];
-      }),
-    );
+    this.route.queryParamMap.subscribe({
+      next: (paramMap) => {
+        const sort = paramMap.get('sort');
+        if (sort) {
+          this.recipeService.getAll({ sort }).subscribe({
+            next: (recipes) => {
+              this.recipes.set(recipes);
+            },
+          });
+        }
+      },
+    });
   }
 }

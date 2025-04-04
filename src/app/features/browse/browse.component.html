@@ -4,15 +4,9 @@
   <div class="mx-auto max-w-7xl space-y-6">
     <section class="flex items-center justify-between gap-8">
       <div class="flex gap-8">
-        <button class="border-s-secondary-500 border-b-2 text-lg">
-          Popular
-        </button>
-        <button class="text-dark-500/75 hover:text-dark-500 text-lg transition">
-          Most Viewed
-        </button>
-        <button class="text-dark-500/75 hover:text-dark-500 text-lg transition">
-          Newest
-        </button>
+        <app-sort-button value="most_viewed">Most Viewed</app-sort-button>
+        <app-sort-button value="newest"> Newest </app-sort-button>
+        <app-sort-button value="trending"> Trending </app-sort-button>
       </div>
       <div
         class="border-dark-500 flex w-fit gap-2 rounded-full border px-4 py-2"
@@ -28,9 +22,9 @@
       </div>
     </section>
     <section class="flex gap-8">
-      @if (recipes$ | async; as recipes) {
+      @if (recipes()) {
         <ul class="border-dark-500 rounded-lg border">
-          @for (recipe of recipes; track recipe.id) {
+          @for (recipe of recipes(); track recipe.id) {
             <li
               class="flex gap-4 p-4"
               [class]="{

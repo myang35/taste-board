@@ -1,0 +1,16 @@
+@let selected = selected$ | async;
+
+<button
+  (click)="onClick()"
+  [disabled]="selected"
+  [class]="{
+    'text-lg': true,
+    'text-dark-500/75': !selected,
+    'hover:text-dark-500': !selected,
+    transition: !selected,
+    'border-b-secondary-500': selected,
+    'border-b-2': selected,
+  }"
+>
+  <ng-content></ng-content>
+</button>

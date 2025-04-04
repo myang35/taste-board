@@ -9,4 +9,16 @@ export interface Recipe {
   prepMinutes: number;
   calories: number;
   tags: string[];
+  ingredients: {
+    id: string;
+    name: string;
+    amount: number;
+    unit: string;
+  }[];
+  steps: string[];
+  notes: string;
+  shared: boolean;
+  viewCount: number;
+  createdAt: string;
+  updatedAt: string;
 }

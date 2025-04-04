@@ -9,7 +9,13 @@ import { environment } from '@env';
 export class RecipeService {
   private http = inject(HttpClient);
 
-  getAll() {
-    return this.http.get<Recipe[]>(`${environment.apiUrl}/recipes`);
+  getAll(params?: { sort?: string }) {
+    const url = new URL(`${environment.apiUrl}/recipes`);
+
+    if (params?.sort) {
+      url.searchParams.append('sort', params.sort);
+    }
+
+    return this.http.get<Recipe[]>(url.toString());
   }
 }
