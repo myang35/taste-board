@@ -1,0 +1,67 @@
+@let page = (page$ | async) ?? 1;
+@let maxPage = (maxPage$ | async) ?? 1;
+
+<div class="flex gap-2">
+  <button
+    [disabled]="page === 1"
+    (click)="setPage(page - 1)"
+    class="shadow-dark-500/50 rounded-lg px-4 py-1 shadow transition"
+    [class]="{
+      'hover:bg-secondary-500/25': page >= 2,
+      'opacity-50': page === 1,
+    }"
+  >
+    Previous
+  </button>
+  @if (page >= 3) {
+    <button
+      (click)="setPage(1)"
+      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+    >
+      1
+    </button>
+    <span>...</span>
+  }
+  @if (page >= 2) {
+    <button
+      (click)="setPage(page - 1)"
+      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+    >
+      {{ page - 1 }}
+    </button>
+  }
+  <button
+    disabled
+    class="shadow-dark-500/50 bg-secondary-500 text-light-500 rounded-lg px-4 py-1 shadow"
+  >
+    {{ page }}
+  </button>
+  @if (page < maxPage) {
+    <button
+      (click)="setPage(page + 1)"
+      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+    >
+      {{ page + 1 }}
+    </button>
+  }
+  @if (page <= maxPage - 2) {
+    <span>...</span>
+    <button
+      (click)="setPage(maxPage)"
+      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+    >
+      {{ maxPage }}
+    </button>
+  }
+  <button
+    [disabled]="page === maxPage"
+    (click)="setPage(page + 1)"
+    class="shadow-dark-500/50 rounded-lg px-4 py-1 shadow transition"
+    [class]="{
+      'hover:bg-secondary-500/25': page < maxPage,
+      'opacity-50': page === maxPage,
+    }"
+  >
+    Next
+  </button>
+</div>

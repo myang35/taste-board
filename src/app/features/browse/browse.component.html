@@ -10,7 +10,7 @@
       </div>
       <app-search-bar></app-search-bar>
     </section>
-    <section class="flex gap-8">
+    <section class="flex flex-col items-center gap-4">
       @if (recipes()) {
         <ul class="border-dark-500 rounded-lg border">
           @for (recipe of recipes(); track recipe.id) {
@@ -49,6 +49,7 @@
             </li>
           }
         </ul>
+        <app-pagination-controls></app-pagination-controls>
       } @else if (errorMessage()) {
         <p>{{ errorMessage() }}</p>
       } @else {
