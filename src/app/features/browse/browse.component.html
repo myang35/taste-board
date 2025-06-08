@@ -45,6 +45,12 @@
                   <p>Prep time: {{ recipe.prepMinutes }} minutes</p>
                   <p>Calories: {{ recipe.calories }}</p>
                 </div>
+                <a
+                  href="/view/{{ recipe.id }}"
+                  class="bg-primary-500/75 hover:bg-primary-500 w-fit rounded-lg px-4 py-1 shadow shadow-black/50 transition"
+                >
+                  View
+                </a>
               </div>
             </li>
           }

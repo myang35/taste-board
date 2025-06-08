@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Recipe } from '@core/types/recipe';
 import { environment } from '@env';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,19 @@ export class RecipeService {
     }
 
     return this.http.get<Recipe[]>(url.toString());
+  }
+
+  get(id: string) {
+    return this.http
+      .get<Recipe | null>(`${environment.apiUrl}/recipes/${id}`)
+      .pipe(
+        catchError((error) => {
+          if (error?.error?.error === 'RESOURCE_NOT_FOUND') {
+            return of(null);
+          }
+          throw error;
+        }),
+      );
   }
 
   count(params?: { search?: string }) {

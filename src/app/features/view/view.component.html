@@ -1,0 +1,90 @@
+@if (recipeManager?.status() === "ready") {
+  @if (recipeManager?.data()) {
+    @let recipe = recipeManager?.data();
+    <div class="mx-auto flex max-w-5xl flex-col gap-8 p-4">
+      <section class="flex flex-col gap-4">
+        <img
+          [src]="recipe?.imageUrl"
+          [alt]="recipe?.name"
+          class="shadow-dark-500/50 mx-auto max-h-80 rounded-lg shadow"
+        />
+        <div>
+          <h1 class="text-center text-3xl">{{ recipe?.name }}</h1>
+          <p class="text-center">{{ recipe?.author?.email }}</p>
+        </div>
+      </section>
+      <section class="flex flex-col gap-4">
+        <p>
+          Tags:
+          @for (tag of recipe?.tags; track tag) {
+            <span
+              class="text-light-500 bg-secondary-500 w-fit rounded-full px-2 py-1"
+            >
+              {{ tag }}
+            </span>
+          } @empty {
+            <span>none</span>
+          }
+        </p>
+        <div>
+          <p>{{ recipe?.viewCount }} views</p>
+          <p>
+            {{ recipe?.createdAt | date }}
+            <span class="text-sm italic"
+              >({{ recipe?.updatedAt | date }} updated)</span
+            >
+          </p>
+        </div>
+        <p>{{ recipe?.description }}</p>
+        <div>
+          <p>Preparation time: {{ recipe?.prepMinutes }} minutes</p>
+          <p>Calories: {{ recipe?.calories }}</p>
+        </div>
+      </section>
+      <section>
+        <div class="w-fit rounded-lg p-4 shadow shadow-black/50">
+          <h2 class="text-lg font-bold">Ingredients</h2>
+          <table>
+            <tbody>
+              @for (ingredient of recipe?.ingredients; track ingredient.id) {
+                <tr class="border-b-dark-500/25 border-b">
+                  <td class="max-w-40 py-1 pr-4 break-words">
+                    {{ ingredient.name }}
+                  </td>
+                  <td class="px-2 py-1 align-top">
+                    {{ ingredient.amount }} {{ ingredient.unit }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section>
+        <div class="w-fit rounded-lg p-4 shadow shadow-black/50">
+          <h2 class="text-lg font-bold">Notes</h2>
+          <p>{{ recipe?.notes }}</p>
+        </div>
+      </section>
+      <section>
+        <div class="rounded-lg p-4 shadow shadow-black/50">
+          <h2 class="text-2xl">Steps</h2>
+          <ol class="divide-y divide-black/10 rounded-lg">
+            @for (step of recipe?.steps; track step) {
+              <li class="flex gap-2 py-4">
+                <h3 class="font-bold">{{ $index + 1 }}.</h3>
+                <p>{{ step }}</p>
+              </li>
+            }
+          </ol>
+        </div>
+      </section>
+    </div>
+  } @else {
+    <p class="text-red-500">Recipe Not Found</p>
+  }
+} @else if (recipeManager?.status() === "error") {
+  <p class="text-red-500">Error: {{ recipeManager?.error()?.message }}</p>
+} @else {
+  <span>Loading...</span>
+}
