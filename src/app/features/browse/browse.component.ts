@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { PaginationControlsComponent } from './_ui/pagination-controls/pagination-controls.component';
+import { SearchBarComponent } from './_ui/search-bar/search-bar.component';
+import { SortButtonComponent } from './_ui/sort-button/sort-button.component';
 import { RECIPES_PER_PAGE } from './constants';
-import { PaginationControlsComponent } from './ui/pagination-controls/pagination-controls.component';
-import { SearchBarComponent } from './ui/search-bar/search-bar.component';
-import { SortButtonComponent } from './ui/sort-button/sort-button.component';
 
 @Component({
   selector: 'app-browse',
