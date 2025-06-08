@@ -1,0 +1,16 @@
+<div class="mx-auto flex max-w-5xl flex-col items-center gap-8 p-4">
+  <h1 class="text-2xl">{{ user()?.email }}</h1>
+  <div class="flex w-full gap-4">
+    <ul class="w-60">
+      <li>
+        <app-tab path="recipes">Recipes</app-tab>
+      </li>
+      <li>
+        <app-tab path="security">Security</app-tab>
+      </li>
+    </ul>
+    <div class="w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
