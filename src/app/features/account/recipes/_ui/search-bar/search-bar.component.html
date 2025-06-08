@@ -1,0 +1,19 @@
+<form
+  [formGroup]="searchForm"
+  (ngSubmit)="onSubmit($event)"
+  class="border-dark-500 flex w-fit gap-2 rounded-full border px-4 py-2"
+>
+  <input
+    type="text"
+    placeholder="Search..."
+    formControlName="query"
+    class="outline-none"
+  />
+  <button type="submit" class="flex items-center">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Search icon"
+      fontIcon="search"
+    ></mat-icon>
+  </button>
+</form>
