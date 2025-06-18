@@ -16,7 +16,7 @@
         [cdkMenuTriggerFor]="accountMenu"
         class="inline rounded px-2 py-1 transition hover:bg-black/10 aria-expanded:bg-black/10"
       >
-        {{ user.email.split("@")[0] }}
+        {{ user.name }}
       </button>
       <ng-template #accountMenu>
         <div
