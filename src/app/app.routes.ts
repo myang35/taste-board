@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@core/guards/auth.guard';
 import { AccountComponent } from '@features/account/account.component';
 import { RecipesComponent } from '@features/account/recipes/recipes.component';
 import { SecurityComponent } from '@features/account/security/security.component';
@@ -37,6 +38,7 @@ export const routes: Routes = [
   {
     path: 'account',
     component: AccountComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
