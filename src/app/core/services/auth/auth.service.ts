@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '@core/types/user';
 import { environment } from '@env';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 
 export interface AuthResponse {
   user: User;
@@ -89,6 +89,9 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
+    if (error.error?.code === 'UNAUTHENTICATED_ERROR') {
+      return of(null);
+    }
     return throwError(
       () => new Error(error.error?.message || error.message || 'Unknown error'),
     );
