@@ -15,6 +15,7 @@ export class RecipeService {
     search?: string;
     limit?: number;
     skip?: number;
+    userId?: string;
   }) {
     const url = new URL(`${environment.apiUrl}/recipes`);
 
@@ -32,6 +33,10 @@ export class RecipeService {
 
     if (params?.skip) {
       url.searchParams.append('skip', params.skip.toString());
+    }
+
+    if (params?.userId) {
+      url.searchParams.append('userId', params.userId);
     }
 
     return this.http.get<Recipe[]>(url.toString());
