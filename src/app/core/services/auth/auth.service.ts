@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   get token() {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   private storeData(value: AuthResponse) {
