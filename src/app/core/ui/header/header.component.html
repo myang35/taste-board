@@ -24,19 +24,7 @@
           class="bg-light-500 flex w-full flex-col gap-2 rounded p-2 shadow shadow-black/50"
         >
           <a
-            href="/account"
-            cdkMenuItem
-            class="flex items-center gap-2 rounded px-2 py-1 text-start transition hover:bg-black/10"
-          >
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Account icon"
-              fontIcon="person"
-              class="scale-75"
-            ></mat-icon>
-            Account
-          </a>
-          <button
+            href="/account/recipes"
             cdkMenuItem
             class="flex items-center gap-2 rounded px-2 py-1 text-start transition hover:bg-black/10"
           >
@@ -47,7 +35,20 @@
               class="scale-75"
             ></mat-icon>
             Recipes
-          </button>
+          </a>
+          <a
+            href="/account/security"
+            cdkMenuItem
+            class="flex items-center gap-2 rounded px-2 py-1 text-start transition hover:bg-black/10"
+          >
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Security icon"
+              fontIcon="security"
+              class="scale-75"
+            ></mat-icon>
+            Security
+          </a>
           <div class="border-dark-500/50 border-b"></div>
           <button
             cdkMenuItem
