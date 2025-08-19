@@ -3,12 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { Recipe } from '@core/types/recipe';
 import { environment } from '@env';
 import { catchError, map, of } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
   getAll(params?: {
     sort?: string;
@@ -53,6 +55,40 @@ export class RecipeService {
           throw error;
         }),
       );
+  }
+
+  create(params: {
+    name: string;
+    description: string;
+    prepMinutes: number;
+    calories: number;
+    tags: string[];
+    ingredients: {
+      name: string;
+      amount: number;
+      unit: string;
+    }[];
+    steps: string[];
+    notes: string;
+    shared: boolean;
+  }) {
+    const user = this.authService.user();
+    if (!user) {
+      throw new Error('User must be logged in to create a recipe');
+    }
+
+    return this.http.post<Recipe>(`${environment.apiUrl}/recipes`, {
+      authorId: user.id,
+      name: params.name,
+      description: params.description,
+      prepMinutes: params.prepMinutes,
+      calories: params.calories,
+      tags: params.tags,
+      ingredients: params.ingredients,
+      steps: params.steps,
+      notes: params.notes,
+      shared: params.shared,
+    });
   }
 
   count(params?: { search?: string }) {

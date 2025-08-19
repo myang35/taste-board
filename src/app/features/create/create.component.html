@@ -1,8 +1,12 @@
 <div class="p-4">
-  <form [formGroup]="form" class="mx-auto max-w-3xl">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onFormSubmit()"
+    class="mx-auto max-w-3xl"
+  >
     <app-tab-group #tabGroup>
       <app-tab label="Info">
-        <div formGroupName="info" class="space-y-4 py-4">
+        <div class="space-y-4 py-4">
           <div class="flex flex-col">
             <label for="name">Name:</label>
             <input
@@ -29,9 +33,61 @@
               id="prepMinutes"
               formControlName="prepMinutes"
               min="0"
-              max="999"
+              max="9999"
               class="border-dark-500 w-20 rounded border p-2"
             />
+          </div>
+          <div class="flex flex-col">
+            <label for="prepMinutes">Calories:</label>
+            <input
+              type="number"
+              id="calories"
+              formControlName="calories"
+              min="0"
+              max="9999"
+              class="border-dark-500 w-20 rounded border p-2"
+            />
+          </div>
+          <div formArrayName="tags">
+            <label>Tags:</label>
+            <div
+              class="border-dark-500 divide-dark-500/50 w-fit space-y-1 divide-y rounded-lg border p-2"
+            >
+              @for (tag of tags.controls; track tag) {
+                <div class="flex items-end gap-2 pb-1">
+                  <input
+                    type="text"
+                    id="tag-{{ $index }}"
+                    [formControlName]="$index"
+                    maxlength="32"
+                    class="border-dark-500 rounded border px-2 py-1"
+                  />
+                  <button
+                    type="button"
+                    (click)="deleteTag($index)"
+                    class="text-red-700"
+                  >
+                    <mat-icon
+                      aria-hidden="false"
+                      aria-label="Delete icon"
+                      fontIcon="close"
+                    ></mat-icon>
+                  </button>
+                </div>
+              }
+              <button
+                type="button"
+                (click)="addTag()"
+                class="border-dark-500 flex items-center rounded border px-2 py-1"
+              >
+                <mat-icon
+                  aria-hidden="false"
+                  aria-label="Add icon"
+                  fontIcon="add"
+                ></mat-icon>
+                Add Tag
+              </button>
+            </div>
           </div>
         </div>
       </app-tab>
@@ -77,7 +133,11 @@
                     class="border-dark-500 w-20 rounded border px-2 py-1"
                   />
                 </div>
-                <button (click)="deleteIngredient($index)" class="text-red-700">
+                <button
+                  type="button"
+                  (click)="deleteIngredient($index)"
+                  class="text-red-700"
+                >
                   <mat-icon
                     aria-hidden="false"
                     aria-label="Delete icon"
@@ -87,6 +147,7 @@
               </div>
             }
             <button
+              type="button"
               (click)="addIngredient()"
               class="border-dark-500 flex items-center rounded border px-2 py-1"
             >
@@ -104,15 +165,19 @@
         <div formArrayName="steps" class="space-y-4 py-4">
           @for (step of steps.controls; track step) {
             <div class="flex flex-col">
-              <label for="description">Step {{ $index + 1 }}.</label>
+              <label for="step-{{ $index }}">Step {{ $index + 1 }}.</label>
               <div class="flex gap-2">
                 <textarea
-                  id="description"
+                  id="step-{{ $index }}"
                   [formControlName]="$index"
                   maxlength="1024"
                   class="border-dark-500 w-full rounded border p-2"
                 ></textarea>
-                <button (click)="deleteStep($index)" class="text-red-700">
+                <button
+                  type="button"
+                  (click)="deleteStep($index)"
+                  class="text-red-700"
+                >
                   <mat-icon
                     aria-hidden="false"
                     aria-label="Delete icon"
@@ -123,6 +188,7 @@
             </div>
           }
           <button
+            type="button"
             (click)="addStep()"
             class="border-dark-500 flex items-center rounded border px-2 py-1"
           >
@@ -147,11 +213,38 @@
           ></textarea>
         </div>
       </app-tab>
+      <app-tab label="Privacy">
+        <div class="py-4">
+          <h2 class="text-center text-lg">Open to Public?</h2>
+          <div class="mx-auto w-fit">
+            <div class="space-x-1">
+              <input
+                type="radio"
+                id="shared-yes"
+                formControlName="shared"
+                value="yes"
+              />
+              <label for="shared-yes">Yes</label>
+            </div>
+            <div class="space-x-1">
+              <input
+                type="radio"
+                id="shared-no"
+                formControlName="shared"
+                value="no"
+              />
+              <label for="shared-no">No</label>
+            </div>
+          </div>
+        </div>
+      </app-tab>
     </app-tab-group>
 
     <div class="flex justify-between gap-8">
       @if (tabGroup.selectedIndex() !== 0) {
         <button
+          type="button"
+          (click)="onBackClick()"
           class="border-dark-500 bg-dark-500/10 hover:bg-dark-500/20 rounded-lg border px-4 py-2 transition"
         >
           Back
@@ -161,12 +254,15 @@
       }
       @if (tabGroup.selectedIndex() < tabGroup.tabs().length - 1) {
         <button
+          type="button"
+          (click)="onNextClick()"
           class="border-dark-500 bg-primary-500/25 hover:bg-primary-500/50 rounded-lg border px-4 py-2 transition"
         >
           Next
         </button>
       } @else {
         <button
+          type="submit"
           class="bg-primary-500/75 border-dark-500 hover:bg-primary-500 rounded-lg border px-4 py-2 transition"
         >
           Finish

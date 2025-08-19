@@ -3,6 +3,7 @@
     @for (tab of tabs(); track $index) {
       @let selected = selectedIndex() === $index;
       <button
+        type="button"
         (click)="selectedIndex.set($index)"
         [disabled]="selected"
         [class]="{
