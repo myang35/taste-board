@@ -28,14 +28,56 @@
   --color-light-500: #f8faf7;
 
   --color-dark-500: #2e1d05;
+
+  /* New Colors */
+
+  --color-background: #ffffff;
+  --color-foreground: #0c0a09;
+  --color-primary: #1c1917;
+  --color-primary-foreground: #fafaf9;
+  --color-secondary: #f5f5f4;
+  --color-secondary-foreground: #1c1917;
+  --color-muted: #f5f5f4;
+  --color-muted-foreground: #78716c;
+  --color-accent: #f5f5f4;
+  --color-accent-foreground: #1c1917;
+  --color-destructive: EF4444;
+  --color-destructive-foreground: #fafaf9;
+
+  --color-border: #e7e5e4;
+  --color-input: #e7e5e4;
+  --color-ring: #d6d3d1;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #0c0a09;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0c0a09;
+
+  --color-orange: #f97415;
+  --color-orange-foreground: #fafaf9;
+
+  --color-green: #16a249;
+  --color-green-foreground: #fafaf9;
+
+  --color-warm: #e8c468;
+  --color-warm-foreground: #1c1917;
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
+
   body {
-    @apply bg-light-500 text-dark-500;
+    @apply bg-background text-foreground;
   }
 
   button {
     @apply not-disabled:cursor-pointer;
+  }
+
+  a {
+    @apply cursor-pointer;
   }
 }
