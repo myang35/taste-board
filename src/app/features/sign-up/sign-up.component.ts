@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatIcon],
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
 })
@@ -20,7 +21,8 @@ export class SignUpComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]],
   });
-
+  showPassword = false;
+  showConfirmPassword = false;
   fullNameErrorMessage = '';
   emailErrorMessage = '';
   passwordErrorMessage = '';
@@ -92,5 +94,13 @@ export class SignUpComponent {
           }
         },
       });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

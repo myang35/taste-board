@@ -1,128 +1,162 @@
-<div class="absolute inset-0 m-auto w-fit h-fit">
-  <div class="border-2 border-dark-500 p-6 w-80 rounded-lg shadow-lg">
-    <div class="text-center mb-4">
-      <h2 class="text-xl font-semibold">Sign Up</h2>
+<div class="p-16">
+  <div
+    class="bg-card text-card-foreground mx-auto flex w-full max-w-md flex-col gap-6 rounded-lg border p-6 shadow-lg"
+  >
+    <img src="/logo.png" alt="logo" class="mx-auto h-12" />
+    <div class="space-y-2">
+      <h2 class="text-center text-2xl font-bold">Join TasteBoard</h2>
+      <p class="text-muted-foreground text-center text-sm">
+        Create your account and start sharing amazing recipes with the
+        community.
+      </p>
     </div>
-    <form [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()">
-      <!-- Display form error message -->
+    <form
+      [formGroup]="signupForm"
+      (ngSubmit)="onSignupSubmit()"
+      class="flex flex-col gap-6"
+    >
       @if (formErrorMessage) {
-        <div>
-          <p class="p-2 bg-red-200 text-red-500 rounded-lg mb-4">
-            {{ formErrorMessage }}
-          </p>
-        </div>
+        <p
+          class="text-danger bg-danger/10 border-danger/20 flex items-center gap-1 rounded-lg border p-2 text-sm"
+        >
+          <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+          {{ formErrorMessage }}
+        </p>
       }
-      <!-- Full Name Field -->
-      <div class="mb-4">
-        <label for="fullName" class="block text-sm font-medium text-gray-700"
+      <div class="flex flex-col gap-1">
+        <label for="full-name" class="text-sm font-medium select-none"
           >Full Name</label
         >
-        <input
-          id="fullName"
-          type="text"
-          formControlName="fullName"
-          class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your full name"
-          required
-        />
-        @if (fullNameErrorMessage) {
-          <div>
-            <p class="p-2 bg-red-200 text-red-500 rounded-lg mb-4">
-              {{ fullNameErrorMessage }}
-            </p>
-          </div>
-        }
-      </div>
-
-      <!-- Email Field -->
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700"
-          >Email</label
-        >
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your email"
-          required
-        />
+        <div class="relative">
+          <mat-icon
+            fontIcon="person"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="full-name"
+            type="text"
+            formControlName="fullName"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 pl-10"
+            [class]="{ 'border-danger': emailErrorMessage }"
+            placeholder="Full name"
+            required
+          />
+        </div>
         @if (emailErrorMessage) {
-          <div>
-            <p class="p-2 bg-red-200 text-red-500 rounded-lg mb-4">
-              {{ emailErrorMessage }}
-            </p>
-          </div>
+          <p class="text-danger flex items-center gap-1 text-sm">
+            <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+            {{ emailErrorMessage }}
+          </p>
         }
       </div>
-
-      <!-- Password Field -->
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700"
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-sm font-medium select-none">Email</label>
+        <div class="relative">
+          <mat-icon
+            fontIcon="email"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 pl-10"
+            [class]="{ 'border-danger': emailErrorMessage }"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        @if (emailErrorMessage) {
+          <p class="text-danger flex items-center gap-1 text-sm">
+            <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+            {{ emailErrorMessage }}
+          </p>
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-sm font-medium select-none"
           >Password</label
         >
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your password"
-          required
-        />
+        <div class="relative">
+          <mat-icon
+            fontIcon="lock"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 px-10"
+            [class]="{ 'border-danger': passwordErrorMessage }"
+            placeholder="Create a password"
+            required
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="hover:bg-accent absolute top-1 right-1 bottom-1 my-auto flex size-8 items-center justify-center rounded-lg"
+          >
+            <mat-icon
+              [fontIcon]="showPassword ? 'visibility_off' : 'visibility'"
+              class="scale-75"
+            ></mat-icon>
+          </button>
+        </div>
         @if (passwordErrorMessage) {
-          <div>
-            <p class="p-2 bg-red-200 text-red-500 rounded-lg mb-4">
-              {{ passwordErrorMessage }}
-            </p>
-          </div>
+          <p class="text-danger flex items-center gap-1 text-sm">
+            <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+            {{ passwordErrorMessage }}
+          </p>
         }
       </div>
-
-      <!-- Confirm Password Field -->
-      <div class="mb-4">
-        <label
-          for="confirmPassword"
-          class="block text-sm font-medium text-gray-700"
+      <div class="flex flex-col gap-1">
+        <label for="confirm-password" class="text-sm font-medium select-none"
           >Confirm Password</label
         >
-        <input
-          id="confirmPassword"
-          type="password"
-          formControlName="confirmPassword"
-          class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Confirm your password"
-          required
-        />
+        <div class="relative">
+          <mat-icon
+            fontIcon="lock"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="confirm-password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 px-10"
+            [class]="{ 'border-danger': confirmPasswordErrorMessage }"
+            placeholder="Confirm your password"
+            required
+          />
+          <button
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            class="hover:bg-accent absolute top-1 right-1 bottom-1 my-auto flex size-8 items-center justify-center rounded-lg"
+          >
+            <mat-icon
+              [fontIcon]="showConfirmPassword ? 'visibility_off' : 'visibility'"
+              class="scale-75"
+            ></mat-icon>
+          </button>
+        </div>
         @if (confirmPasswordErrorMessage) {
-          <div>
-            <p class="p-2 bg-red-200 text-red-500 rounded-lg mb-4">
-              {{ confirmPasswordErrorMessage }}
-            </p>
-          </div>
+          <p class="text-danger flex items-center gap-1 text-sm">
+            <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+            {{ confirmPasswordErrorMessage }}
+          </p>
         }
       </div>
-
-      <div class="flex justify-between items-center mb-4">
-        <button
-          type="button"
-          (click)="navigateToHome()"
-          class="px-4 py-2 bg-gray-400 text-white rounded-lg shadow-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
-        >
-          Cancel
-        </button>
-        <a href="/login" class="text-sm text-blue-600 hover:text-blue-700"
-          >Already have an account? Log In</a
-        >
-      </div>
-
-      <div class="flex justify-center">
-        <button
-          type="submit"
-          class="w-full px-4 py-2 bg-primary-500 text-light-500 rounded-lg shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          Sign Up
-        </button>
-      </div>
+      <button
+        type="submit"
+        class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2"
+      >
+        Create Account
+      </button>
     </form>
+    <p class="text-muted-foreground text-center text-sm">
+      Already have an account?
+      <a href="/login" class="text-orange hover:text-orange/80 font-medium"
+        >Sign in</a
+      >
+    </p>
   </div>
 </div>
