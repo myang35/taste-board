@@ -24,15 +24,21 @@
       }
       <div class="flex flex-col gap-2">
         <label for="email" class="text-sm font-medium select-none">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          class="placeholder:text-muted-foreground w-full rounded-lg border p-2"
-          [class]="{ 'border-danger': emailErrorMessage }"
-          placeholder="Enter your email"
-          required
-        />
+        <div class="relative">
+          <mat-icon
+            fontIcon="email"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 pl-10"
+            [class]="{ 'border-danger': emailErrorMessage }"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
         @if (emailErrorMessage) {
           <p class="text-danger flex items-center gap-1 text-sm">
             <mat-icon fontIcon="error" class="scale-75"></mat-icon>
@@ -44,15 +50,31 @@
         <label for="password" class="text-sm font-medium select-none"
           >Password</label
         >
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          class="placeholder:text-muted-foreground w-full rounded-lg border p-2"
-          [class]="{ 'border-danger': passwordErrorMessage }"
-          placeholder="Enter your password"
-          required
-        />
+        <div class="relative">
+          <mat-icon
+            fontIcon="lock"
+            class="absolute top-0 bottom-0 left-2 my-auto scale-75"
+          ></mat-icon>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            class="placeholder:text-muted-foreground w-full rounded-lg border p-2 px-10"
+            [class]="{ 'border-danger': passwordErrorMessage }"
+            placeholder="Enter your password"
+            required
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="hover:bg-accent absolute top-1 right-1 bottom-1 my-auto flex size-8 items-center justify-center rounded-lg"
+          >
+            <mat-icon
+              [fontIcon]="showPassword ? 'visibility_off' : 'visibility'"
+              class="scale-75"
+            ></mat-icon>
+          </button>
+        </div>
         @if (passwordErrorMessage) {
           <p class="text-danger flex items-center gap-1 text-sm">
             <mat-icon fontIcon="error" class="scale-75"></mat-icon>

@@ -19,6 +19,7 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+  showPassword = false;
   emailErrorMessage = '';
   passwordErrorMessage = '';
   formErrorMessage = '';
@@ -63,5 +64,9 @@ export class LoginComponent {
           }
         },
       });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
