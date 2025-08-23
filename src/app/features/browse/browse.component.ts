@@ -1,32 +1,28 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
 import { PaginationControlsComponent } from './_ui/pagination-controls/pagination-controls.component';
 import { SearchBarComponent } from './_ui/search-bar/search-bar.component';
-import { SortButtonComponent } from './_ui/sort-button/sort-button.component';
 import { RECIPES_PER_PAGE } from './constants';
 
 @Component({
   selector: 'app-browse',
-  imports: [
-    MatIconModule,
-    SortButtonComponent,
-    SearchBarComponent,
-    PaginationControlsComponent,
-  ],
+  imports: [MatIconModule, SearchBarComponent, PaginationControlsComponent],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.css',
 })
 export class BrowseComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private recipeService = inject(RecipeService);
   private viewportScroller = inject(ViewportScroller);
 
   recipes = signal<Recipe[] | undefined>(undefined);
   errorMessage = signal('');
+  sortValue = '';
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe({
@@ -49,6 +45,8 @@ export class BrowseComponent implements OnInit {
           return;
         }
 
+        this.sortValue = sort ?? 'most_viewed';
+
         this.recipeService
           .getAll({
             sort: sort || undefined,
@@ -62,6 +60,14 @@ export class BrowseComponent implements OnInit {
             },
           });
       },
+    });
+  }
+
+  onSortChange(event: Event) {
+    const element = event.currentTarget as HTMLSelectElement;
+    this.router.navigate([], {
+      queryParams: { sort: element.value },
+      queryParamsHandling: 'merge',
     });
   }
 }

@@ -1,54 +1,59 @@
 @let page = (page$ | async) ?? 1;
 @let maxPage = (maxPage$ | async) ?? 1;
 
-<div class="flex gap-2">
+<div class="flex items-center gap-2 text-sm">
   <button
     [disabled]="page === 1"
     (click)="setPage(page - 1)"
-    class="shadow-dark-500/50 rounded-lg px-4 py-1 shadow transition"
+    class="flex items-center rounded-lg border py-1.5 pr-4 pl-2 transition"
     [class]="{
-      'hover:bg-secondary-500/25': page >= 2,
+      'hover:bg-accent': page >= 2,
       'opacity-50': page === 1,
     }"
   >
+    <mat-icon fontIcon="arrow_back_ios" class="scale-50"></mat-icon>
     Previous
   </button>
   @if (page >= 3) {
     <button
       (click)="setPage(1)"
-      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+      class="hover:bg-accent rounded-lg border px-4 py-1.5 transition"
     >
       1
     </button>
-    <span>...</span>
+    @if (page > 3) {
+      <span>...</span>
+    }
   }
   @if (page >= 2) {
     <button
       (click)="setPage(page - 1)"
-      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+      class="hover:bg-accent rounded-lg border px-4 py-1.5 transition"
     >
       {{ page - 1 }}
     </button>
   }
   <button
     disabled
-    class="shadow-dark-500/50 bg-secondary-500 text-light-500 rounded-lg px-4 py-1 shadow"
+    class="bg-primary text-primary-foreground rounded-lg border px-4 py-1.5"
   >
     {{ page }}
   </button>
   @if (page < maxPage) {
     <button
       (click)="setPage(page + 1)"
-      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+      class="hover:bg-accent rounded-lg border px-4 py-1.5 transition"
     >
       {{ page + 1 }}
     </button>
   }
   @if (page <= maxPage - 2) {
-    <span>...</span>
+    @if (page < maxPage - 2) {
+      <span>...</span>
+    }
     <button
       (click)="setPage(maxPage)"
-      class="shadow-dark-500/50 hover:bg-secondary-500/25 rounded-lg px-4 py-1 shadow transition"
+      class="hover:bg-accent rounded-lg border px-4 py-1.5 transition"
     >
       {{ maxPage }}
     </button>
@@ -56,12 +61,13 @@
   <button
     [disabled]="page === maxPage"
     (click)="setPage(page + 1)"
-    class="shadow-dark-500/50 rounded-lg px-4 py-1 shadow transition"
+    class="flex items-center rounded-lg border py-1.5 pr-2 pl-4 transition"
     [class]="{
-      'hover:bg-secondary-500/25': page < maxPage,
+      'hover:bg-accent': page < maxPage,
       'opacity-50': page === maxPage,
     }"
   >
     Next
+    <mat-icon fontIcon="arrow_forward_ios" class="scale-50"></mat-icon>
   </button>
 </div>

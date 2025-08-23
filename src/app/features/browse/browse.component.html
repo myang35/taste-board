@@ -1,66 +1,190 @@
-<div class="space-y-6 p-4">
-  <h1 class="border-secondary-500 border-b-2 pb-2 text-3xl">Browse Recipes</h1>
-
-  <div class="mx-auto max-w-7xl space-y-6">
-    <section class="flex items-center justify-between gap-8">
-      <div class="flex gap-8">
-        <app-sort-button value="most_viewed">Most Viewed</app-sort-button>
-        <app-sort-button value="newest"> Newest </app-sort-button>
-        <app-sort-button value="trending"> Trending </app-sort-button>
-      </div>
-      <app-search-bar></app-search-bar>
-    </section>
-    <section class="flex flex-col items-center gap-4">
-      @if (recipes()) {
-        <ul class="border-dark-500 rounded-lg border">
-          @for (recipe of recipes(); track recipe.id) {
-            <li
-              class="flex gap-4 p-4"
-              [class]="{
-                'border-b': !$last,
-                'border-b-dark-500/50': !$last,
-              }"
-            >
-              @if (recipe.imageUrl) {
-                <img
-                  [src]="recipe.imageUrl"
-                  class="size-40 rounded object-cover"
-                />
-              }
-              <div class="flex flex-col justify-between">
-                <div>
-                  <div class="flex gap-4">
-                    <h1 class="font-bold">{{ recipe.name }}</h1>
-                    @for (tag of recipe.tags; track tag) {
-                      <p
-                        class="text-light-500 bg-secondary-500 rounded-full px-2"
-                      >
-                        {{ tag }}
-                      </p>
-                    }
-                  </div>
-                  <p>{{ recipe.description }}</p>
-                </div>
-                <div>
-                  <p>Prep time: {{ recipe.prepMinutes }} minutes</p>
-                  <p>Calories: {{ recipe.calories }}</p>
-                </div>
-                <a
-                  href="/view/{{ recipe.id }}"
-                  class="bg-primary-500/75 hover:bg-primary-500 w-fit rounded-lg px-4 py-1 shadow shadow-black/50 transition"
-                >
-                  View
-                </a>
-              </div>
-            </li>
-          }
-        </ul>
-        <app-pagination-controls></app-pagination-controls>
-      } @else if (errorMessage()) {
-        <p>{{ errorMessage() }}</p>
-      } @else {
-        <p>Loading...</p>
-      }
-    </section>
+<div class="container mx-auto flex flex-col gap-6 p-4">
+  <div class="space-y-2">
+    <h1 class="text-3xl font-bold lg:text-4xl">Browse Recipes</h1>
+    <p class="text-muted-foreground">
+      Discover amazing recipes from our community of passionate cooks
+    </p>
   </div>
+
+  <app-search-bar></app-search-bar>
+
+  <div class="flex items-center justify-between gap-8">
+    <div class="flex items-center gap-4">
+      <label for="sort" class="flex items-center gap-2 text-sm"
+        ><span class="text-muted-foreground flex items-center">
+          <mat-icon fontIcon="tune" class="scale-75"></mat-icon>
+        </span>
+        <span class="font-medium">Sort by:</span></label
+      >
+      <select
+        name="sort"
+        id="sort"
+        (change)="onSortChange($event)"
+        [(value)]="sortValue"
+        class="rounded-lg border p-2 text-sm"
+      >
+        <option value="most_viewed">Most Viewed</option>
+        <option value="newest">Newest</option>
+        <option value="trending">Trending</option>
+      </select>
+    </div>
+    <p class="text-muted-foreground text-sm">
+      Showing {{ recipes()?.length ?? 0 }} recipes
+    </p>
+  </div>
+
+  <div class="space-y-2">
+    <p class="flex items-center gap-1">
+      <span class="text-muted-foreground flex items-center">
+        <mat-icon fontIcon="filter_alt" class="scale-75"></mat-icon>
+      </span>
+      <span class="text-sm font-medium">Filter by tags:</span>
+    </p>
+    <div class="flex flex-wrap gap-2">
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Healthy
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Vegetarian
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Mediterranean
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Spicy
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Asian
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Quick
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Dessert
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Baking
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Chocolate
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Seafood
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Grilled
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Italian
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Pizza
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Traditional
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Thai
+      </button>
+      <button
+        class="hover:bg-orange/20 rounded-full border px-2 py-0.5 text-xs font-medium transition"
+      >
+        Curry
+      </button>
+    </div>
+  </div>
+
+  <section class="flex flex-col gap-4">
+    @if (recipes()) {
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+        @for (recipe of recipes(); track recipe.id) {
+          <a
+            href="/view/{{ recipe.id }}"
+            class="bg-card text-card-foreground flex flex-col overflow-hidden rounded-lg border shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+          >
+            <img
+              [src]="
+                recipe.imageUrl ? recipe.imageUrl : '/image-placeholder.svg'
+              "
+              [alt]="recipe.name"
+              (error)="recipe.imageUrl = '/image-placeholder.svg'"
+              class="h-48 object-cover"
+            />
+            <div class="space-y-2 p-4 text-start">
+              <h3 class="hover:text-orange text-xl font-medium transition">
+                {{ recipe.name }}
+              </h3>
+              <p class="text-muted-foreground text-sm">
+                {{
+                  recipe.description.slice(0, 128) +
+                    (recipe.description.length > 128 ? "..." : "")
+                }}
+              </p>
+              <div class="flex gap-4">
+                <p class="text-muted-foreground flex items-center text-sm">
+                  <mat-icon fontIcon="schedule" class="scale-75"></mat-icon>
+                  {{ recipe.prepMinutes }} min
+                </p>
+                <p class="text-muted-foreground flex items-center text-sm">
+                  <mat-icon fontIcon="visibility" class="scale-75"></mat-icon>
+                  {{ recipe.viewCount }} views
+                </p>
+              </div>
+              <div class="flex gap-4">
+                @for (tag of recipe.tags; track $index) {
+                  <div
+                    class="rounded-full border px-2 py-0.5 text-xs font-medium"
+                  >
+                    {{ tag.slice(0, 1).toUpperCase() + tag.slice(1) }}
+                  </div>
+                }
+              </div>
+              <div class="border-t pt-2">
+                <p class="text-muted-foreground text-xs">
+                  by <span class="font-medium">{{ recipe.author.name }}</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+      <div class="mx-auto">
+        <app-pagination-controls></app-pagination-controls>
+      </div>
+    } @else if (errorMessage()) {
+      <p>{{ errorMessage() }}</p>
+    } @else {
+      <p>Loading...</p>
+    }
+  </section>
 </div>

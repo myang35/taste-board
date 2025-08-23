@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { RECIPES_PER_PAGE } from '@features/browse/constants';
@@ -7,7 +8,7 @@ import { concatMap, map, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-pagination-controls',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, MatIcon],
   templateUrl: './pagination-controls.component.html',
   styleUrl: './pagination-controls.component.css',
 })
