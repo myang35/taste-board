@@ -11,16 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
 export class SearchBarComponent {
   private fb = inject(FormBuilder);
 
-  submit = output<string>();
+  searchSubmit = output<{ query: string }>();
 
   searchForm = this.fb.group({
     query: this.fb.control(''),
   });
 
-  onSubmit(e: Event) {
-    e.stopPropagation();
-
-    const query = this.searchForm.get('query')?.value ?? '';
-    this.submit.emit(query);
+  onSubmit() {
+    const query = this.searchForm.controls.query.value ?? '';
+    this.searchSubmit.emit({ query });
   }
 }

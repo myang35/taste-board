@@ -1,10 +1,13 @@
 <a
   href="/account/({{ path() }})"
-  class="block w-full rounded px-2 py-1 transition hover:bg-black/5"
+  class="hover:bg-accent block w-full rounded px-2 py-1 transition"
   [class]="{
-    'bg-black/5': selected,
+    'bg-gradient-to-r': selected,
+    'from-orange/10': selected,
+    'to-accent/10': selected,
+    'border-l-orange': selected,
+    'font-medium': selected,
     'border-l-6': selected,
-    'border-l-secondary-500': selected,
   }"
   ><ng-content></ng-content
 ></a>

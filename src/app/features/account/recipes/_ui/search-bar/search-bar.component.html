@@ -1,19 +1,16 @@
-<form
-  [formGroup]="searchForm"
-  (ngSubmit)="onSubmit($event)"
-  class="border-dark-500 flex w-fit gap-2 rounded-full border px-4 py-2"
->
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="relative">
   <input
     type="text"
-    placeholder="Search..."
+    placeholder="Search for recipes..."
     formControlName="query"
-    class="outline-none"
+    class="w-full rounded-lg border py-3 pr-4 pl-10 text-sm"
   />
-  <button type="submit" class="flex items-center">
+  <div class="text-muted-foreground">
     <mat-icon
       aria-hidden="false"
       aria-label="Search icon"
       fontIcon="search"
+      class="absolute top-0 bottom-0 left-2 my-auto"
     ></mat-icon>
-  </button>
+  </div>
 </form>

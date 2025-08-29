@@ -1,0 +1,39 @@
+<div
+  class="bg-card text-card-foreground flex flex-col gap-4 rounded-lg border p-4"
+>
+  <div class="flex flex-col">
+    <div class="flex items-center gap-2">
+      <mat-icon fontIcon="email"></mat-icon>
+      <h3 class="text-2xl font-medium">Email Address</h3>
+    </div>
+    <p class="text-muted-foreground text-sm">
+      Current email: <span class="font-medium">{{ user()?.email }}</span>
+    </p>
+  </div>
+  <form class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="email" class="text-sm font-medium">New Email Address</label>
+      <input
+        type="text"
+        id="email"
+        placeholder="Enter new email address"
+        class="rounded-lg border px-3 py-2 text-sm"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="password" class="text-sm font-medium">Current Password</label>
+      <input
+        type="text"
+        id="password"
+        placeholder="Enter current password"
+        class="rounded-lg border px-3 py-2 text-sm"
+      />
+    </div>
+    <button
+      type="button"
+      class="bg-primary text-primary-foreground w-full rounded-lg p-2 text-sm font-medium"
+    >
+      Update Email
+    </button>
+  </form>
+</div>

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from '@core/guards/auth.guard';
 import { AccountComponent } from '@features/account/account.component';
 import { RecipesComponent } from '@features/account/recipes/recipes.component';
-import { SecurityComponent } from '@features/account/security/security.component';
+import { SettingsComponent } from '@features/account/settings/settings.component';
 import { BrowseComponent } from '@features/browse/browse.component';
 import { CreateComponent } from '@features/create/create.component';
 import { HomeComponent } from '@features/home/home.component';
@@ -50,8 +50,8 @@ export const routes: Routes = [
         component: RecipesComponent,
       },
       {
-        path: 'security',
-        component: SecurityComponent,
+        path: 'settings',
+        component: SettingsComponent,
       },
     ],
   },

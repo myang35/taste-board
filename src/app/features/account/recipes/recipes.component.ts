@@ -3,11 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { RecipeCardComponent } from './_ui/recipe-card/recipe-card.component';
 import { SearchBarComponent } from './_ui/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-recipes',
-  imports: [MatIconModule, SearchBarComponent],
+  imports: [MatIconModule, SearchBarComponent, RecipeCardComponent],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
 })
@@ -29,6 +30,7 @@ export class RecipesComponent {
   }
 
   onSearchSubmit(query: string) {
+    this.recipes.set(undefined);
     this.recipeService
       .getAll({
         userId: this.authService.user()?.id,
