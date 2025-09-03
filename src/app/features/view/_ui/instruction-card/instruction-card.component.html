@@ -1,0 +1,25 @@
+<button
+  type="button"
+  (click)="checked = !checked"
+  class="hover:bg-accent flex w-full gap-4 rounded-lg border p-4 transition"
+  [class]="{
+    'bg-muted': checked,
+  }"
+>
+  <div
+    class="bg-orange text-orange-foreground size-6 content-center rounded-full text-center text-sm"
+    [class]="{
+      'bg-orange/50': checked,
+    }"
+  >
+    {{ seqNumber() }}
+  </div>
+  <p
+    [class]="{
+      'line-through': checked,
+      'text-muted-foreground': checked,
+    }"
+  >
+    {{ instruction() }}
+  </p>
+</button>

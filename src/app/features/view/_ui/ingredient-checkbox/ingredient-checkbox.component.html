@@ -1,0 +1,20 @@
+<div class="flex gap-2">
+  <input
+    type="checkbox"
+    name="ingredient-{{ ingredient().name }}"
+    id="ingredient-{{ ingredient().name }}"
+    [(ngModel)]="checked"
+  />
+  <label
+    for="ingredient-{{ ingredient().name }}"
+    class="select-none"
+    [class]="{
+      'line-through': checked,
+      'text-muted-foreground': checked,
+    }"
+    ><span class="font-medium"
+      >{{ ingredient().amount }} {{ ingredient().unit }}</span
+    >
+    {{ ingredient().name }}</label
+  >
+</div>

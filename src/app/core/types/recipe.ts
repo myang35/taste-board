@@ -1,3 +1,4 @@
+import { Ingredient } from './ingredient';
 import { User } from './user';
 
 export interface Recipe {
@@ -9,12 +10,7 @@ export interface Recipe {
   prepMinutes: number;
   calories: number;
   tags: string[];
-  ingredients: {
-    id: string;
-    name: string;
-    amount: number;
-    unit: string;
-  }[];
+  ingredients: Ingredient[];
   steps: string[];
   notes: string;
   shared: boolean;
