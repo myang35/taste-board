@@ -1,0 +1,98 @@
+<ng-container [formGroup]="form().root">
+  <div formArrayName="ingredients" class="flex flex-col gap-4">
+    @for (ingredient of form().ingredients.controls; track ingredient) {
+      <div [formGroupName]="$index" class="grid grid-cols-12 gap-2">
+        <div class="col-span-2 flex flex-col justify-end gap-1">
+          <label
+            for="ingredient-{{ $index }}-amount"
+            class="text-sm font-medium"
+            >Amount</label
+          >
+          <input
+            id="ingredient-{{ $index }}-amount"
+            type="number"
+            formControlName="amount"
+            placeholder="1"
+            required
+            max="999999"
+            class="rounded-lg border px-3 py-2 text-sm"
+          />
+        </div>
+        <div class="col-span-2 flex flex-col justify-end gap-1">
+          <label for="ingredient-{{ $index }}-unit" class="text-sm font-medium"
+            >Unit</label
+          >
+          <select
+            id="ingredient-{{ $index }}-unit"
+            formControlName="unit"
+            required
+            class="h-full rounded-lg border px-3 py-2 text-sm"
+          >
+            <option value="1">cup</option>
+            <option value="2">tbsp</option>
+            <option value="3">tsp</option>
+            <option value="4">oz</option>
+            <option value="5">lb</option>
+            <option value="6">g</option>
+            <option value="7">kg</option>
+            <option value="8">ml</option>
+            <option value="9">l</option>
+            <option value="10">piece</option>
+            <option value="11">clove</option>
+            <option value="12">slice</option>
+            <option value="13">whole</option>
+            <option value="14">pinch</option>
+          </select>
+        </div>
+        <div class="col-span-4 flex flex-col justify-end gap-1">
+          <label for="ingredient-{{ $index }}-name" class="text-sm font-medium"
+            >Ingredient</label
+          >
+          <input
+            id="ingredient-{{ $index }}-name"
+            type="text"
+            formControlName="name"
+            placeholder="flour"
+            required
+            maxlength="128"
+            class="rounded-lg border px-3 py-2 text-sm"
+          />
+        </div>
+        <div class="col-span-3 flex flex-col justify-end gap-1">
+          <label for="ingredient-{{ $index }}-notes" class="text-sm font-medium"
+            >Notes</label
+          >
+          <input
+            id="ingredient-{{ $index }}-notes"
+            type="text"
+            formControlName="notes"
+            placeholder="sifted"
+            maxlength="32"
+            class="rounded-lg border px-3 py-2 text-sm"
+          />
+        </div>
+        <div class="flex items-end">
+          <button
+            type="button"
+            (click)="form().removeIngredient($index)"
+            class="text-danger hover:bg-danger/10 mb-1 size-8 rounded-full border transition"
+          >
+            <span class="flex scale-75 items-center justify-center">
+              <mat-icon fontIcon="remove"></mat-icon>
+            </span>
+          </button>
+        </div>
+      </div>
+    }
+    <button
+      type="button"
+      (click)="form().addIngredient()"
+      class="flex w-fit items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium"
+    >
+      <span class="scale-75">
+        <mat-icon fontIcon="add"></mat-icon>
+      </span>
+      Add Ingredient
+    </button>
+  </div>
+</ng-container>

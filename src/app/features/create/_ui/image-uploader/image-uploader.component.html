@@ -1,0 +1,40 @@
+<div
+  [formGroup]="form().root"
+  class="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-6"
+>
+  @if (imageFile(); as imageFile) {
+    <div class="flex flex-col items-center">
+      <img [src]="imageUrl()" alt="recipe" class="h-40 rounded-lg shadow-sm" />
+      <p class="text-sm">{{ imageFile.name }}</p>
+      <p class="text-muted-foreground text-sm">
+        {{ sizeToString(imageFile.size) }}
+      </p>
+      @if (imageFile.size > 10000000) {
+        <p class="text-danger flex items-center gap-1">
+          <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+          File is too large!
+        </p>
+      }
+    </div>
+  } @else {
+    <div class="text-muted-foreground flex size-18 items-center justify-center">
+      <mat-icon fontIcon="upload" class="scale-300"></mat-icon>
+    </div>
+  }
+  <label
+    for="image"
+    class="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition"
+  >
+    Upload Recipe Image
+  </label>
+  <input
+    #imageInput
+    type="file"
+    id="image"
+    formControlName="image"
+    accept=".png, .jpg, .jpeg"
+    (change)="updateImage()"
+    class="hidden"
+  />
+  <p class="text-muted-foreground text-sm">PNG, JPG up to 10MB</p>
+</div>

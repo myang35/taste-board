@@ -1,0 +1,56 @@
+<div class="flex flex-col gap-4">
+  <div class="flex gap-2">
+    <input
+      type="text"
+      [formControl]="inputControl"
+      placeholder="Add a tag..."
+      maxlength="64"
+      class="w-full rounded-lg border px-3 py-2"
+    />
+    <button
+      type="button"
+      class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg border px-3 py-2 text-sm transition"
+    >
+      Add
+    </button>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    @for (selectedTag of selectedTags; track $index) {
+      <div
+        class="bg-muted relative rounded-full border py-0.5 pr-6 pl-2 text-xs font-medium"
+      >
+        {{ selectedTag }}
+        <button
+          type="button"
+          (click)="selectedTags.splice($index, 1)"
+          class="hover:bg-danger hover:text-danger-foreground absolute top-0 right-1 bottom-0 my-auto flex size-8 translate-x-[25%] scale-50 items-center justify-center rounded-full transition"
+        >
+          <mat-icon fontIcon="clear"></mat-icon>
+        </button>
+      </div>
+      <input type="hidden" formControlName="tags" />
+    }
+  </div>
+  <div class="flex flex-col gap-2">
+    <label class="text-muted-foreground text-sm font-medium"
+      >Popular tags:</label
+    >
+    <div class="flex flex-wrap gap-2">
+      @for (tag of popularTags; track $index) {
+        <button
+          type="button"
+          [disabled]="selectedTags.includes(tag)"
+          (click)="selectedTags.push(tag)"
+          class="not-disabled:hover:bg-accent not-disabled:hover:text-accent-foreground relative flex items-center rounded-lg border py-1 pr-2 pl-6 text-xs font-medium whitespace-nowrap transition disabled:opacity-50"
+        >
+          <div
+            class="absolute top-0 bottom-0 left-2 my-auto -translate-x-[25%] scale-50"
+          >
+            <mat-icon fontIcon="add"></mat-icon>
+          </div>
+          {{ tag }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
