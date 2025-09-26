@@ -14,12 +14,23 @@
   >
     {{ seqNumber() }}
   </div>
-  <p
-    [class]="{
-      'line-through': checked,
-      'text-muted-foreground': checked,
-    }"
-  >
-    {{ instruction() }}
-  </p>
+  <div>
+    <p
+      [class]="{
+        'line-through': checked,
+        'text-muted-foreground': checked,
+      }"
+    >
+      {{ instruction().description }}
+    </p>
+    <p class="text-muted-foreground flex items-center text-xs">
+      <mat-icon fontIcon="timer" class="scale-50"></mat-icon>
+      <span
+        [class]="{
+          'line-through': checked,
+        }"
+        >{{ instruction().minutes }} min</span
+      >
+    </p>
+  </div>
 </button>
