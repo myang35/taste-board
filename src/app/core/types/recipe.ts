@@ -8,7 +8,6 @@ export interface Recipe {
   name: string;
   servings: number;
   description: string;
-  prepMinutes: number;
   cookMinutes: number;
   difficulty: number;
   imageUrl: string;
