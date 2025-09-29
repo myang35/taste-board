@@ -11,7 +11,6 @@ export interface Recipe {
   cookMinutes: number;
   difficulty: number;
   imageUrl: string;
-  tags: string[];
   ingredients: Ingredient[];
   instructions: Instruction[];
   calories: number;

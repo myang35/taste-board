@@ -45,13 +45,6 @@
             <mat-icon fontIcon="visibility" class="scale-75"></mat-icon>
             <p>{{ recipe.viewCount }} views</p>
           </div>
-          <div class="flex gap-4">
-            @for (tag of recipe.tags; track $index) {
-              <div class="rounded-full border px-2 py-0.5 text-xs font-medium">
-                {{ StringUtils.firstUpper(tag) }}
-              </div>
-            }
-          </div>
         </div>
         <div class="flex flex-col gap-4">
           <img

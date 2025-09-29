@@ -28,13 +28,6 @@
         {{ recipe().viewCount }} views
       </p>
     </div>
-    <div class="flex gap-4">
-      @for (tag of recipe().tags; track $index) {
-        <div class="rounded-full border px-2 py-0.5 text-xs font-medium">
-          {{ tag.slice(0, 1).toUpperCase() + tag.slice(1) }}
-        </div>
-      }
-    </div>
     <div class="border-t pt-2">
       <p class="text-muted-foreground text-xs">
         Created {{ isoToString(recipe().createdAt) }}

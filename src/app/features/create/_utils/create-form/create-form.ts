@@ -12,7 +12,6 @@ export class CreateForm {
     cookMinutes: [NaN, [Validators.min(0), Validators.max(9999)]],
     difficulty: [0, [Validators.min(0), Validators.max(5)]],
     image: this.formBuilder.control<File | undefined>(undefined, []),
-    tags: this.formBuilder.array<ReturnType<typeof this.createTagControl>>([]),
     ingredients: this.formBuilder.array<
       ReturnType<typeof this.createIngredientGroup>
     >([]),
@@ -35,7 +34,6 @@ export class CreateForm {
   cookMinutes = this.root.controls.cookMinutes;
   difficulty = this.root.controls.difficulty;
   image = this.root.controls.image;
-  tags = this.root.controls.tags;
   ingredients = this.root.controls.ingredients;
   instructions = this.root.controls.instructions;
   calories = this.root.controls.calories;
@@ -56,7 +54,6 @@ export class CreateForm {
       cookMinutes: this.cookMinutes.value || 0,
       difficulty: this.difficulty.value || 0,
       image: this.image.value ?? undefined,
-      tags: (this.tags.value ?? []).filter((tag) => tag) as string[],
       ingredients: (this.ingredients.value ?? []).map((ingredient) => ({
         name: ingredient.name ?? '',
         amount: ingredient.amount || 0,
@@ -94,14 +91,6 @@ export class CreateForm {
     this.root.controls.instructions.removeAt(index);
   }
 
-  addTag() {
-    this.root.controls.tags.push(this.createTagControl());
-  }
-
-  removeTag(index: number) {
-    this.root.controls.tags.removeAt(index);
-  }
-
   private createIngredientGroup() {
     return this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(128)]],
@@ -116,9 +105,5 @@ export class CreateForm {
       description: ['', [Validators.maxLength(1024)]],
       minutes: [NaN, [Validators.max(9999)]],
     });
-  }
-
-  private createTagControl() {
-    return this.formBuilder.control('', [Validators.maxLength(32)]);
   }
 }
