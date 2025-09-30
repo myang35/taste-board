@@ -27,23 +27,11 @@
         </div>
       </div>
       <div class="flex flex-1 gap-4">
-        <div
-          class="text-card-foreground bg-card mb-6 flex w-fit flex-1 flex-col rounded-lg border shadow-sm"
-        >
-          <img src="/image-placeholder.svg" alt="" class="h-48 object-cover" />
-          <div class="p-4">
-            <h1>Fresh Pasta</h1>
-            <p>30 min</p>
-          </div>
+        <div class="mb-6 flex-1">
+          <app-recipe-card [recipe]="heroRecipes?.[0]"></app-recipe-card>
         </div>
-        <div
-          class="text-card-foreground bg-card mt-6 flex w-fit flex-1 flex-col rounded-lg border shadow-sm"
-        >
-          <img src="/image-placeholder.svg" alt="" class="h-48 object-cover" />
-          <div class="p-4">
-            <h1>Sushi Roll</h1>
-            <p>45 min</p>
-          </div>
+        <div class="mt-6 flex-1">
+          <app-recipe-card [recipe]="heroRecipes?.[1]"></app-recipe-card>
         </div>
       </div>
     </div>
@@ -134,108 +122,18 @@
         </a>
       </div>
       <div class="flex gap-8">
-        <div
-          class="bg-card text-card-foreground flex-1 rounded-lg border shadow-sm transition hover:shadow-lg"
-        >
-          <img
-            src="/image-placeholder.svg"
-            alt=""
-            class="h-48 w-full object-cover"
-          />
-          <div class="flex flex-col gap-3 p-6">
-            <h3 class="text-xl font-medium">Mediterranean Quinoa Bowl</h3>
-            <div class="flex gap-4">
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="schedule"></mat-icon> 25 min
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <span class="text-orange flex items-center">
-                  <mat-icon fontIcon="star"></mat-icon>
-                </span>
-                4.8
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="group"></mat-icon> 2.3k
-              </p>
-            </div>
-            <div class="flex gap-4">
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Healthy</p>
-              </div>
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Vegetarian</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="bg-card text-card-foreground flex-1 rounded-lg border shadow-sm transition hover:shadow-lg"
-        >
-          <img
-            src="/image-placeholder.svg"
-            alt=""
-            class="h-48 w-full object-cover"
-          />
-          <div class="flex flex-col gap-3 p-6">
-            <h3 class="text-xl font-medium">Spicy Korean Ramen</h3>
-            <div class="flex gap-4">
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="schedule"></mat-icon> 15 min
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <span class="text-orange flex items-center">
-                  <mat-icon fontIcon="star"></mat-icon>
-                </span>
-                4.9
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="group"></mat-icon> 5.1k
-              </p>
-            </div>
-            <div class="flex gap-4">
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Spicy</p>
-              </div>
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Asian</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="bg-card text-card-foreground flex-1 rounded-lg border shadow-sm transition hover:shadow-lg"
-        >
-          <img
-            src="/image-placeholder.svg"
-            alt=""
-            class="h-48 w-full object-cover"
-          />
-          <div class="flex flex-col gap-3 p-6">
-            <h3 class="text-xl font-medium">Classic Chocolate Cake</h3>
-            <div class="flex gap-4">
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="schedule"></mat-icon> 45 min
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <span class="text-orange flex items-center">
-                  <mat-icon fontIcon="star"></mat-icon>
-                </span>
-                4.7
-              </p>
-              <p class="text-muted-foreground flex items-center gap-1">
-                <mat-icon fontIcon="group"></mat-icon> 3.8k
-              </p>
-            </div>
-            <div class="flex gap-4">
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Dessert</p>
-              </div>
-              <div class="bg-orange/10 rounded-full px-2 py-1">
-                <p class="text-orange text-xs">Baking</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-recipe-card
+          [recipe]="trendingRecipes?.[0]"
+          class="w-full"
+        ></app-recipe-card>
+        <app-recipe-card
+          [recipe]="trendingRecipes?.[1]"
+          class="w-full"
+        ></app-recipe-card>
+        <app-recipe-card
+          [recipe]="trendingRecipes?.[2]"
+          class="w-full"
+        ></app-recipe-card>
       </div>
     </div>
   </section>

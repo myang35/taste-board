@@ -1,0 +1,6 @@
+<img
+  [src]="errored() ? '/image-placeholder.svg' : src()"
+  [alt]="alt()"
+  (error)="errored.set(true)"
+  [class]="classProp()"
+/>

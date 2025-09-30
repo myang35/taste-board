@@ -57,6 +57,12 @@ export class RecipeService {
       );
   }
 
+  getRandom(size: number) {
+    return this.http.get<Recipe[]>(
+      `${environment.apiUrl}/recipes/random/${size}`,
+    );
+  }
+
   create(params: {
     name: string;
     description: string;

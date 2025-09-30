@@ -1,0 +1,47 @@
+<a
+  href="/view/{{ recipe()?.id }}"
+  class="bg-card text-card-foreground block overflow-hidden rounded-lg border shadow-sm transition duration-300"
+  [class]="{
+    'hover:-translate-y-1': recipe(),
+    'hover:shadow-lg': recipe(),
+    'cursor-default': !recipe(),
+    'pointer-events-none': !recipe(),
+  }"
+>
+  <app-image
+    [src]="recipe()?.imageUrl"
+    [alt]="recipe()?.name"
+    class="h-48 w-full object-cover"
+  ></app-image>
+  <div class="flex flex-col gap-3 p-6">
+    <h3 class="text-xl font-medium">
+      @if (recipe()) {
+        {{ recipe()?.name }}
+      } @else {
+        ...
+      }
+    </h3>
+    <div class="flex gap-4">
+      <p class="text-muted-foreground flex items-center gap-1 text-sm">
+        <span class="size-6 scale-75">
+          <mat-icon fontIcon="schedule"></mat-icon>
+        </span>
+        @if (recipe()) {
+          {{ recipe()?.cookMinutes }} min
+        } @else {
+          ...
+        }
+      </p>
+      <p class="text-muted-foreground flex items-center gap-1 text-sm">
+        <span class="size-6 scale-75">
+          <mat-icon fontIcon="visibility"></mat-icon>
+        </span>
+        @if (recipe()) {
+          {{ recipe()?.viewCount }} views
+        } @else {
+          ...
+        }
+      </p>
+    </div>
+  </div>
+</a>
