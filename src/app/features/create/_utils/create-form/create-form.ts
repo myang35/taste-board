@@ -5,32 +5,55 @@ export class CreateForm {
   private formBuilder = inject(FormBuilder);
 
   root = this.formBuilder.group({
-    name: ['', [Validators.maxLength(128)]],
-    servings: [NaN, [Validators.max(99)]],
-    description: ['', [Validators.maxLength(1024)]],
-    prepMinutes: [NaN, [Validators.min(0), Validators.max(9999)]],
-    cookMinutes: [NaN, [Validators.min(0), Validators.max(9999)]],
-    difficulty: [0, [Validators.min(0), Validators.max(5)]],
+    name: ['Spaget', [Validators.maxLength(128)]],
+    servings: [1, [Validators.max(99)]],
+    description: ['Spagetti but with one noodle', [Validators.maxLength(1024)]],
+    cookMinutes: [20, [Validators.min(0), Validators.max(9999)]],
+    difficulty: [1, [Validators.min(0), Validators.max(5)]],
     image: this.formBuilder.control<File | undefined>(undefined, []),
     ingredients: this.formBuilder.array<
       ReturnType<typeof this.createIngredientGroup>
-    >([]),
+    >([
+      this.createIngredientGroup({
+        name: 'noodle',
+        amount: 1,
+        unit: 'piece',
+      }),
+      this.createIngredientGroup({
+        name: 'plate',
+        amount: 1,
+        unit: 'whole',
+        notes: 'washed',
+      }),
+    ]),
     instructions: this.formBuilder.array<
       ReturnType<typeof this.createInstructionGroup>
-    >([]),
-    calories: [NaN, [Validators.min(0), Validators.max(9999)]],
-    protein: [NaN, [Validators.min(0), Validators.max(9999)]],
-    carbohydrates: [NaN, [Validators.min(0), Validators.max(9999)]],
-    fat: [NaN, [Validators.min(0), Validators.max(9999)]],
-    fiber: [NaN, [Validators.min(0), Validators.max(9999)]],
-    sugar: [NaN, [Validators.min(0), Validators.max(9999)]],
-    notes: ['', [Validators.maxLength(4096)]],
+    >([
+      this.createInstructionGroup({
+        description: 'Put plate on table',
+        minutes: 1,
+      }),
+      this.createInstructionGroup({
+        description: 'Put noodle on plate',
+        minutes: 2,
+      }),
+      this.createInstructionGroup({
+        description: 'Eat noodle',
+        minutes: 10,
+      }),
+    ]),
+    calories: [50, [Validators.min(0), Validators.max(9999)]],
+    protein: [1, [Validators.min(0), Validators.max(9999)]],
+    carbohydrates: [2, [Validators.min(0), Validators.max(9999)]],
+    fat: [3, [Validators.min(0), Validators.max(9999)]],
+    fiber: [20, [Validators.min(0), Validators.max(9999)]],
+    sugar: [30, [Validators.min(0), Validators.max(9999)]],
+    notes: ['Do not forget the noodle', [Validators.maxLength(4096)]],
     shared: ['no'],
   });
   name = this.root.controls.name;
   servings = this.root.controls.servings;
   description = this.root.controls.description;
-  prepMinutes = this.root.controls.prepMinutes;
   cookMinutes = this.root.controls.cookMinutes;
   difficulty = this.root.controls.difficulty;
   image = this.root.controls.image;
@@ -50,7 +73,6 @@ export class CreateForm {
       name: this.name.value ?? '',
       servings: this.servings.value || 0,
       description: this.description.value ?? '',
-      prepMinutes: this.prepMinutes.value || 0,
       cookMinutes: this.cookMinutes.value || 0,
       difficulty: this.difficulty.value || 0,
       image: this.image.value ?? undefined,
@@ -91,19 +113,36 @@ export class CreateForm {
     this.root.controls.instructions.removeAt(index);
   }
 
-  private createIngredientGroup() {
+  private createIngredientGroup(value?: {
+    name?: string;
+    amount?: number;
+    unit?: string;
+    notes?: string;
+  }) {
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(128)]],
-      amount: [NaN, [Validators.required, Validators.max(9999)]],
-      unit: ['', [Validators.required, Validators.maxLength(32)]],
-      notes: ['', [Validators.maxLength(32)]],
+      name: [
+        value?.name ?? '',
+        [Validators.required, Validators.maxLength(128)],
+      ],
+      amount: [
+        value?.amount ?? NaN,
+        [Validators.required, Validators.max(9999)],
+      ],
+      unit: [
+        value?.unit ?? '',
+        [Validators.required, Validators.maxLength(32)],
+      ],
+      notes: [value?.notes ?? '', [Validators.maxLength(32)]],
     });
   }
 
-  private createInstructionGroup() {
+  private createInstructionGroup(value?: {
+    description?: string;
+    minutes?: number;
+  }) {
     return this.formBuilder.group({
-      description: ['', [Validators.maxLength(1024)]],
-      minutes: [NaN, [Validators.max(9999)]],
+      description: [value?.description ?? '', [Validators.maxLength(1024)]],
+      minutes: [value?.minutes ?? NaN, [Validators.max(9999)]],
     });
   }
 }

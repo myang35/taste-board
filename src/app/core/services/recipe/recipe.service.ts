@@ -65,16 +65,27 @@ export class RecipeService {
 
   create(params: {
     name: string;
+    servings: number;
     description: string;
-    prepMinutes: number;
-    calories: number;
-    tags: string[];
+    cookMinutes: number;
+    difficulty: number;
+    image?: File; // TODO: Should be a URL string
     ingredients: {
       name: string;
       amount: number;
       unit: string;
+      notes: string;
     }[];
-    steps: string[];
+    instructions: {
+      description: string;
+      minutes: number;
+    }[];
+    calories: number;
+    protein: number;
+    carbohydrates: number;
+    fat: number;
+    fiber: number;
+    sugar: number;
     notes: string;
     shared: boolean;
   }) {
@@ -84,14 +95,20 @@ export class RecipeService {
     }
 
     return this.http.post<Recipe>(`${environment.apiUrl}/recipes`, {
-      authorId: user.id,
       name: params.name,
+      servings: params.servings,
       description: params.description,
-      prepMinutes: params.prepMinutes,
-      calories: params.calories,
-      tags: params.tags,
+      cookMinutes: params.cookMinutes,
+      difficulty: params.difficulty,
+      image: params.image,
       ingredients: params.ingredients,
-      steps: params.steps,
+      instructions: params.instructions,
+      calories: params.calories,
+      proteinGrams: params.protein,
+      carbohydratesGrams: params.carbohydrates,
+      fatGrams: params.fat,
+      fiberGrams: params.fiber,
+      sugarGrams: params.sugar,
       notes: params.notes,
       shared: params.shared,
     });

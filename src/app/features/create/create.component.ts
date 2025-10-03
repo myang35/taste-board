@@ -7,7 +7,6 @@ import { TabsModule } from '@shared/ui/tabs/tabs.module';
 import { ImageUploaderComponent } from './_ui/image-uploader/image-uploader.component';
 import { IngredientSelectorComponent } from './_ui/ingredient-selector/ingredient-selector.component';
 import { InstructionAdderComponent } from './_ui/instruction-adder/instruction-adder.component';
-import { TagSelectorComponent } from './_ui/tag-selector/tag-selector.component';
 import { CreateForm } from './_utils/create-form/create-form';
 
 @Component({
@@ -17,7 +16,6 @@ import { CreateForm } from './_utils/create-form/create-form';
     ReactiveFormsModule,
     MatIconModule,
     ImageUploaderComponent,
-    TagSelectorComponent,
     IngredientSelectorComponent,
     InstructionAdderComponent,
   ],
@@ -31,12 +29,10 @@ export class CreateComponent {
   protected form = new CreateForm();
 
   createRecipe() {
-    console.log('values:', this.form.values);
-
-    // this.recipeService.create(values).subscribe({
-    //   next: (value) => {
-    //     this.router.navigateByUrl(`/view/${value.id}`);
-    //   },
-    // });
+    this.recipeService.create(this.form.values).subscribe({
+      next: (value) => {
+        this.router.navigateByUrl(`/view/${value.id}`);
+      },
+    });
   }
 }
