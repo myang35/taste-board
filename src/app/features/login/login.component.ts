@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
+import { ApiErrorUtils } from '@core/utils/api-error-utils/api-error-utils';
 
 @Component({
   selector: 'app-login',
@@ -11,62 +13,73 @@ import { AuthService } from '@core/services/auth/auth.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  private router = inject(Router);
-  private formBuilder = inject(FormBuilder);
-  private authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
 
-  loginForm = this.formBuilder.group({
+  protected loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
-  showPassword = false;
-  emailErrorMessage = '';
-  passwordErrorMessage = '';
-  formErrorMessage = '';
+  protected showPassword = signal(false);
+  protected formErrorMessage = signal('');
+  protected inputErrorMessages = signal<{
+    email?: string;
+    password?: string;
+  }>({});
 
   navigateToHome() {
     this.router.navigateByUrl('/');
   }
 
   onLoginSubmit() {
-    this.emailErrorMessage = '';
-    this.passwordErrorMessage = '';
-    this.formErrorMessage = '';
+    this.formErrorMessage.set('');
+    this.inputErrorMessages.set({});
 
     const { email, password } = this.loginForm.controls;
-    if (!this.loginForm.valid || !email.value || !password.value) {
-      if (email.hasError('required')) {
-        this.emailErrorMessage = 'Required';
-      }
-      if (email.hasError('email')) {
-        this.emailErrorMessage = 'Invalid format';
-      }
-      if (password.hasError('required')) {
-        this.passwordErrorMessage = 'Required';
-      }
+
+    if (email.hasError('required')) {
+      this.inputErrorMessages().email = 'Required';
+    }
+    if (email.hasError('email')) {
+      this.inputErrorMessages().email = 'Invalid format';
+    }
+    if (password.hasError('required')) {
+      this.inputErrorMessages().password = 'Required';
+    }
+
+    if (Object.keys(this.inputErrorMessages()).length > 0) {
+      this.inputErrorMessages.set(this.inputErrorMessages()); // Trigger signal
       return;
     }
 
     this.authService
       .login({
-        email: email.value,
-        password: password.value,
+        email: email.value!,
+        password: password.value!,
       })
       .subscribe({
         next: () => {
           this.router.navigateByUrl('/');
         },
         error: (error) => {
-          if ('message' in error) {
-            this.formErrorMessage = error.message;
-          } else {
-            this.formErrorMessage = 'Unknown error occurred';
+          if (error instanceof HttpErrorResponse) {
+            if (ApiErrorUtils.isInvalidInputsError(error.error)) {
+              this.formErrorMessage.set(error.error.message);
+              this.inputErrorMessages.set(error.error.data.inputs);
+              return;
+            }
+            if (ApiErrorUtils.isApiError(error.error)) {
+              this.formErrorMessage.set(error.error.message);
+              return;
+            }
           }
+          this.formErrorMessage.set('Unknown error occurred');
         },
       });
   }
 
   togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
+    this.showPassword.set(!this.showPassword());
   }
 }

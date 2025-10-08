@@ -1,8 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '@core/types/user';
 import { environment } from '@env';
-import { catchError, of, tap, throwError } from 'rxjs';
+import { tap } from 'rxjs';
 
 export interface AuthResponse {
   user: User;
@@ -33,8 +33,7 @@ export class AuthService {
         tap({
           next: (value) => this.storeData(value),
         }),
-      )
-      .pipe(catchError(this.handleError));
+      );
   }
 
   signup(data: { name: string; email: string; password: string }) {
@@ -46,8 +45,7 @@ export class AuthService {
         tap({
           next: (value) => this.storeData(value),
         }),
-      )
-      .pipe(catchError(this.handleError));
+      );
   }
 
   refresh() {
@@ -59,8 +57,7 @@ export class AuthService {
         tap({
           next: (value) => this.storeData(value),
         }),
-      )
-      .pipe(catchError(this.handleError));
+      );
   }
 
   logout() {
@@ -75,8 +72,7 @@ export class AuthService {
             this.user.set(undefined);
           },
         }),
-      )
-      .pipe(catchError(this.handleError));
+      );
   }
 
   get token() {
@@ -86,14 +82,5 @@ export class AuthService {
   private storeData(value: AuthResponse) {
     this.user.set(value.user);
     sessionStorage.setItem('token', value.token);
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error?.code === 'UNAUTHENTICATED_ERROR') {
-      return of(null);
-    }
-    return throwError(
-      () => new Error(error.error?.message || error.message || 'Unknown error'),
-    );
   }
 }
