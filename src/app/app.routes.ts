@@ -30,6 +30,7 @@ export const routes: Routes = [
   {
     path: 'create',
     component: CreateComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'view/:recipeId',
