@@ -1,221 +1,254 @@
-<div class="container mx-auto flex flex-col gap-8 p-4">
-  <div class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold lg:text-4xl">Create New Recipe</h1>
-    <p class="text-muted-foreground text-lg">
-      Share your culinary creativity with the TasteBoard community
+@if (editedRecipe() === null) {
+  <div class="container p-4">
+    <p class="text-danger text-center text-2xl">Recipe not found</p>
+  </div>
+} @else if (
+  user() && editedRecipe() && user()?.id !== editedRecipe()?.author?.id
+) {
+  <div class="container p-4">
+    <p class="text-danger text-center text-2xl">
+      You do not have permission to edit this recipe
     </p>
   </div>
-  <form
-    [formGroup]="form.root"
-    (ngSubmit)="createRecipe()"
-    (keydown.enter)="$event.preventDefault()"
-    class="flex flex-col gap-8"
-  >
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+} @else if (urlParams.editRecipe && editedRecipe() === undefined) {
+  <div class="container p-4">
+    <p class="text-center">Loading...</p>
+  </div>
+} @else {
+  <div class="container mx-auto flex flex-col gap-8 p-4">
+    <h1 class="text-3xl font-bold lg:text-4xl">
+      {{ editedRecipe() ? "Edit" : "Create New" }} Recipe
+    </h1>
+    <button
+      type="button"
+      (click)="autofillForm()"
+      class="hover:bg-accent hover:text-accent-foreground w-fit rounded-lg border px-3 py-2"
     >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="description"></mat-icon>
-        Basic Information
-      </h2>
-      <div class="flex flex-col gap-4">
-        <div class="flex flex-col gap-2">
-          <label for="name" class="text-sm font-medium">Recipe Name *</label>
-          <input
-            type="text"
-            id="name"
-            formControlName="name"
-            placeholder="Enter recipe name"
-            class="rounded-lg border px-3 py-2"
-          />
+      TEST: autofill form
+    </button>
+    <form
+      [formGroup]="form.root"
+      (ngSubmit)="editedRecipe() ? updateRecipe() : createRecipe()"
+      (keydown.enter)="$event.preventDefault()"
+      class="flex flex-col gap-8"
+    >
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="description"></mat-icon>
+          Basic Information
+        </h2>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="name" class="text-sm font-medium">Recipe Name *</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              placeholder="Enter recipe name"
+              class="rounded-lg border px-3 py-2"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="description">Description *</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Describe your recipe..."
+              rows="3"
+              class="rounded-lg border px-3 py-2"
+            ></textarea>
+          </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="flex flex-col gap-2">
+              <label for="servings" class="text-sm font-medium"
+                >Servings *</label
+              >
+              <input
+                type="number"
+                id="servings"
+                formControlName="servings"
+                placeholder="4"
+                class="rounded-lg border px-3 py-2"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="cookMinutes" class="text-sm font-medium"
+                >Cook Time (minutes) *</label
+              >
+              <input
+                type="number"
+                id="cookMinutes"
+                formControlName="cookMinutes"
+                placeholder="30"
+                max="9999"
+                class="rounded-lg border px-3 py-2"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="difficulty" class="text-sm font-medium"
+                >Difficulty
+                <span class="text-muted-foreground text-xs"
+                  >(optional)</span
+                ></label
+              >
+              <select
+                id="difficulty"
+                formControlName="difficulty"
+                class="rounded-lg border px-3 py-2"
+              >
+                <option value="0" class="text-muted-foreground">
+                  Not Rated
+                </option>
+                <option value="1">1 - Very Easy</option>
+                <option value="2">2 - Easy</option>
+                <option value="3">3 - Medium</option>
+                <option value="4">4 - Hard</option>
+                <option value="5">5 - Very Hard</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="flex flex-col gap-2">
-          <label for="description">Description *</label>
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Describe your recipe..."
-            rows="3"
-            class="rounded-lg border px-3 py-2"
-          ></textarea>
-        </div>
+      </div>
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="photo_camera"></mat-icon>
+          Recipe Image
+        </h2>
+        <app-image-uploader [form]="form"></app-image-uploader>
+      </div>
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="receipt_long"></mat-icon>
+          Ingredients
+        </h2>
+        <app-ingredient-selector [form]="form"></app-ingredient-selector>
+      </div>
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="format_list_numbered"></mat-icon>
+          Instructions
+        </h2>
+        <app-instruction-adder [form]="form"></app-instruction-adder>
+      </div>
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="article"></mat-icon>
+          Nutrition Facts (Optional)
+        </h2>
         <div class="grid gap-4 md:grid-cols-3">
-          <div class="flex flex-col gap-2">
-            <label for="servings" class="text-sm font-medium">Servings *</label>
+          <div class="flex flex-col gap-1">
+            <label for="calories" class="text-sm font-medium"
+              >Calories per serving</label
+            >
             <input
+              id="calories"
               type="number"
-              id="servings"
-              formControlName="servings"
-              placeholder="4"
+              formControlName="calories"
+              placeholder="350"
               class="rounded-lg border px-3 py-2"
             />
           </div>
-          <div class="flex flex-col gap-2">
-            <label for="cookMinutes" class="text-sm font-medium"
-              >Cook Time (minutes) *</label
+          <div class="flex flex-col gap-1">
+            <label for="protein" class="text-sm font-medium">Protein (g)</label>
+            <input
+              id="protein"
+              type="number"
+              formControlName="protein"
+              placeholder="25"
+              class="rounded-lg border px-3 py-2"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="carbohydrates" class="text-sm font-medium"
+              >Carbohydrates (g)</label
             >
             <input
+              id="carbohydrates"
               type="number"
-              id="cookMinutes"
-              formControlName="cookMinutes"
+              formControlName="carbohydrates"
               placeholder="30"
-              max="9999"
               class="rounded-lg border px-3 py-2"
             />
           </div>
-          <div class="flex flex-col gap-2">
-            <label for="difficulty" class="text-sm font-medium"
-              >Difficulty
-              <span class="text-muted-foreground text-xs"
-                >(optional)</span
-              ></label
-            >
-            <select
-              id="difficulty"
-              formControlName="difficulty"
+          <div class="flex flex-col gap-1">
+            <label for="fat" class="text-sm font-medium">Fat (g)</label>
+            <input
+              id="fat"
+              type="number"
+              formControlName="fat"
+              placeholder="15"
               class="rounded-lg border px-3 py-2"
-            >
-              <option value="0" class="text-muted-foreground">Not Rated</option>
-              <option value="1">1 - Very Easy</option>
-              <option value="2">2 - Easy</option>
-              <option value="3">3 - Medium</option>
-              <option value="4">4 - Hard</option>
-              <option value="5">5 - Very Hard</option>
-            </select>
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="fiber" class="text-sm font-medium">Fiber (g)</label>
+            <input
+              id="fiber"
+              type="number"
+              formControlName="fiber"
+              placeholder="5"
+              class="rounded-lg border px-3 py-2"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="sugar" class="text-sm font-medium">Sugar (g)</label>
+            <input
+              id="sugar"
+              type="number"
+              formControlName="sugar"
+              placeholder="8"
+              class="rounded-lg border px-3 py-2"
+            />
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
-    >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="photo_camera"></mat-icon>
-        Recipe Image
-      </h2>
-      <app-image-uploader [form]="form"></app-image-uploader>
-    </div>
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
-    >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="receipt_long"></mat-icon>
-        Ingredients
-      </h2>
-      <app-ingredient-selector [form]="form"></app-ingredient-selector>
-    </div>
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
-    >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="format_list_numbered"></mat-icon>
-        Instructions
-      </h2>
-      <app-instruction-adder [form]="form"></app-instruction-adder>
-    </div>
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
-    >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="article"></mat-icon>
-        Nutrition Facts (Optional)
-      </h2>
-      <div class="grid gap-4 md:grid-cols-3">
-        <div class="flex flex-col gap-1">
-          <label for="calories" class="text-sm font-medium"
-            >Calories per serving</label
+      <div
+        class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
+      >
+        <h2 class="flex items-center gap-2 text-2xl font-medium">
+          <mat-icon fontIcon="notes"></mat-icon>
+          Notes (Optional)
+        </h2>
+        <textarea
+          formControlName="notes"
+          rows="3"
+          placeholder="Share any tips, variations, or additional information about your recipe..."
+          class="rounded-lg border px-3 py-2 text-sm"
+        ></textarea>
+      </div>
+      <div class="flex justify-between gap-4">
+        <div>
+          @if (editedRecipe()) {
+            <app-delete-button [recipe]="editedRecipe()!"></app-delete-button>
+          }
+        </div>
+        <div class="flex justify-end gap-4">
+          <a
+            href="/browse"
+            class="hover:bg-accent hover:text-accent-foreground rounded-lg border px-3 py-2 text-sm font-medium transition"
+            >Cancel</a
           >
-          <input
-            id="calories"
-            type="number"
-            formControlName="calories"
-            placeholder="350"
-            class="rounded-lg border px-3 py-2"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="protein" class="text-sm font-medium">Protein (g)</label>
-          <input
-            id="protein"
-            type="number"
-            formControlName="protein"
-            placeholder="25"
-            class="rounded-lg border px-3 py-2"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="carbohydrates" class="text-sm font-medium"
-            >Carbohydrates (g)</label
+          <button
+            type="submit"
+            class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium transition"
           >
-          <input
-            id="carbohydrates"
-            type="number"
-            formControlName="carbohydrates"
-            placeholder="30"
-            class="rounded-lg border px-3 py-2"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="fat" class="text-sm font-medium">Fat (g)</label>
-          <input
-            id="fat"
-            type="number"
-            formControlName="fat"
-            placeholder="15"
-            class="rounded-lg border px-3 py-2"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="fiber" class="text-sm font-medium">Fiber (g)</label>
-          <input
-            id="fiber"
-            type="number"
-            formControlName="fiber"
-            placeholder="5"
-            class="rounded-lg border px-3 py-2"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="sugar" class="text-sm font-medium">Sugar (g)</label>
-          <input
-            id="sugar"
-            type="number"
-            formControlName="sugar"
-            placeholder="8"
-            class="rounded-lg border px-3 py-2"
-          />
+            <span class="flex scale-75 items-center">
+              <mat-icon fontIcon="save"></mat-icon>
+            </span>
+            Save Recipe
+          </button>
         </div>
       </div>
-    </div>
-    <div
-      class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"
-    >
-      <h2 class="flex items-center gap-2 text-2xl font-medium">
-        <mat-icon fontIcon="notes"></mat-icon>
-        Notes (Optional)
-      </h2>
-      <textarea
-        formControlName="notes"
-        rows="3"
-        placeholder="Share any tips, variations, or additional information about your recipe..."
-        class="rounded-lg border px-3 py-2 text-sm"
-      ></textarea>
-    </div>
-    <div class="flex justify-end gap-4">
-      <a
-        href="/browse"
-        class="hover:bg-accent hover:text-accent-foreground rounded-lg border px-3 py-2 text-sm font-medium transition"
-        >Cancel</a
-      >
-      <button
-        type="submit"
-        class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium transition"
-      >
-        <span class="flex scale-75 items-center">
-          <mat-icon fontIcon="save"></mat-icon>
-        </span>
-        Save Recipe
-      </button>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+}

@@ -1,153 +1,161 @@
+@let recipe = recipeManager?.data();
+
 <div class="container mx-auto flex flex-col gap-8 p-4">
-  <a
-    href="/browse"
-    class="hover:bg-accent hover:text-accent-foreground flex w-fit items-center gap-2 rounded-lg px-3 py-2 transition"
-  >
-    <mat-icon fontIcon="arrow_back" class="scale-75"></mat-icon>
-    Back to Browse
-  </a>
-  @if (recipeManager?.status() === "ready") {
-    @let recipe = recipeManager?.data();
-    @if (recipe) {
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="flex flex-col gap-4">
-          <h1 class="text-4xl font-bold">{{ recipe.name }}</h1>
-          <p class="text-muted-foreground text-lg">{{ recipe.description }}</p>
-          <div class="flex flex-wrap gap-4">
-            <div class="flex items-center gap-1">
-              <div class="text-orange flex items-center">
-                <mat-icon fontIcon="timer" class="scale-75"></mat-icon>
-              </div>
-              <p class="text-sm text-nowrap">
-                <span class="font-medium">Duration:</span>
-                {{ recipe.cookMinutes }} min
-              </p>
-            </div>
-            <div class="flex items-center gap-1">
-              <div class="text-orange flex items-center">
-                <mat-icon fontIcon="restaurant" class="scale-75"></mat-icon>
-              </div>
-              <p class="text-sm text-nowrap">
-                <span class="font-medium">Serves:</span> {{ recipe.servings }}
-              </p>
-            </div>
-            <div class="flex items-center gap-1">
-              <div class="text-orange flex items-center">
-                <mat-icon fontIcon="speed" class="scale-75"></mat-icon>
-              </div>
-              <p class="text-sm text-nowrap">
-                <span class="font-medium">Difficulty:</span>
-                {{ difficultyToString(recipe.difficulty) }}
-              </p>
-            </div>
-          </div>
-          <div class="text-muted-foreground flex items-center gap-2">
-            <mat-icon fontIcon="visibility" class="scale-75"></mat-icon>
-            <p>{{ recipe.viewCount }} views</p>
-          </div>
-        </div>
-        <div class="flex flex-col gap-4">
-          <img
-            [src]="recipe.imageUrl"
-            [alt]="recipe.name"
-            (error)="recipe.imageUrl = '/image-placeholder.svg'"
-            class="h-80 rounded-lg object-cover shadow-lg"
-          />
-          <div
-            class="bg-card text-card-foreground flex items-center justify-between gap-4 rounded-lg border px-4 py-2 shadow-sm"
-          >
-            <div class="flex items-center gap-2">
-              <img
-                [src]="recipe.author.imgUrl"
-                [alt]="recipe.author.name"
-                (error)="recipe.author.imgUrl = '/image-placeholder.svg'"
-                class="size-8 rounded-full"
-              />
-              <h3 class="font-medium">{{ recipe.author.name }}</h3>
-            </div>
-            <a
-              href=""
-              class="text-orange hover:text-orange/80 px-3 py-2 transition"
-              >View Profile</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="grid gap-8 lg:grid-cols-3">
-        <div class="space-y-8">
-          <div
-            class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
-          >
-            <h2 class="text-2xl font-bold">Ingredients</h2>
-            <ul class="space-y-4">
-              @for (ingredient of recipe.ingredients; track $index) {
-                <li>
-                  <app-ingredient-checkbox
-                    [ingredient]="ingredient"
-                  ></app-ingredient-checkbox>
-                </li>
-              }
-            </ul>
-          </div>
-          <div
-            class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
-          >
-            <h2 class="text-2xl font-bold">Nutrition Facts</h2>
-            <ul class="space-y-2 divide-y">
-              <li class="flex justify-between text-lg font-bold">
-                <span>Calories</span>
-                <span>{{ recipe.calories }}</span>
-              </li>
-              <li class="flex justify-between">
-                <span>Protein</span>
-                <span>{{ recipe.proteinGrams }}g</span>
-              </li>
-              <li class="flex justify-between">
-                <span>Carbohydrates</span>
-                <span>{{ recipe.carbohydratesGrams }}g</span>
-              </li>
-              <li class="flex justify-between">
-                <span>Fat</span>
-                <span>{{ recipe.fatGrams }}g</span>
-              </li>
-              <li class="flex justify-between">
-                <span>Fiber</span>
-                <span>{{ recipe.fiberGrams }}g</span>
-              </li>
-              <li class="flex justify-between">
-                <span>Sugar</span>
-                <span>{{ recipe.sugarGrams }}g</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="space-y-8 lg:col-span-2">
-          <div
-            class="bg-card text-card-foreground flex flex-col gap-4 rounded-lg border p-6 shadow-sm"
-          >
-            <h2 class="text-2xl font-bold">Instructions</h2>
-            <ul class="space-y-4">
-              @for (instruction of recipe.instructions; track $index) {
-                <li>
-                  <app-instruction-card
-                    [seqNumber]="$index + 1"
-                    [instruction]="instruction"
-                  ></app-instruction-card>
-                </li>
-              }
-            </ul>
-          </div>
-          <div
-            class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
-          >
-            <h2 class="text-2xl font-bold">Notes</h2>
-            <p class="text-muted-foreground">{{ recipe.notes }}</p>
-          </div>
-        </div>
-      </div>
-    } @else {
-      <p class="text-red-500">Recipe Not Found</p>
+  <div class="flex justify-between gap-8">
+    <a
+      href="/browse"
+      class="hover:bg-accent hover:text-accent-foreground flex w-fit items-center gap-2 rounded-lg px-3 py-2 transition"
+    >
+      <mat-icon fontIcon="arrow_back" class="scale-75"></mat-icon>
+      Back to Browse
+    </a>
+    @if (user() && user()?.id === recipe?.author?.id) {
+      <a
+        href="/create?editRecipe={{ recipe?.id }}"
+        class="hover:bg-accent hover:text-accent-foreground flex w-fit items-center gap-2 rounded-lg border px-3 py-2 transition"
+      >
+        <mat-icon fontIcon="edit" class="scale-75"></mat-icon>
+        Edit this Recipe
+      </a>
     }
+  </div>
+  @if (recipe) {
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="flex flex-col gap-4">
+        <h1 class="text-4xl font-bold">{{ recipe.name }}</h1>
+        <p class="text-muted-foreground text-lg">{{ recipe.description }}</p>
+        <div class="flex flex-wrap gap-4">
+          <div class="flex items-center gap-1">
+            <div class="text-orange flex items-center">
+              <mat-icon fontIcon="timer" class="scale-75"></mat-icon>
+            </div>
+            <p class="text-sm text-nowrap">
+              <span class="font-medium">Duration:</span>
+              {{ recipe.cookMinutes }} min
+            </p>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="text-orange flex items-center">
+              <mat-icon fontIcon="restaurant" class="scale-75"></mat-icon>
+            </div>
+            <p class="text-sm text-nowrap">
+              <span class="font-medium">Serves:</span> {{ recipe.servings }}
+            </p>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="text-orange flex items-center">
+              <mat-icon fontIcon="speed" class="scale-75"></mat-icon>
+            </div>
+            <p class="text-sm text-nowrap">
+              <span class="font-medium">Difficulty:</span>
+              {{ difficultyToString(recipe.difficulty) }}
+            </p>
+          </div>
+        </div>
+        <div class="text-muted-foreground flex items-center gap-2">
+          <mat-icon fontIcon="visibility" class="scale-75"></mat-icon>
+          <p>{{ recipe.viewCount }} views</p>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <img
+          [src]="recipe.imageUrl"
+          [alt]="recipe.name"
+          (error)="recipe.imageUrl = '/image-placeholder.svg'"
+          class="h-80 rounded-lg object-cover shadow-lg"
+        />
+        <div
+          class="bg-card text-card-foreground flex items-center justify-between gap-4 rounded-lg border px-4 py-2 shadow-sm"
+        >
+          <div class="flex items-center gap-2">
+            <img
+              [src]="recipe.author.imgUrl"
+              [alt]="recipe.author.name"
+              (error)="recipe.author.imgUrl = '/image-placeholder.svg'"
+              class="size-8 rounded-full"
+            />
+            <h3 class="font-medium">{{ recipe.author.name }}</h3>
+          </div>
+          <a
+            href=""
+            class="text-orange hover:text-orange/80 px-3 py-2 transition"
+            >View Profile</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="grid gap-8 lg:grid-cols-3">
+      <div class="space-y-8">
+        <div
+          class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
+        >
+          <h2 class="text-2xl font-bold">Ingredients</h2>
+          <ul class="space-y-4">
+            @for (ingredient of recipe.ingredients; track $index) {
+              <li>
+                <app-ingredient-checkbox
+                  [ingredient]="ingredient"
+                ></app-ingredient-checkbox>
+              </li>
+            }
+          </ul>
+        </div>
+        <div
+          class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
+        >
+          <h2 class="text-2xl font-bold">Nutrition Facts</h2>
+          <ul class="space-y-2 divide-y">
+            <li class="flex justify-between text-lg font-bold">
+              <span>Calories</span>
+              <span>{{ recipe.calories }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Protein</span>
+              <span>{{ recipe.proteinGrams }}g</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Carbohydrates</span>
+              <span>{{ recipe.carbohydratesGrams }}g</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Fat</span>
+              <span>{{ recipe.fatGrams }}g</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Fiber</span>
+              <span>{{ recipe.fiberGrams }}g</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Sugar</span>
+              <span>{{ recipe.sugarGrams }}g</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="space-y-8 lg:col-span-2">
+        <div
+          class="bg-card text-card-foreground flex flex-col gap-4 rounded-lg border p-6 shadow-sm"
+        >
+          <h2 class="text-2xl font-bold">Instructions</h2>
+          <ul class="space-y-4">
+            @for (instruction of recipe.instructions; track $index) {
+              <li>
+                <app-instruction-card
+                  [seqNumber]="$index + 1"
+                  [instruction]="instruction"
+                ></app-instruction-card>
+              </li>
+            }
+          </ul>
+        </div>
+        <div
+          class="bg-card text-card-foreground shadow-s flex flex-col gap-4 rounded-lg border p-6"
+        >
+          <h2 class="text-2xl font-bold">Notes</h2>
+          <p class="text-muted-foreground">{{ recipe.notes }}</p>
+        </div>
+      </div>
+    </div>
   } @else if (recipeManager?.status() === "error") {
     <p class="text-red-500">Error: {{ recipeManager?.error()?.message }}</p>
   } @else {

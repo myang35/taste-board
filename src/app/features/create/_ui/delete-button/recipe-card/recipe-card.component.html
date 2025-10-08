@@ -1,0 +1,30 @@
+<div
+  class="bg-card text-card-foreground flex h-full flex-col overflow-hidden rounded-lg border shadow-sm"
+>
+  <img
+    [src]="recipe().imageUrl ? recipe().imageUrl : '/image-placeholder.svg'"
+    [alt]="recipe().name"
+    (error)="recipe().imageUrl = '/image-placeholder.svg'"
+    class="h-48 object-cover"
+  />
+  <div class="space-y-2 p-4 text-start">
+    <h3 class="text-xl font-medium">
+      {{ recipe().name }}
+    </h3>
+    <div class="flex gap-4">
+      <p class="text-muted-foreground flex items-center text-sm">
+        <mat-icon fontIcon="schedule" class="scale-75"></mat-icon>
+        {{ recipe().cookMinutes }} min
+      </p>
+      <p class="text-muted-foreground flex items-center text-sm">
+        <mat-icon fontIcon="visibility" class="scale-75"></mat-icon>
+        {{ recipe().viewCount }} views
+      </p>
+    </div>
+    <div class="border-t pt-2">
+      <p class="text-muted-foreground text-xs">
+        Created {{ isoToString(recipe().createdAt) }}
+      </p>
+    </div>
+  </div>
+</div>

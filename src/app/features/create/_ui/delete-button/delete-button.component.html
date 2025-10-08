@@ -1,0 +1,42 @@
+<div>
+  <button
+    type="button"
+    (click)="showConfirmModal.set(true)"
+    class="text-danger hover:bg-danger/10 border-danger/25 rounded-lg border px-3 py-2 text-sm transition"
+  >
+    Delete Recipe
+  </button>
+
+  <div
+    class="fixed inset-0 bg-black/25"
+    [class]="{
+      hidden: !showConfirmModal(),
+    }"
+  >
+    <div
+      class="bg-background fixed inset-0 m-auto flex size-fit w-full max-w-sm flex-col gap-4 rounded-lg border p-8 shadow-lg"
+    >
+      <app-recipe-card [recipe]="recipe()"></app-recipe-card>
+      <p class="text-center text-sm">
+        Delete <span class="font-bold">{{ recipe().name }}</span
+        >?
+      </p>
+      <div class="flex justify-center gap-4">
+        <button
+          type="button"
+          (click)="showConfirmModal.set(false)"
+          class="hover:bg-accent rounded-lg border px-3 py-2 transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          (click)="deleteRecipe()"
+          class="hover:bg-danger/10 text-danger border-danger/25 rounded-lg border px-3 py-2 transition"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

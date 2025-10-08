@@ -114,6 +114,69 @@ export class RecipeService {
     });
   }
 
+  update(
+    id: string,
+    params: {
+      name?: string;
+      servings?: number;
+      description?: string;
+      cookMinutes?: number;
+      difficulty?: number;
+      image?: File; // TODO: Should be a URL string
+      ingredients?: {
+        name: string;
+        amount: number;
+        unit: string;
+        notes: string;
+      }[];
+      instructions?: {
+        description: string;
+        minutes: number;
+      }[];
+      calories?: number;
+      protein?: number;
+      carbohydrates?: number;
+      fat?: number;
+      fiber?: number;
+      sugar?: number;
+      notes?: string;
+      shared?: boolean;
+    },
+  ) {
+    const user = this.authService.user();
+    if (!user) {
+      throw new Error('User must be logged in to update a recipe');
+    }
+
+    return this.http.patch<Recipe>(`${environment.apiUrl}/recipes/${id}`, {
+      name: params.name,
+      servings: params.servings,
+      description: params.description,
+      cookMinutes: params.cookMinutes,
+      difficulty: params.difficulty,
+      image: params.image,
+      ingredients: params.ingredients,
+      instructions: params.instructions,
+      calories: params.calories,
+      proteinGrams: params.protein,
+      carbohydratesGrams: params.carbohydrates,
+      fatGrams: params.fat,
+      fiberGrams: params.fiber,
+      sugarGrams: params.sugar,
+      notes: params.notes,
+      shared: params.shared,
+    });
+  }
+
+  delete(id: string) {
+    const user = this.authService.user();
+    if (!user) {
+      throw new Error('User must be logged in to delete a recipe');
+    }
+
+    return this.http.delete<Recipe>(`${environment.apiUrl}/recipes/${id}`);
+  }
+
   count(params?: { search?: string }) {
     const url = new URL(`${environment.apiUrl}/recipes/count`);
 

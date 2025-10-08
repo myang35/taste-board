@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '@core/services/auth/auth.service';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
 import { RequestManager } from '@shared/utils/request-manager';
@@ -15,12 +16,13 @@ import { InstructionCardComponent } from './_ui/instruction-card/instruction-car
   styleUrl: './view.component.css',
 })
 export class ViewComponent implements OnInit {
-  private recipeService = inject(RecipeService);
-  private activatedRoute = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly recipeService = inject(RecipeService);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
-  StringUtils = StringUtils;
-
-  recipeManager?: RequestManager<Recipe | null>;
+  protected StringUtils = StringUtils;
+  protected recipeManager?: RequestManager<Recipe | null>;
+  protected user = this.authService.user;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe({
