@@ -28,19 +28,19 @@
       @if (user(); as user) {
         <button
           [cdkMenuTriggerFor]="accountMenu"
-          class="inline rounded px-3 py-2 transition hover:bg-black/10 aria-expanded:bg-black/10"
+          class="hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent inline rounded px-3 py-2 transition"
         >
           {{ user.name }}
         </button>
         <ng-template #accountMenu>
           <div
             cdkMenu
-            class="bg-light-500 flex w-full flex-col gap-2 rounded p-2 shadow shadow-black/50"
+            class="bg-background flex w-full flex-col gap-2 rounded p-2 shadow shadow-black/50"
           >
             <a
               href="/account/recipes"
               cdkMenuItem
-              class="flex items-center gap-2 rounded px-3 py-2 text-start transition hover:bg-black/10"
+              class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 text-start transition"
             >
               <mat-icon
                 aria-hidden="false"
@@ -53,7 +53,7 @@
             <a
               href="/account/settings"
               cdkMenuItem
-              class="flex items-center gap-2 rounded px-3 py-2 text-start transition hover:bg-black/10"
+              class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 text-start transition"
             >
               <mat-icon
                 aria-hidden="false"
@@ -67,7 +67,7 @@
             <button
               cdkMenuItem
               (click)="logout()"
-              class="flex items-center gap-2 rounded px-3 py-2 transition hover:bg-black/10"
+              class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 transition"
             >
               <mat-icon
                 aria-hidden="false"
