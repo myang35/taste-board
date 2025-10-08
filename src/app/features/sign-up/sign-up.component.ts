@@ -16,14 +16,14 @@ export class SignUpComponent {
   private authService = inject(AuthService);
 
   signupForm = this.formBuilder.group({
-    fullName: ['', [Validators.required]],
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]],
   });
   showPassword = false;
   showConfirmPassword = false;
-  fullNameErrorMessage = '';
+  nameErrorMessage = '';
   emailErrorMessage = '';
   passwordErrorMessage = '';
   confirmPasswordErrorMessage = '';
@@ -34,24 +34,23 @@ export class SignUpComponent {
   }
 
   onSignupSubmit() {
-    this.fullNameErrorMessage = '';
+    this.nameErrorMessage = '';
     this.emailErrorMessage = '';
     this.passwordErrorMessage = '';
     this.confirmPasswordErrorMessage = '';
     this.formErrorMessage = '';
 
-    const { fullName, email, password, confirmPassword } =
-      this.signupForm.controls;
+    const { name, email, password, confirmPassword } = this.signupForm.controls;
 
     if (
       !this.signupForm.valid ||
-      !fullName.value ||
+      !name.value ||
       !email.value ||
       !password.value ||
       !confirmPassword.value
     ) {
-      if (fullName.hasError('required')) {
-        this.fullNameErrorMessage = 'Required';
+      if (name.hasError('required')) {
+        this.nameErrorMessage = 'Required';
       }
       if (email.hasError('required')) {
         this.emailErrorMessage = 'Required';
@@ -78,13 +77,13 @@ export class SignUpComponent {
 
     this.authService
       .signup({
-        fullName: fullName.value,
+        name: name.value,
         email: email.value,
         password: password.value,
       })
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/account');
         },
         error: (error) => {
           if ('message' in error) {

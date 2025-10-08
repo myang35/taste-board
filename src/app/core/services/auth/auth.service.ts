@@ -37,7 +37,7 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
-  signup(data: { fullName: string; email: string; password: string }) {
+  signup(data: { name: string; email: string; password: string }) {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, data, {
         withCredentials: true,
