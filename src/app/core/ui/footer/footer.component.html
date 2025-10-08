@@ -39,27 +39,37 @@
         <div>
           <h2 class="font-medium">Account</h2>
           <ul>
-            <li>
-              <a
-                href="/login"
-                class="text-muted-foreground hover:text-foreground text-sm transition"
-                >Login</a
-              >
-            </li>
-            <li>
-              <a
-                href="/sign-up"
-                class="text-muted-foreground hover:text-foreground text-sm transition"
-                >Sign Up</a
-              >
-            </li>
-            <li>
-              <a
-                href="/account"
-                class="text-muted-foreground hover:text-foreground text-sm transition"
-                >My Account</a
-              >
-            </li>
+            @if (user()) {
+              <li>
+                <a
+                  href="/account/recipes"
+                  class="text-muted-foreground hover:text-foreground text-sm transition"
+                  >My Recipes</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/account/settings"
+                  class="text-muted-foreground hover:text-foreground text-sm transition"
+                  >Settings</a
+                >
+              </li>
+            } @else {
+              <li>
+                <a
+                  href="/login"
+                  class="text-muted-foreground hover:text-foreground text-sm transition"
+                  >Login</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/sign-up"
+                  class="text-muted-foreground hover:text-foreground text-sm transition"
+                  >Sign Up</a
+                >
+              </li>
+            }
           </ul>
         </div>
       </div>
