@@ -118,7 +118,10 @@
           <mat-icon fontIcon="photo_camera"></mat-icon>
           Recipe Image
         </h2>
-        <app-image-uploader [form]="form"></app-image-uploader>
+        <app-image-uploader
+          [form]="form"
+          [initialSrc]="editedRecipe()?.imageUrl"
+        ></app-image-uploader>
       </div>
       <div
         class="bg-card text-card-foreground flex flex-col gap-6 rounded-lg border p-6 shadow-sm"

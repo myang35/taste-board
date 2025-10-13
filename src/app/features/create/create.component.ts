@@ -52,7 +52,7 @@ export class CreateComponent implements OnInit {
 
             this.form.updateFromRecipe(value);
           },
-          error: (err) => {
+          error: () => {
             this.editedRecipe.set(null);
           },
         });
@@ -123,8 +123,8 @@ export class CreateComponent implements OnInit {
     if (!recipeId) return;
 
     this.recipeService.update(recipeId, this.form.values).subscribe({
-      next: (value) => {
-        this.router.navigateByUrl(`/view/${value.id}`);
+      next: () => {
+        this.router.navigateByUrl(`/view/${recipeId}`);
       },
     });
   }

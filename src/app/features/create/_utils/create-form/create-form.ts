@@ -128,7 +128,7 @@ export class CreateForm {
       description: this.description.value ?? '',
       cookMinutes: this.cookMinutes.value || 0,
       difficulty: this.difficulty.value || 0,
-      image: this.image.value ?? undefined,
+      image: this.image.value,
       ingredients: (this.ingredients.value ?? []).map((ingredient) => ({
         name: ingredient.name ?? '',
         amount: ingredient.amount || 0,

@@ -69,7 +69,7 @@ export class RecipeService {
     description: string;
     cookMinutes: number;
     difficulty: number;
-    image?: File; // TODO: Should be a URL string
+    image?: File | null;
     ingredients: {
       name: string;
       amount: number;
@@ -94,24 +94,32 @@ export class RecipeService {
       throw new Error('User must be logged in to create a recipe');
     }
 
-    return this.http.post<Recipe>(`${environment.apiUrl}/recipes`, {
-      name: params.name,
-      servings: params.servings,
-      description: params.description,
-      cookMinutes: params.cookMinutes,
-      difficulty: params.difficulty,
-      image: params.image,
-      ingredients: params.ingredients,
-      instructions: params.instructions,
-      calories: params.calories,
-      proteinGrams: params.protein,
-      carbohydratesGrams: params.carbohydrates,
-      fatGrams: params.fat,
-      fiberGrams: params.fiber,
-      sugarGrams: params.sugar,
-      notes: params.notes,
-      shared: params.shared,
-    });
+    const formData = new FormData();
+    if (params.image) {
+      formData.set('image', params.image, params.image.name);
+    }
+    formData.set(
+      'data',
+      JSON.stringify({
+        name: params.name,
+        servings: params.servings,
+        description: params.description,
+        cookMinutes: params.cookMinutes,
+        difficulty: params.difficulty,
+        ingredients: params.ingredients,
+        instructions: params.instructions,
+        calories: params.calories,
+        proteinGrams: params.protein,
+        carbohydratesGrams: params.carbohydrates,
+        fatGrams: params.fat,
+        fiberGrams: params.fiber,
+        sugarGrams: params.sugar,
+        notes: params.notes,
+        shared: params.shared,
+      }),
+    );
+
+    return this.http.post<Recipe>(`${environment.apiUrl}/recipes`, formData);
   }
 
   update(
@@ -122,7 +130,7 @@ export class RecipeService {
       description?: string;
       cookMinutes?: number;
       difficulty?: number;
-      image?: File; // TODO: Should be a URL string
+      image?: File | null;
       ingredients?: {
         name: string;
         amount: number;
@@ -148,24 +156,36 @@ export class RecipeService {
       throw new Error('User must be logged in to update a recipe');
     }
 
-    return this.http.patch<Recipe>(`${environment.apiUrl}/recipes/${id}`, {
-      name: params.name,
-      servings: params.servings,
-      description: params.description,
-      cookMinutes: params.cookMinutes,
-      difficulty: params.difficulty,
-      image: params.image,
-      ingredients: params.ingredients,
-      instructions: params.instructions,
-      calories: params.calories,
-      proteinGrams: params.protein,
-      carbohydratesGrams: params.carbohydrates,
-      fatGrams: params.fat,
-      fiberGrams: params.fiber,
-      sugarGrams: params.sugar,
-      notes: params.notes,
-      shared: params.shared,
-    });
+    const formData = new FormData();
+    if (params.image) {
+      formData.set('image', params.image);
+    }
+    formData.set(
+      'data',
+      JSON.stringify({
+        name: params.name,
+        servings: params.servings,
+        description: params.description,
+        cookMinutes: params.cookMinutes,
+        difficulty: params.difficulty,
+        image: params.image,
+        ingredients: params.ingredients,
+        instructions: params.instructions,
+        calories: params.calories,
+        proteinGrams: params.protein,
+        carbohydratesGrams: params.carbohydrates,
+        fatGrams: params.fat,
+        fiberGrams: params.fiber,
+        sugarGrams: params.sugar,
+        notes: params.notes,
+        shared: params.shared,
+      }),
+    );
+
+    return this.http.patch<Recipe>(
+      `${environment.apiUrl}/recipes/${id}`,
+      formData,
+    );
   }
 
   delete(id: string) {

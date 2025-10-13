@@ -9,29 +9,39 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { CreateForm } from '@features/create/_utils/create-form/create-form';
+import { ImageComponent } from '@shared/ui/image/image.component';
 
 @Component({
   selector: 'app-image-uploader',
-  imports: [MatIcon, ReactiveFormsModule],
+  imports: [MatIcon, ReactiveFormsModule, ImageComponent],
   templateUrl: './image-uploader.component.html',
   styleUrl: './image-uploader.component.css',
 })
 export class ImageUploaderComponent {
   readonly form = input.required<CreateForm>();
+  readonly initialSrc = input<string>();
 
   private readonly imageInputChild =
     viewChild.required<ElementRef<HTMLInputElement>>('imageInput');
 
-  protected imageFile = signal<File | null>(null);
+  protected imageFile = signal<File | null | undefined>(undefined);
   protected imageUrl = computed(() => {
     const imageFile = this.imageFile();
-    return imageFile && URL.createObjectURL(imageFile);
+    const initialSrc = this.initialSrc();
+    if (imageFile === undefined && initialSrc) {
+      return initialSrc;
+    }
+    if (imageFile) {
+      return URL.createObjectURL(imageFile);
+    }
+    return '';
   });
 
   updateImage() {
-    const inputFile =
-      this.imageInputChild().nativeElement.files?.item(0) || null;
-    this.imageFile.set(inputFile);
+    this.imageFile.set(
+      this.imageInputChild().nativeElement.files?.item(0) || null,
+    );
+    this.form().image.setValue(this.imageFile());
   }
 
   sizeToString(size: number) {

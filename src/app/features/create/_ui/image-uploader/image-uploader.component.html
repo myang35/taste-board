@@ -2,22 +2,48 @@
   [formGroup]="form().root"
   class="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-6"
 >
-  @if (imageFile(); as imageFile) {
-    <div class="flex flex-col items-center">
-      <img [src]="imageUrl()" alt="recipe" class="h-40 rounded-lg shadow-sm" />
-      <p class="text-sm">{{ imageFile.name }}</p>
-      <p class="text-muted-foreground text-sm">
-        {{ sizeToString(imageFile.size) }}
-      </p>
-      @if (imageFile.size > 10000000) {
-        <p class="text-danger flex items-center gap-1">
-          <mat-icon fontIcon="error" class="scale-75"></mat-icon>
-          File is too large!
+  @if (imageUrl(); as imageUrl) {
+    <div class="relative flex flex-col items-center">
+      <button
+        type="button"
+        (click)="imageFile.set(null)"
+        class="bg-background hover:bg-accent hover:text-accent-foreground absolute -top-4 -right-4 flex size-8 items-center justify-center rounded-full border-2 transition"
+      >
+        <mat-icon fontIcon="close"></mat-icon>
+      </button>
+      <app-image
+        [src]="imageUrl"
+        alt="recipe"
+        class="h-[270px] w-[480px] rounded-lg object-cover shadow-sm"
+      />
+      @if (imageFile() === undefined && initialSrc()) {
+        <p class="text-muted-foreground text-sm">Original</p>
+      }
+      @if (imageFile(); as imageFile) {
+        <p class="text-sm">{{ imageFile.name }}</p>
+        <p class="text-muted-foreground text-sm">
+          {{ sizeToString(imageFile.size) }}
         </p>
+        @if (imageFile.size > 10000000) {
+          <p class="text-danger flex items-center gap-1">
+            <mat-icon fontIcon="error" class="scale-75"></mat-icon>
+            File is too large!
+          </p>
+        }
       }
     </div>
+  } @else if (initialSrc()) {
+    <button
+      type="button"
+      (click)="imageFile.set(undefined)"
+      class="hover:bg-accent hover:text-accent-foreground h-[270px] w-[480px] rounded-lg border border-dashed px-3 py-2 transition"
+    >
+      Reset Image
+    </button>
   } @else {
-    <div class="text-muted-foreground flex size-18 items-center justify-center">
+    <div
+      class="text-muted-foreground flex size-18 h-[270px] w-[480px] items-center justify-center rounded-lg border border-dashed"
+    >
       <mat-icon fontIcon="upload" class="scale-300"></mat-icon>
     </div>
   }
@@ -31,7 +57,6 @@
     #imageInput
     type="file"
     id="image"
-    formControlName="image"
     accept=".png, .jpg, .jpeg"
     (change)="updateImage()"
     class="hidden"
