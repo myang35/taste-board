@@ -3,12 +3,10 @@
 @if (currentUser) {
   <div class="container mx-auto flex flex-col items-center gap-8 p-4">
     <div class="flex items-center gap-4">
-      <img
-        [src]="currentUser.imgUrl"
-        alt="profile"
-        (error)="currentUser.imgUrl = '/image-placeholder.svg'"
-        class="size-16 rounded-full"
-      />
+      <app-user-image
+        [user]="currentUser"
+        class="size-16 text-3xl"
+      ></app-user-image>
       <div class="flex flex-col">
         <h1 class="text-3xl font-bold">{{ currentUser.name }}</h1>
         <p class="text-muted-foreground">{{ currentUser.email }}</p>

@@ -28,9 +28,10 @@
       @if (user(); as user) {
         <button
           [cdkMenuTriggerFor]="accountMenu"
-          class="hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent inline rounded px-3 py-2 transition"
+          class="hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent flex items-center gap-2 rounded-lg py-0.5 pr-3 pl-2 transition"
         >
-          {{ user.name }}
+          <app-user-image [user]="user" class="size-8"></app-user-image>
+          <span>{{ user.name }}</span>
         </button>
         <ng-template #accountMenu>
           <div

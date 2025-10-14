@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { UserImageComponent } from '@shared/ui/user-image/user-image.component';
 import { RequestManager } from '@shared/utils/request-manager';
 import { StringUtils } from '@shared/utils/string-utils/string-utils';
 import { IngredientCheckboxComponent } from './_ui/ingredient-checkbox/ingredient-checkbox.component';
@@ -11,7 +12,12 @@ import { InstructionCardComponent } from './_ui/instruction-card/instruction-car
 
 @Component({
   selector: 'app-view',
-  imports: [MatIcon, IngredientCheckboxComponent, InstructionCardComponent],
+  imports: [
+    MatIcon,
+    IngredientCheckboxComponent,
+    InstructionCardComponent,
+    UserImageComponent,
+  ],
   templateUrl: './view.component.html',
   styleUrl: './view.component.css',
 })

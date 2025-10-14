@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
+import { UserImageComponent } from '@shared/ui/user-image/user-image.component';
 import { TabComponent } from './_ui/tab/tab.component';
 
 @Component({
-  imports: [RouterModule, TabComponent],
+  imports: [RouterModule, TabComponent, UserImageComponent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
 })
