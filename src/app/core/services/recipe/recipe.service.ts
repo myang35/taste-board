@@ -197,6 +197,12 @@ export class RecipeService {
     return this.http.delete<Recipe>(`${environment.apiUrl}/recipes/${id}`);
   }
 
+  addView(id: string, viewerId?: string) {
+    return this.http.post(`${environment.apiUrl}/recipes/${id}/views`, {
+      viewerId,
+    });
+  }
+
   count(params?: { search?: string }) {
     const url = new URL(`${environment.apiUrl}/recipes/count`);
 
