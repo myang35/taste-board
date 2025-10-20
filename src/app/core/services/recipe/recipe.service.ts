@@ -18,6 +18,7 @@ export class RecipeService {
     limit?: number;
     skip?: number;
     userId?: string;
+    shared?: boolean;
   }) {
     const url = new URL(`${environment.apiUrl}/recipes`);
 
@@ -39,6 +40,10 @@ export class RecipeService {
 
     if (params?.userId) {
       url.searchParams.append('userId', params.userId);
+    }
+
+    if (params?.shared) {
+      url.searchParams.append('shared', params.shared ? 'true' : 'false');
     }
 
     return this.http.get<Recipe[]>(url.toString());

@@ -73,6 +73,7 @@ export class BrowseComponent implements OnInit {
             userId: authorId || undefined,
             limit: RECIPES_PER_PAGE,
             skip: RECIPES_PER_PAGE * (page - 1),
+            shared: true,
           })
           .subscribe({
             next: (recipes) => {
