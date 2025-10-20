@@ -31,7 +31,7 @@ export class CreateForm {
     fiber?: number;
     sugar?: number;
     notes?: string;
-    shared?: string;
+    shared?: boolean;
   }) {
     this.root = this.createRoot(values);
   }
@@ -53,7 +53,7 @@ export class CreateForm {
       fiber: recipe.fiberGrams,
       sugar: recipe.sugarGrams,
       notes: recipe.notes,
-      shared: recipe.shared ? 'yes' : 'no',
+      shared: recipe.shared,
     });
   }
 
@@ -146,7 +146,7 @@ export class CreateForm {
       fiber: this.fiber.value || 0,
       sugar: this.sugar.value || 0,
       notes: this.notes.value ?? '',
-      shared: this.shared.value === 'yes',
+      shared: !!this.shared.value,
     };
   }
 
@@ -174,7 +174,7 @@ export class CreateForm {
     fiber?: number;
     sugar?: number;
     notes?: string;
-    shared?: string;
+    shared?: boolean;
   }) {
     if (values.name) {
       this.root.controls.name.setValue(values.name);
@@ -253,7 +253,7 @@ export class CreateForm {
       fiber: recipe.fiberGrams,
       sugar: recipe.sugarGrams,
       notes: recipe.notes,
-      shared: recipe.shared ? 'yes' : 'no',
+      shared: recipe.shared,
     });
   }
 
@@ -297,7 +297,7 @@ export class CreateForm {
     fiber?: number;
     sugar?: number;
     notes?: string;
-    shared?: string;
+    shared?: boolean;
   }) {
     return this.formBuilder.group({
       name: [values?.name ?? '', [Validators.maxLength(128)]],
@@ -362,7 +362,7 @@ export class CreateForm {
       fiber: [values?.fiber ?? NaN, [Validators.min(0), Validators.max(9999)]],
       sugar: [values?.sugar ?? NaN, [Validators.min(0), Validators.max(9999)]],
       notes: [values?.notes ?? '', [Validators.maxLength(4096)]],
-      shared: [values?.shared ?? 'no'],
+      shared: [!!values?.shared],
     });
   }
 

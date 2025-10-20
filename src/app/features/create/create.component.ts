@@ -105,7 +105,7 @@ export class CreateComponent implements OnInit {
       fiber: 20,
       sugar: 30,
       notes: 'Do not forget the noodle',
-      shared: 'no',
+      shared: true,
     });
   }
 

@@ -1,5 +1,4 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
@@ -7,7 +6,7 @@ import { RecipeCardComponent } from './recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-delete-button',
-  imports: [MatIcon, RecipeCardComponent],
+  imports: [RecipeCardComponent],
   templateUrl: './delete-button.component.html',
   styleUrl: './delete-button.component.css',
 })
