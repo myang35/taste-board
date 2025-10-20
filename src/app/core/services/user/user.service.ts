@@ -12,6 +12,10 @@ export class UserService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
+  get(id: string) {
+    return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+  }
+
   updateEmail(params: { newEmail: string; password: string }) {
     const user = this.authService.user();
     if (!user) {

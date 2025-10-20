@@ -3,32 +3,43 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '@core/services/recipe/recipe.service';
+import { UserService } from '@core/services/user/user.service';
 import { Recipe } from '@core/types/recipe';
+import { User } from '@core/types/user';
+import { UserImageComponent } from '@shared/ui/user-image/user-image.component';
 import { PaginationControlsComponent } from './_ui/pagination-controls/pagination-controls.component';
 import { SearchBarComponent } from './_ui/search-bar/search-bar.component';
 import { RECIPES_PER_PAGE } from './constants';
 
 @Component({
   selector: 'app-browse',
-  imports: [MatIconModule, SearchBarComponent, PaginationControlsComponent],
+  imports: [
+    MatIconModule,
+    SearchBarComponent,
+    PaginationControlsComponent,
+    UserImageComponent,
+  ],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.css',
 })
 export class BrowseComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private recipeService = inject(RecipeService);
-  private viewportScroller = inject(ViewportScroller);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly recipeService = inject(RecipeService);
+  private readonly userService = inject(UserService);
+  private readonly viewportScroller = inject(ViewportScroller);
 
-  recipes = signal<Recipe[] | undefined>(undefined);
-  errorMessage = signal('');
-  sortValue = '';
+  protected recipes = signal<Recipe[] | undefined>(undefined);
+  protected author = signal<User | undefined>(undefined);
+  protected errorMessage = signal('');
+  protected sortValue = '';
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe({
       next: (paramMap) => {
         const sort = paramMap.get('sort');
         const search = paramMap.get('search');
+        const authorId = paramMap.get('author');
         const page = parseInt(paramMap.get('page') ?? '1');
 
         this.viewportScroller.scrollToPosition([0, 0]);
@@ -45,12 +56,21 @@ export class BrowseComponent implements OnInit {
           return;
         }
 
+        if (authorId) {
+          this.userService.get(authorId).subscribe({
+            next: (value) => {
+              this.author.set(value);
+            },
+          });
+        }
+
         this.sortValue = sort ?? 'most_viewed';
 
         this.recipeService
           .getAll({
             sort: sort || undefined,
             search: search || undefined,
+            userId: authorId || undefined,
             limit: RECIPES_PER_PAGE,
             skip: RECIPES_PER_PAGE * (page - 1),
           })
@@ -67,6 +87,14 @@ export class BrowseComponent implements OnInit {
     const element = event.currentTarget as HTMLSelectElement;
     this.router.navigate([], {
       queryParams: { sort: element.value },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  removeAuthor() {
+    this.author.set(undefined);
+    this.router.navigate([], {
+      queryParams: { author: undefined },
       queryParamsHandling: 'merge',
     });
   }

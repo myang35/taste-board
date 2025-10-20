@@ -8,6 +8,26 @@
 
   <app-search-bar></app-search-bar>
 
+  @if (author()) {
+    <div class="flex items-center gap-2">
+      <p class="text-sm">Author:</p>
+      <div class="flex items-center gap-2 rounded-full border px-2 py-1">
+        <app-user-image
+          [user]="author()!"
+          class="size-6 text-sm"
+        ></app-user-image>
+        <p class="text-xs">{{ author()?.name }}</p>
+        <button
+          type="button"
+          (click)="removeAuthor()"
+          class="hover:bg-danger/10 text-danger flex items-center rounded-full transition"
+        >
+          <mat-icon fontIcon="close" class="scale-75"></mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+
   <div class="flex items-center justify-between gap-8">
     <div class="flex items-center gap-4">
       <label for="sort" class="flex items-center gap-2 text-sm"
