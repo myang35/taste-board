@@ -2,11 +2,25 @@
   <div formArrayName="ingredients" class="flex flex-col gap-4">
     @for (ingredient of form().ingredients.controls; track ingredient) {
       <div [formGroupName]="$index" class="grid grid-cols-12 gap-2">
+        <div class="col-span-4 flex flex-col justify-end gap-1">
+          <label for="ingredient-{{ $index }}-name" class="text-sm font-medium"
+            >Ingredient *</label
+          >
+          <input
+            id="ingredient-{{ $index }}-name"
+            type="text"
+            formControlName="name"
+            placeholder="flour"
+            required
+            maxlength="128"
+            class="rounded-lg border px-3 py-2 text-sm"
+          />
+        </div>
         <div class="col-span-2 flex flex-col justify-end gap-1">
           <label
             for="ingredient-{{ $index }}-amount"
             class="text-sm font-medium"
-            >Amount</label
+            >Amount *</label
           >
           <input
             id="ingredient-{{ $index }}-amount"
@@ -20,7 +34,7 @@
         </div>
         <div class="col-span-2 flex flex-col justify-end gap-1">
           <label for="ingredient-{{ $index }}-unit" class="text-sm font-medium"
-            >Unit</label
+            >Unit *</label
           >
           <select
             id="ingredient-{{ $index }}-unit"
@@ -46,23 +60,12 @@
             <option value="whole">whole</option>
           </select>
         </div>
-        <div class="col-span-4 flex flex-col justify-end gap-1">
-          <label for="ingredient-{{ $index }}-name" class="text-sm font-medium"
-            >Ingredient</label
-          >
-          <input
-            id="ingredient-{{ $index }}-name"
-            type="text"
-            formControlName="name"
-            placeholder="flour"
-            required
-            maxlength="128"
-            class="rounded-lg border px-3 py-2 text-sm"
-          />
-        </div>
         <div class="col-span-3 flex flex-col justify-end gap-1">
           <label for="ingredient-{{ $index }}-notes" class="text-sm font-medium"
-            >Notes</label
+            >Notes
+            <span class="text-muted-foreground text-xs italic"
+              >(optional)</span
+            ></label
           >
           <input
             id="ingredient-{{ $index }}-notes"
@@ -89,7 +92,7 @@
     <button
       type="button"
       (click)="form().addIngredient()"
-      class="flex w-fit items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium"
+      class="hover:bg-accent hover:text-accent-foreground flex w-fit items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium transition"
     >
       <span class="scale-75">
         <mat-icon fontIcon="add"></mat-icon>

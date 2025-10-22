@@ -2,17 +2,16 @@
   <div formArrayName="instructions" class="flex flex-col gap-4">
     @for (instruction of form().instructions.controls; track instruction) {
       <div [formGroupName]="$index" class="grid grid-cols-12 gap-2">
-        <div class="col-span-9 flex flex-col justify-end gap-2">
+        <div class="col-span-9 flex gap-2">
           <label
             for="instruction-{{ $index }}-description"
-            class="text-sm font-medium"
+            class="py-1 text-sm font-medium"
           >
             <div
               class="bg-orange text-orange-foreground inline-flex size-6 items-center justify-center rounded-full"
             >
               {{ $index + 1 }}
             </div>
-            Step
           </label>
           <textarea
             id="instruction-{{ $index }}-description"
@@ -21,14 +20,17 @@
             placeholder="Describe this cooking step..."
             required
             max="1024"
-            class="rounded-lg border px-3 py-2 text-sm"
+            class="w-full rounded-lg border px-3 py-2 text-sm"
           ></textarea>
         </div>
         <div class="col-span-2 flex flex-col justify-end gap-1">
           <label
             for="instruction-{{ $index }}-minutes"
             class="text-sm font-medium"
-            >Time (minutes)</label
+            >Minutes
+            <span class="text-muted-foreground text-xs italic"
+              >(optional)</span
+            ></label
           >
           <input
             id="instruction-{{ $index }}-minutes"
@@ -56,7 +58,7 @@
     <button
       type="button"
       (click)="form().addInstruction()"
-      class="flex w-fit items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium"
+      class="hover:bg-accent hover:text-accent-foreground flex w-fit items-center gap-1 rounded-lg border px-3 py-2 text-sm font-medium transition"
     >
       <span class="scale-75">
         <mat-icon fontIcon="add"></mat-icon>
