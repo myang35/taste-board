@@ -73,7 +73,6 @@ export class RecipeService {
     servings: number;
     description: string;
     cookMinutes: number;
-    difficulty: number;
     image?: File | null;
     ingredients: {
       name: string;
@@ -110,7 +109,6 @@ export class RecipeService {
         servings: params.servings,
         description: params.description,
         cookMinutes: params.cookMinutes,
-        difficulty: params.difficulty,
         ingredients: params.ingredients,
         instructions: params.instructions,
         calories: params.calories,
@@ -134,7 +132,6 @@ export class RecipeService {
       servings?: number;
       description?: string;
       cookMinutes?: number;
-      difficulty?: number;
       image?: File | null;
       ingredients?: {
         name: string;
@@ -172,7 +169,6 @@ export class RecipeService {
         servings: params.servings,
         description: params.description,
         cookMinutes: params.cookMinutes,
-        difficulty: params.difficulty,
         image: params.image,
         ingredients: params.ingredients,
         instructions: params.instructions,

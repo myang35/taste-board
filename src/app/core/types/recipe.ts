@@ -9,7 +9,6 @@ export interface Recipe {
   servings: number;
   description: string;
   cookMinutes: number;
-  difficulty: number;
   imageUrl: string;
   ingredients: Ingredient[];
   instructions: Instruction[];

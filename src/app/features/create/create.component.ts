@@ -69,7 +69,6 @@ export class CreateComponent implements OnInit {
       servings: 1,
       description: 'Spagetti but with one noodle',
       cookMinutes: 20,
-      difficulty: 1,
       image: undefined,
       ingredients: [
         {

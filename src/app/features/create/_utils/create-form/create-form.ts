@@ -12,7 +12,6 @@ export class CreateForm {
     servings?: number;
     description?: string;
     cookMinutes?: number;
-    difficulty?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -42,7 +41,6 @@ export class CreateForm {
       servings: recipe.servings,
       description: recipe.description,
       cookMinutes: recipe.cookMinutes,
-      difficulty: recipe.difficulty,
       image: undefined, // TODO: get image from recipe.imageURL
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
@@ -71,10 +69,6 @@ export class CreateForm {
 
   get cookMinutes() {
     return this.root.controls.cookMinutes;
-  }
-
-  get difficulty() {
-    return this.root.controls.difficulty;
   }
 
   get image() {
@@ -127,7 +121,6 @@ export class CreateForm {
       servings: this.servings.value || 0,
       description: this.description.value ?? '',
       cookMinutes: this.cookMinutes.value || 0,
-      difficulty: this.difficulty.value || 0,
       image: this.image.value,
       ingredients: (this.ingredients.value ?? []).map((ingredient) => ({
         name: ingredient.name ?? '',
@@ -155,7 +148,6 @@ export class CreateForm {
     servings?: number;
     description?: string;
     cookMinutes?: number;
-    difficulty?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -187,9 +179,6 @@ export class CreateForm {
     }
     if (values.cookMinutes) {
       this.root.controls.cookMinutes.setValue(values.cookMinutes);
-    }
-    if (values.difficulty) {
-      this.root.controls.difficulty.setValue(values.difficulty);
     }
     if (values.image) {
       this.root.controls.image.setValue(values.image);
@@ -242,7 +231,6 @@ export class CreateForm {
       servings: recipe.servings,
       description: recipe.description,
       cookMinutes: recipe.cookMinutes,
-      difficulty: recipe.difficulty,
       image: undefined,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
@@ -278,7 +266,6 @@ export class CreateForm {
     servings?: number;
     description?: string;
     cookMinutes?: number;
-    difficulty?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -306,10 +293,6 @@ export class CreateForm {
       cookMinutes: [
         values?.cookMinutes ?? NaN,
         [Validators.min(0), Validators.max(9999)],
-      ],
-      difficulty: [
-        values?.difficulty ?? NaN,
-        [Validators.min(0), Validators.max(5)],
       ],
       image: this.formBuilder.control<File | undefined>(values?.image, []),
       ingredients: this.formBuilder.array<
