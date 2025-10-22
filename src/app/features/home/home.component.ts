@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
     this.recipeService
       .getAll({
         sort: 'trending',
+        shared: true,
         limit: 3,
       })
       .subscribe({
