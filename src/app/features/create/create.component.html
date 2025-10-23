@@ -26,6 +26,11 @@
     >
       TEST: autofill form
     </button>
+    @if (form.errorMessage()) {
+      <app-form-error>
+        {{ form.errorMessage() }}
+      </app-form-error>
+    }
     <form
       [formGroup]="form.root"
       (ngSubmit)="editedRecipe() ? updateRecipe() : createRecipe()"
@@ -47,30 +52,82 @@
               id="name"
               formControlName="name"
               placeholder="Enter recipe name"
+              required
+              [maxlength]="form.validators.name.MAX_LENGTH"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('name'),
+              }"
             />
+            @if (form.hasError("name")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["name"]) {
+                  {{ form.fieldErrorMessages()["name"] }}
+                } @else if (form.name.hasError("required")) {
+                  Required
+                } @else if (form.name.hasError("maxlength")) {
+                  Must be less than
+                  {{ form.validators.name.MAX_LENGTH }} characters
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-2">
             <label for="description" class="text-sm font-medium"
-              >Description *</label
+              >Description
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
             >
             <textarea
               id="description"
               formControlName="description"
               placeholder="Describe your recipe..."
               rows="3"
+              [maxlength]="form.validators.description.MAX_LENGTH"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('description'),
+              }"
             ></textarea>
+            @if (form.hasError("description")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["description"]) {
+                  {{ form.fieldErrorMessages()["description"] }}
+                } @else if (form.name.hasError("maxlength")) {
+                  Must be less than
+                  {{ form.validators.description.MAX_LENGTH }} characters
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-2">
-            <label for="servings" class="text-sm font-medium">Servings *</label>
+            <label for="servings" class="text-sm font-medium"
+              >Servings
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
+            >
             <input
               type="number"
               id="servings"
               formControlName="servings"
               placeholder="4"
+              [max]="form.validators.servings.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('servings'),
+              }"
             />
+            @if (form.hasError("servings")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["servings"]) {
+                  {{ form.fieldErrorMessages()["servings"] }}
+                } @else if (form.servings.hasError("max")) {
+                  Must be less than {{ form.validators.servings.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
         </div>
         <div class="border-b"></div>
@@ -96,6 +153,7 @@
         <h2 class="flex items-center gap-2 text-2xl font-medium">
           <mat-icon fontIcon="photo_camera"></mat-icon>
           Recipe Image
+          <span class="text-muted-foreground text-xl italic">(optional)</span>
         </h2>
         <app-image-uploader
           [form]="form"
@@ -140,8 +198,24 @@
               type="number"
               formControlName="calories"
               placeholder="350"
+              [min]="form.validators.calories.MIN"
+              [max]="form.validators.calories.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('calories'),
+              }"
             />
+            @if (form.hasError("calories")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["calories"]) {
+                  {{ form.fieldErrorMessages()["calories"] }}
+                } @else if (form.calories.hasError("min")) {
+                  Must be greater than {{ form.validators.calories.MIN }}
+                } @else if (form.calories.hasError("max")) {
+                  Must be less than {{ form.validators.calories.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-1">
             <label for="protein" class="text-sm font-medium"
@@ -155,8 +229,24 @@
               type="number"
               formControlName="protein"
               placeholder="25"
+              [min]="form.validators.protein.MIN"
+              [max]="form.validators.protein.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('protein'),
+              }"
             />
+            @if (form.hasError("protein")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["proteinGrams"]) {
+                  {{ form.fieldErrorMessages()["proteinGrams"] }}
+                } @else if (form.protein.hasError("min")) {
+                  Must be greater than {{ form.validators.protein.MIN }}
+                } @else if (form.protein.hasError("max")) {
+                  Must be less than {{ form.validators.protein.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-1">
             <label for="carbohydrates" class="text-sm font-medium"
@@ -170,8 +260,24 @@
               type="number"
               formControlName="carbohydrates"
               placeholder="30"
+              [min]="form.validators.carbohydrates.MIN"
+              [max]="form.validators.carbohydrates.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('carbohydrates'),
+              }"
             />
+            @if (form.hasError("carbohydrates")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["carbohydratesGrams"]) {
+                  {{ form.fieldErrorMessages()["carbohydratesGrams"] }}
+                } @else if (form.carbohydrates.hasError("min")) {
+                  Must be greater than {{ form.validators.carbohydrates.MIN }}
+                } @else if (form.carbohydrates.hasError("max")) {
+                  Must be less than {{ form.validators.carbohydrates.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-1">
             <label for="fat" class="text-sm font-medium"
@@ -185,8 +291,24 @@
               type="number"
               formControlName="fat"
               placeholder="15"
+              [min]="form.validators.fat.MIN"
+              [max]="form.validators.fat.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('fat'),
+              }"
             />
+            @if (form.hasError("fat")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["fatGrams"]) {
+                  {{ form.fieldErrorMessages()["fatGrams"] }}
+                } @else if (form.fat.hasError("min")) {
+                  Must be greater than {{ form.validators.fat.MIN }}
+                } @else if (form.fat.hasError("max")) {
+                  Must be less than {{ form.validators.fat.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-1">
             <label for="fiber" class="text-sm font-medium"
@@ -200,8 +322,24 @@
               type="number"
               formControlName="fiber"
               placeholder="5"
+              [min]="form.validators.fiber.MIN"
+              [max]="form.validators.fiber.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('fiber'),
+              }"
             />
+            @if (form.hasError("fiber")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["fiberGrams"]) {
+                  {{ form.fieldErrorMessages()["fiberGrams"] }}
+                } @else if (form.fiber.hasError("min")) {
+                  Must be greater than {{ form.validators.fiber.MIN }}
+                } @else if (form.fiber.hasError("max")) {
+                  Must be less than {{ form.validators.fiber.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
           <div class="flex flex-col gap-1">
             <label for="sugar" class="text-sm font-medium"
@@ -215,8 +353,24 @@
               type="number"
               formControlName="sugar"
               placeholder="8"
+              [min]="form.validators.sugar.MIN"
+              [max]="form.validators.sugar.MAX"
               class="rounded-lg border px-3 py-2"
+              [class]="{
+                'border-danger': form.hasError('sugar'),
+              }"
             />
+            @if (form.hasError("sugar")) {
+              <app-field-error>
+                @if (form.fieldErrorMessages()["sugarGrams"]) {
+                  {{ form.fieldErrorMessages()["sugarGrams"] }}
+                } @else if (form.sugar.hasError("min")) {
+                  Must be greater than {{ form.validators.sugar.MIN }}
+                } @else if (form.sugar.hasError("max")) {
+                  Must be less than {{ form.validators.sugar.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
         </div>
       </div>
@@ -232,8 +386,21 @@
           formControlName="notes"
           rows="3"
           placeholder="Share any tips, variations, or additional information about your recipe..."
+          [maxlength]="form.validators.notes.MAX_LENGTH"
           class="rounded-lg border px-3 py-2 text-sm"
+          [class]="{
+            'border-danger': form.hasError('notes'),
+          }"
         ></textarea>
+        @if (form.hasError("notes")) {
+          <app-field-error>
+            @if (form.fieldErrorMessages()["notes"]) {
+              {{ form.fieldErrorMessages()["notes"] }}
+            } @else if (form.notes.hasError("maxlength")) {
+              Must be less than {{ form.validators.notes.MAX_LENGTH }}
+            }
+          </app-field-error>
+        }
       </div>
       <div class="flex justify-between gap-4">
         <div>

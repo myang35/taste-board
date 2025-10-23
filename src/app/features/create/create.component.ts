@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { FieldErrorComponent } from '@shared/ui/field-error/field-error.component';
+import { FormErrorComponent } from '@shared/ui/form-error/form-error.component';
 import { TabsModule } from '@shared/ui/tabs/tabs.module';
 import { DeleteButtonComponent } from './_ui/delete-button/delete-button.component';
 import { ImageUploaderComponent } from './_ui/image-uploader/image-uploader.component';
@@ -22,6 +24,8 @@ import { CreateForm } from './_utils/create-form/create-form';
     IngredientSelectorComponent,
     InstructionAdderComponent,
     DeleteButtonComponent,
+    FieldErrorComponent,
+    FormErrorComponent,
   ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.css',
@@ -36,6 +40,8 @@ export class CreateComponent implements OnInit {
   protected urlParams = { editRecipe: '' };
   protected editedRecipe = signal<Recipe | undefined | null>(undefined);
   protected user = this.authService.user;
+  protected formErrorMessage = signal('');
+  protected inputErrorMessages = signal<Record<string, string>>({});
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe({
@@ -108,9 +114,12 @@ export class CreateComponent implements OnInit {
   }
 
   createRecipe() {
-    this.recipeService.create(this.form.values).subscribe({
+    this.form.submitCreate().subscribe({
       next: (value) => {
         this.router.navigateByUrl(`/view/${value.id}`);
+      },
+      error: () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     });
   }
@@ -120,7 +129,7 @@ export class CreateComponent implements OnInit {
 
     if (!recipeId) return;
 
-    this.recipeService.update(recipeId, this.form.values).subscribe({
+    this.form.submitUpdate(recipeId).subscribe({
       next: () => {
         this.router.navigateByUrl(`/view/${recipeId}`);
       },

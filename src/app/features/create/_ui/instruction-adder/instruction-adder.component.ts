@@ -3,10 +3,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { CreateForm } from '@features/create/_utils/create-form/create-form';
 import { DurationPipe } from '@shared/pipes/duration/duration.pipe';
+import { FieldErrorComponent } from '@shared/ui/field-error/field-error.component';
 
 @Component({
   selector: 'app-instruction-adder',
-  imports: [ReactiveFormsModule, MatIcon, DurationPipe],
+  imports: [ReactiveFormsModule, MatIcon, DurationPipe, FieldErrorComponent],
   templateUrl: './instruction-adder.component.html',
   styleUrl: './instruction-adder.component.css',
 })

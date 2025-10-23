@@ -13,18 +13,56 @@
               {{ $index + 1 }}
             </div>
           </label>
-          <textarea
-            id="instruction-{{ $index }}-description"
-            formControlName="description"
-            rows="3"
-            placeholder="Describe this cooking step..."
-            required
-            max="1024"
-            class="w-full rounded-lg border px-3 py-2 text-sm"
-          ></textarea>
+          <div class="flex flex-1 flex-col gap-2">
+            <textarea
+              id="instruction-{{ $index }}-description"
+              formControlName="description"
+              rows="3"
+              placeholder="Describe this cooking step..."
+              required
+              [maxlength]="
+                form().validators.instructions.description.MAX_LENGTH
+              "
+              class="rounded-lg border px-3 py-2 text-sm"
+              [class]="{
+                'border-danger': form().hasError(
+                  'instructions.' + $index + '.description'
+                ),
+              }"
+            ></textarea>
+            @if (form().hasError("instructions." + $index + ".description")) {
+              <app-field-error>
+                @if (
+                  form().fieldErrorMessages()[
+                    "instructions." + $index + ".description"
+                  ]
+                ) {
+                  {{
+                    form().fieldErrorMessages()[
+                      "instructions." + $index + ".description"
+                    ]
+                  }}
+                } @else if (
+                  form().instructions.controls[
+                    $index
+                  ].controls.description.hasError("required")
+                ) {
+                  Required
+                } @else if (
+                  form().instructions.controls[
+                    $index
+                  ].controls.description.hasError("maxlength")
+                ) {
+                  Must be less than
+                  {{ form().validators.instructions.description.MAX_LENGTH }}
+                  characters
+                }
+              </app-field-error>
+            }
+          </div>
         </div>
         <div class="flex gap-2">
-          <div class="flex w-full flex-col justify-end gap-1">
+          <div class="flex flex-1 flex-col gap-1">
             <label
               for="instruction-{{ $index }}-minutes"
               class="text-sm font-medium"
@@ -38,23 +76,47 @@
               type="number"
               formControlName="minutes"
               placeholder="5"
-              required
-              maxlength="9999"
+              [max]="form().validators.instructions.minutes.MAX"
               (input)="onMinutesInput($event, $index)"
               class="rounded-lg border px-3 py-2 text-sm"
+              [class]="{
+                'border-danger': form().hasError(
+                  'instructions.' + $index + '.minutes'
+                ),
+              }"
             />
+            @if (form().hasError("instructions." + $index + ".minutes")) {
+              <app-field-error>
+                @if (
+                  form().fieldErrorMessages()[
+                    "instructions." + $index + ".minutes"
+                  ]
+                ) {
+                  {{
+                    form().fieldErrorMessages()[
+                      "instructions." + $index + ".minutes"
+                    ]
+                  }}
+                } @else if (
+                  form().instructions.controls[
+                    $index
+                  ].controls.minutes.hasError("max")
+                ) {
+                  Must be less than
+                  {{ form().validators.instructions.minutes.MAX }}
+                }
+              </app-field-error>
+            }
           </div>
-          <div class="flex items-end">
-            <button
-              type="button"
-              (click)="removeInstruction($index)"
-              class="text-danger hover:bg-danger/10 mb-1 size-8 rounded-full border transition"
-            >
-              <span class="flex scale-75 items-center justify-center">
-                <mat-icon fontIcon="remove"></mat-icon>
-              </span>
-            </button>
-          </div>
+          <button
+            type="button"
+            (click)="removeInstruction($index)"
+            class="text-danger hover:bg-danger/10 mt-6 size-8 rounded-full border transition"
+          >
+            <span class="flex scale-75 items-center justify-center">
+              <mat-icon fontIcon="remove"></mat-icon>
+            </span>
+          </button>
         </div>
       </div>
     }

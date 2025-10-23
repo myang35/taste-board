@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
 export type ApiError = {
   code: string;
   message: string;
@@ -27,5 +29,30 @@ export class ApiErrorUtils {
     )
       return false;
     return true;
+  }
+
+  static handleError(
+    error: unknown,
+    handle: {
+      unknownError?: (error: unknown) => void;
+      httpErrorResponse?: (error: HttpErrorResponse) => void;
+      apiError?: (error: ApiError) => void;
+      invalidInputsError?: (
+        error: ApiError & {
+          data: { inputs: Record<string, string> };
+        },
+      ) => void;
+    },
+  ) {
+    if (error instanceof HttpErrorResponse) {
+      if (ApiErrorUtils.isInvalidInputsError(error.error)) {
+        return handle.invalidInputsError?.(error.error);
+      }
+      if (ApiErrorUtils.isApiError(error.error)) {
+        return handle.apiError?.(error.error);
+      }
+      return handle.httpErrorResponse?.(error);
+    }
+    return handle.unknownError?.(error);
   }
 }

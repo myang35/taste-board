@@ -1,11 +1,78 @@
-import { inject } from '@angular/core';
+import { inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { ApiErrorUtils } from '@core/utils/api-error-utils/api-error-utils';
+import { tap } from 'rxjs';
 
 export class CreateForm {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly recipeService = inject(RecipeService);
 
   root: ReturnType<typeof this.createRoot>;
+  errorMessage = signal('');
+  fieldErrorMessages = signal<Record<string, string>>({});
+
+  readonly validators = {
+    name: {
+      MAX_LENGTH: 128,
+    },
+    servings: {
+      MAX: 9999,
+    },
+    description: {
+      MAX_LENGTH: 1024,
+    },
+    ingredients: {
+      name: {
+        MAX_LENGTH: 128,
+      },
+      amount: {
+        MAX: 9999,
+      },
+      unit: {
+        MAX_LENGTH: 32,
+      },
+      notes: {
+        MAX_LENGTH: 32,
+      },
+    },
+    instructions: {
+      description: {
+        MAX_LENGTH: 1024,
+      },
+      minutes: {
+        MAX: 999999,
+      },
+    },
+    calories: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    protein: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    carbohydrates: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    fat: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    fiber: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    sugar: {
+      MIN: 0,
+      MAX: 999999,
+    },
+    notes: {
+      MAX_LENGTH: 4096,
+    },
+  };
 
   constructor(values?: {
     name?: string;
@@ -136,6 +203,98 @@ export class CreateForm {
     };
   }
 
+  hasError(field: string) {
+    const fieldData = field.split('.');
+    switch (fieldData[0]) {
+      case 'name':
+        return (
+          (this.name.invalid && this.name.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      case 'servings':
+        return (
+          (this.servings.invalid && this.servings.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      case 'description':
+        return (
+          (this.description.invalid && this.description.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      case 'ingredients': {
+        const index = Number.parseInt(fieldData[1]);
+        if (Number.isNaN(index)) {
+          throw new Error('Invalid field');
+        }
+        if (!['name', 'amount', 'unit', 'notes'].includes(fieldData[2])) {
+          throw new Error('Invalid field');
+        }
+        const ingredientControl = this.ingredients.controls[index];
+        const fieldControlKey =
+          fieldData[2] as keyof typeof ingredientControl.controls;
+        const fieldControl = ingredientControl.controls[fieldControlKey];
+        return (
+          (fieldControl.invalid && fieldControl.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      }
+      case 'instructions': {
+        const index = Number.parseInt(fieldData[1]);
+        if (Number.isNaN(index)) {
+          throw new Error('Invalid field');
+        }
+        if (!['description', 'minutes'].includes(fieldData[2])) {
+          throw new Error('Invalid field');
+        }
+        const instructionControl = this.instructions.controls[index];
+        const fieldControlKey =
+          fieldData[2] as keyof typeof instructionControl.controls;
+        const fieldControl = instructionControl.controls[fieldControlKey];
+        return (
+          (fieldControl.invalid && fieldControl.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      }
+      case 'calories':
+        return (
+          (this.calories.invalid && this.calories.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      case 'protein':
+        return (
+          (this.protein.invalid && this.protein.touched) ||
+          !!this.fieldErrorMessages()['proteinGrams']
+        );
+      case 'carbohydrates':
+        return (
+          (this.carbohydrates.invalid && this.carbohydrates.touched) ||
+          !!this.fieldErrorMessages()['carbohydratesGrams']
+        );
+      case 'fat':
+        return (
+          (this.fat.invalid && this.fat.touched) ||
+          !!this.fieldErrorMessages()['fatGrams']
+        );
+      case 'fiber':
+        return (
+          (this.fiber.invalid && this.fiber.touched) ||
+          !!this.fieldErrorMessages()['fiberGrams']
+        );
+      case 'sugar':
+        return (
+          (this.sugar.invalid && this.sugar.touched) ||
+          !!this.fieldErrorMessages()['sugarGrams']
+        );
+      case 'notes':
+        return (
+          (this.notes.invalid && this.notes.touched) ||
+          !!this.fieldErrorMessages()[field]
+        );
+      default:
+        return false;
+    }
+  }
+
   update(values: {
     name?: string;
     servings?: number;
@@ -249,6 +408,22 @@ export class CreateForm {
     this.root.controls.instructions.removeAt(index);
   }
 
+  submitCreate() {
+    return this.recipeService.create(this.values).pipe(
+      tap({
+        error: (error) => this.handleError(error),
+      }),
+    );
+  }
+
+  submitUpdate(recipeId: string) {
+    return this.recipeService.update(recipeId, this.values).pipe(
+      tap({
+        error: (error) => this.handleError(error),
+      }),
+    );
+  }
+
   private createRoot(values?: {
     name?: string;
     servings?: number;
@@ -274,9 +449,21 @@ export class CreateForm {
     shared?: boolean;
   }) {
     return this.formBuilder.group({
-      name: [values?.name ?? '', [Validators.maxLength(128)]],
-      servings: [values?.servings ?? NaN, [Validators.max(99)]],
-      description: [values?.description ?? '', [Validators.maxLength(1024)]],
+      name: [
+        values?.name ?? '',
+        [
+          Validators.required,
+          Validators.maxLength(this.validators.name.MAX_LENGTH),
+        ],
+      ],
+      servings: [
+        values?.servings ?? NaN,
+        [Validators.max(this.validators.servings.MAX)],
+      ],
+      description: [
+        values?.description ?? '',
+        [Validators.maxLength(this.validators.description.MAX_LENGTH)],
+      ],
       image: this.formBuilder.control<File | undefined>(values?.image, []),
       ingredients: this.formBuilder.array<
         ReturnType<typeof this.createIngredientGroup>
@@ -314,20 +501,50 @@ export class CreateForm {
       ),
       calories: [
         values?.calories ?? NaN,
-        [Validators.min(0), Validators.max(9999)],
+        [
+          Validators.min(this.validators.calories.MIN),
+          Validators.max(this.validators.calories.MAX),
+        ],
       ],
       protein: [
         values?.protein ?? NaN,
-        [Validators.min(0), Validators.max(9999)],
+        [
+          Validators.min(this.validators.protein.MIN),
+          Validators.max(this.validators.protein.MAX),
+        ],
       ],
       carbohydrates: [
         values?.carbohydrates ?? NaN,
-        [Validators.min(0), Validators.max(9999)],
+        [
+          Validators.min(this.validators.carbohydrates.MIN),
+          Validators.max(this.validators.carbohydrates.MAX),
+        ],
       ],
-      fat: [values?.fat ?? NaN, [Validators.min(0), Validators.max(9999)]],
-      fiber: [values?.fiber ?? NaN, [Validators.min(0), Validators.max(9999)]],
-      sugar: [values?.sugar ?? NaN, [Validators.min(0), Validators.max(9999)]],
-      notes: [values?.notes ?? '', [Validators.maxLength(4096)]],
+      fat: [
+        values?.fat ?? NaN,
+        [
+          Validators.min(this.validators.fat.MIN),
+          Validators.max(this.validators.fat.MAX),
+        ],
+      ],
+      fiber: [
+        values?.fiber ?? NaN,
+        [
+          Validators.min(this.validators.fiber.MIN),
+          Validators.max(this.validators.fiber.MAX),
+        ],
+      ],
+      sugar: [
+        values?.sugar ?? NaN,
+        [
+          Validators.min(this.validators.sugar.MIN),
+          Validators.max(this.validators.sugar.MAX),
+        ],
+      ],
+      notes: [
+        values?.notes ?? '',
+        [Validators.maxLength(this.validators.notes.MAX_LENGTH)],
+      ],
       shared: [!!values?.shared],
     });
   }
@@ -341,17 +558,29 @@ export class CreateForm {
     return this.formBuilder.group({
       name: [
         value?.name ?? '',
-        [Validators.required, Validators.maxLength(128)],
+        [
+          Validators.required,
+          Validators.maxLength(this.validators.ingredients.name.MAX_LENGTH),
+        ],
       ],
       amount: [
         value?.amount ?? NaN,
-        [Validators.required, Validators.max(9999)],
+        [
+          Validators.required,
+          Validators.max(this.validators.ingredients.amount.MAX),
+        ],
       ],
       unit: [
         value?.unit ?? '',
-        [Validators.required, Validators.maxLength(32)],
+        [
+          Validators.required,
+          Validators.maxLength(this.validators.ingredients.unit.MAX_LENGTH),
+        ],
       ],
-      notes: [value?.notes ?? '', [Validators.maxLength(32)]],
+      notes: [
+        value?.notes ?? '',
+        [Validators.maxLength(this.validators.ingredients.notes.MAX_LENGTH)],
+      ],
     });
   }
 
@@ -360,8 +589,34 @@ export class CreateForm {
     minutes?: number;
   }) {
     return this.formBuilder.group({
-      description: [value?.description ?? '', [Validators.maxLength(1024)]],
-      minutes: [value?.minutes ?? NaN, [Validators.max(9999)]],
+      description: [
+        value?.description ?? '',
+        [
+          Validators.maxLength(
+            this.validators.instructions.description.MAX_LENGTH,
+          ),
+        ],
+      ],
+      minutes: [
+        value?.minutes ?? NaN,
+        [Validators.max(this.validators.instructions.minutes.MAX)],
+      ],
+    });
+  }
+
+  private handleError(error: unknown) {
+    ApiErrorUtils.handleError(error, {
+      invalidInputsError: (error) => {
+        this.errorMessage.set(error.message);
+        this.fieldErrorMessages.set(error.data.inputs);
+      },
+      apiError: (error) => {
+        this.errorMessage.set(error.message);
+      },
+      httpErrorResponse: (error) => {
+        this.errorMessage.set(error.message);
+      },
+      unknownError: () => this.errorMessage.set('An unknown error occurred'),
     });
   }
 }
