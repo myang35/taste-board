@@ -31,7 +31,10 @@
             </div>
             <p class="text-sm text-nowrap">
               <span class="font-medium">Duration:</span>
-              {{ recipe.cookMinutes }} min
+              @if (recipe.cookMinutes >= 60) {
+                {{ recipe.cookMinutes | duration: "h" }}h
+              }
+              {{ recipe.cookMinutes | duration: "m" }}m
             </p>
           </div>
           <div class="flex items-center gap-1">

@@ -72,7 +72,6 @@ export class RecipeService {
     name: string;
     servings: number;
     description: string;
-    cookMinutes: number;
     image?: File | null;
     ingredients: {
       name: string;
@@ -108,7 +107,6 @@ export class RecipeService {
         name: params.name,
         servings: params.servings,
         description: params.description,
-        cookMinutes: params.cookMinutes,
         ingredients: params.ingredients,
         instructions: params.instructions,
         calories: params.calories,

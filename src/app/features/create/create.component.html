@@ -62,33 +62,6 @@
               class="rounded-lg border px-3 py-2"
             ></textarea>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
-            <div class="flex flex-col gap-2">
-              <label for="servings" class="text-sm font-medium"
-                >Servings *</label
-              >
-              <input
-                type="number"
-                id="servings"
-                formControlName="servings"
-                placeholder="4"
-                class="rounded-lg border px-3 py-2"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <label for="cookMinutes" class="text-sm font-medium"
-                >Cook Time (minutes) *</label
-              >
-              <input
-                type="number"
-                id="cookMinutes"
-                formControlName="cookMinutes"
-                placeholder="30"
-                max="9999"
-                class="rounded-lg border px-3 py-2"
-              />
-            </div>
-          </div>
         </div>
         <div class="border-b"></div>
         <div class="bg-muted/25 flex gap-4 rounded-lg border p-4">
@@ -143,12 +116,24 @@
         <h2 class="flex items-center gap-2 text-2xl font-medium">
           <mat-icon fontIcon="article"></mat-icon>
           Nutrition Facts
-          <span class="text-muted-foreground text-xl italic">(Optional)</span>
         </h2>
         <div class="grid gap-4 md:grid-cols-3">
+          <div class="col-span-3 flex flex-col gap-2">
+            <label for="servings" class="text-sm font-medium">Servings *</label>
+            <input
+              type="number"
+              id="servings"
+              formControlName="servings"
+              placeholder="4"
+              class="rounded-lg border px-3 py-2"
+            />
+          </div>
           <div class="flex flex-col gap-1">
             <label for="calories" class="text-sm font-medium"
-              >Calories per serving</label
+              >Calories per serving
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
             >
             <input
               id="calories"
@@ -159,7 +144,12 @@
             />
           </div>
           <div class="flex flex-col gap-1">
-            <label for="protein" class="text-sm font-medium">Protein (g)</label>
+            <label for="protein" class="text-sm font-medium"
+              >Protein (g)
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
+            >
             <input
               id="protein"
               type="number"
@@ -170,7 +160,10 @@
           </div>
           <div class="flex flex-col gap-1">
             <label for="carbohydrates" class="text-sm font-medium"
-              >Carbohydrates (g)</label
+              >Carbohydrates (g)
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
             >
             <input
               id="carbohydrates"
@@ -181,7 +174,12 @@
             />
           </div>
           <div class="flex flex-col gap-1">
-            <label for="fat" class="text-sm font-medium">Fat (g)</label>
+            <label for="fat" class="text-sm font-medium"
+              >Fat (g)
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
+            >
             <input
               id="fat"
               type="number"
@@ -191,7 +189,12 @@
             />
           </div>
           <div class="flex flex-col gap-1">
-            <label for="fiber" class="text-sm font-medium">Fiber (g)</label>
+            <label for="fiber" class="text-sm font-medium"
+              >Fiber (g)
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
+            >
             <input
               id="fiber"
               type="number"
@@ -201,7 +204,12 @@
             />
           </div>
           <div class="flex flex-col gap-1">
-            <label for="sugar" class="text-sm font-medium">Sugar (g)</label>
+            <label for="sugar" class="text-sm font-medium"
+              >Sugar (g)
+              <span class="text-muted-foreground text-xs italic"
+                >(optional)</span
+              ></label
+            >
             <input
               id="sugar"
               type="number"

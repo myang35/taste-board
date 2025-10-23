@@ -68,7 +68,6 @@ export class CreateComponent implements OnInit {
       name: 'Spaget',
       servings: 1,
       description: 'Spagetti but with one noodle',
-      cookMinutes: 20,
       image: undefined,
       ingredients: [
         {

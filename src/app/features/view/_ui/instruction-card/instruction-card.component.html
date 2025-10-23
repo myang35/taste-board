@@ -29,7 +29,11 @@
         [class]="{
           'line-through': checked,
         }"
-        >{{ instruction().minutes }} min</span
+      >
+        @if (instruction().minutes >= 60) {
+          {{ instruction().minutes | duration: "h" }}h
+        }
+        {{ instruction().minutes | duration: "m" }}m</span
       >
     </p>
   </div>

@@ -11,7 +11,6 @@ export class CreateForm {
     name?: string;
     servings?: number;
     description?: string;
-    cookMinutes?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -40,7 +39,6 @@ export class CreateForm {
       name: recipe.name,
       servings: recipe.servings,
       description: recipe.description,
-      cookMinutes: recipe.cookMinutes,
       image: undefined, // TODO: get image from recipe.imageURL
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
@@ -65,10 +63,6 @@ export class CreateForm {
 
   get description() {
     return this.root.controls.description;
-  }
-
-  get cookMinutes() {
-    return this.root.controls.cookMinutes;
   }
 
   get image() {
@@ -120,7 +114,6 @@ export class CreateForm {
       name: this.name.value ?? '',
       servings: this.servings.value || 0,
       description: this.description.value ?? '',
-      cookMinutes: this.cookMinutes.value || 0,
       image: this.image.value,
       ingredients: (this.ingredients.value ?? []).map((ingredient) => ({
         name: ingredient.name ?? '',
@@ -147,7 +140,6 @@ export class CreateForm {
     name?: string;
     servings?: number;
     description?: string;
-    cookMinutes?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -176,9 +168,6 @@ export class CreateForm {
     }
     if (values.description) {
       this.root.controls.description.setValue(values.description);
-    }
-    if (values.cookMinutes) {
-      this.root.controls.cookMinutes.setValue(values.cookMinutes);
     }
     if (values.image) {
       this.root.controls.image.setValue(values.image);
@@ -230,7 +219,6 @@ export class CreateForm {
       name: recipe.name,
       servings: recipe.servings,
       description: recipe.description,
-      cookMinutes: recipe.cookMinutes,
       image: undefined,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
@@ -265,7 +253,6 @@ export class CreateForm {
     name?: string;
     servings?: number;
     description?: string;
-    cookMinutes?: number;
     image?: File;
     ingredients?: {
       name?: string;
@@ -290,10 +277,6 @@ export class CreateForm {
       name: [values?.name ?? '', [Validators.maxLength(128)]],
       servings: [values?.servings ?? NaN, [Validators.max(99)]],
       description: [values?.description ?? '', [Validators.maxLength(1024)]],
-      cookMinutes: [
-        values?.cookMinutes ?? NaN,
-        [Validators.min(0), Validators.max(9999)],
-      ],
       image: this.formBuilder.control<File | undefined>(values?.image, []),
       ingredients: this.formBuilder.array<
         ReturnType<typeof this.createIngredientGroup>

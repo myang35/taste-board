@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RecipeService } from '@core/services/recipe/recipe.service';
 import { Recipe } from '@core/types/recipe';
+import { DurationPipe } from '@shared/pipes/duration/duration.pipe';
 import { UserImageComponent } from '@shared/ui/user-image/user-image.component';
 import { RequestManager } from '@shared/utils/request-manager';
 import { StringUtils } from '@shared/utils/string-utils/string-utils';
@@ -18,6 +19,7 @@ import { InstructionCardComponent } from './_ui/instruction-card/instruction-car
     IngredientCheckboxComponent,
     InstructionCardComponent,
     UserImageComponent,
+    DurationPipe,
   ],
   templateUrl: './view.component.html',
   styleUrl: './view.component.css',
