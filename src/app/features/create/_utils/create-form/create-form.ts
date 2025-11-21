@@ -101,25 +101,6 @@ export class CreateForm {
     this.root = this.createRoot(values);
   }
 
-  static fromRecipe(recipe: Recipe) {
-    return new CreateForm({
-      name: recipe.name,
-      servings: recipe.servings,
-      description: recipe.description,
-      image: undefined, // TODO: get image from recipe.imageURL
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      calories: recipe.calories,
-      protein: recipe.proteinGrams,
-      carbohydrates: recipe.carbohydratesGrams,
-      fat: recipe.fatGrams,
-      fiber: recipe.fiberGrams,
-      sugar: recipe.sugarGrams,
-      notes: recipe.notes,
-      shared: recipe.shared,
-    });
-  }
-
   get name() {
     return this.root.controls.name;
   }
