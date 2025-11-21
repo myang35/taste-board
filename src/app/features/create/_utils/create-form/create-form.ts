@@ -429,7 +429,7 @@ export class CreateForm {
     notes?: string;
     shared?: boolean;
   }) {
-    return this.formBuilder.group({
+    const root = this.formBuilder.group({
       name: [
         values?.name ?? '',
         [
@@ -445,7 +445,7 @@ export class CreateForm {
         values?.description ?? '',
         [Validators.maxLength(this.validators.description.MAX_LENGTH)],
       ],
-      image: this.formBuilder.control<File | undefined>(values?.image, []),
+      image: [values?.image, []],
       ingredients: this.formBuilder.array<
         ReturnType<typeof this.createIngredientGroup>
       >(
@@ -528,6 +528,12 @@ export class CreateForm {
       ],
       shared: [!!values?.shared],
     });
+
+    // Initial value cannot be undefined because it will default to null.
+    // This ensures that if image is undefined, the value will be undefined.
+    root.controls.image.setValue(values?.image);
+
+    return root;
   }
 
   private createIngredientGroup(value?: {

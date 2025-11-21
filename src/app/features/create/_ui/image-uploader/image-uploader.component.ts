@@ -28,7 +28,7 @@ export class ImageUploaderComponent {
   protected imageUrl = computed(() => {
     const imageFile = this.imageFile();
     const initialSrc = this.initialSrc();
-    if (imageFile === undefined && initialSrc) {
+    if (imageFile === undefined) {
       return initialSrc;
     }
     if (imageFile) {
