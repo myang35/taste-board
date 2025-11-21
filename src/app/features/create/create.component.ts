@@ -66,53 +66,6 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  /**
-   * For testing only. Remove before production!
-   */
-  autofillForm() {
-    this.form.update({
-      name: 'Spaget',
-      servings: 1,
-      description: 'Spagetti but with one noodle',
-      image: undefined,
-      ingredients: [
-        {
-          name: 'noodle',
-          amount: 1,
-          unit: 'piece',
-        },
-        {
-          name: 'plate',
-          amount: 1,
-          unit: 'whole',
-          notes: 'washed',
-        },
-      ],
-      instructions: [
-        {
-          description: 'Put plate on table',
-          minutes: 1,
-        },
-        {
-          description: 'Put noodle on plate',
-          minutes: 2,
-        },
-        {
-          description: 'Eat noodle',
-          minutes: 10,
-        },
-      ],
-      calories: 50,
-      protein: 1,
-      carbohydrates: 2,
-      fat: 3,
-      fiber: 20,
-      sugar: 30,
-      notes: 'Do not forget the noodle',
-      shared: true,
-    });
-  }
-
   createRecipe() {
     this.form.submitCreate().subscribe({
       next: (value) => {
