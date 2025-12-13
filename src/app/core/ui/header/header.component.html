@@ -2,45 +2,60 @@
   class="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-b backdrop-blur"
 >
   <div
-    class="container mx-auto flex items-center justify-between gap-4 px-4 py-2"
+    class="container mx-auto flex flex-col justify-between px-4 py-2 sm:flex-row sm:items-center sm:justify-start sm:gap-4"
   >
-    <a href="/">
-      <h1 class="text-orange text-xl font-bold">MoRecipes</h1>
-    </a>
-    <div class="flex items-center gap-4">
-      <a
-        href="/"
-        class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
-        >Home</a
+    <div class="flex w-full justify-between gap-4 sm:w-fit">
+      <a href="/">
+        <h1 class="text-orange text-xl font-bold">MoRecipes</h1>
+      </a>
+      <button
+        (click)="showMenu.set(!showMenu())"
+        class="hover:bg-accent flex size-8 items-center justify-center rounded-full transition sm:hidden"
       >
-      <a
-        href="/browse"
-        class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
-        >Browse</a
-      >
-      <a
-        href="/create"
-        class="hover:bg-accent hover:text-accent-foreground inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium transition"
-        ><mat-icon fontIcon="add" class="scale-75"></mat-icon>Create</a
-      >
+        <mat-icon fontIcon="menu"></mat-icon>
+      </button>
     </div>
-    <div>
-      @if (user(); as user) {
-        <app-account-button [user]="user"></app-account-button>
-      } @else {
-        <div class="space-x-4">
-          <a
-            href="/login"
-            class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
-            >Login</a
-          >
-          <a
-            href="/sign-up"
-            class="hover:bg-accent hover:text-accent-foreground rounded-lg border px-3 py-1.5 text-sm font-medium transition"
-            >Signup</a
-          >
-        </div>
-      }
+    <div
+      class="flex w-full justify-between"
+      [class]="{
+        'not-sm:hidden': !showMenu(),
+      }"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+        <a
+          href="/"
+          class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
+          >Home</a
+        >
+        <a
+          href="/browse"
+          class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
+          >Browse</a
+        >
+        <a
+          href="/create"
+          class="hover:bg-accent hover:text-accent-foreground inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium transition"
+          >Create</a
+        >
+      </div>
+      <div>
+        @if (user(); as user) {
+          <app-account-button [user]="user"></app-account-button>
+        } @else {
+          <div class="flex flex-col sm:flex-row sm:gap-4">
+            <a
+              href="/login"
+              class="hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-1.5 text-sm font-medium transition"
+              >Login</a
+            >
+            <a
+              href="/sign-up"
+              class="hover:bg-accent hover:text-accent-foreground rounded-lg border px-3 py-1.5 text-sm font-medium transition"
+              >Signup</a
+            >
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>
