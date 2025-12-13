@@ -1,0 +1,54 @@
+<button
+  [cdkMenuTriggerFor]="accountMenu"
+  class="hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent flex items-center gap-2 rounded-lg py-0.5 pr-3 pl-2 transition"
+>
+  <app-user-image [user]="user()" class="size-8"></app-user-image>
+  <span>{{ user().name }}</span>
+</button>
+<ng-template #accountMenu>
+  <div
+    cdkMenu
+    class="bg-background flex w-full flex-col gap-2 rounded p-2 shadow shadow-black/50"
+  >
+    <a
+      href="/account/recipes"
+      cdkMenuItem
+      class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 text-start transition"
+    >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Recipes icon"
+        fontIcon="menu_book"
+        class="scale-75"
+      ></mat-icon>
+      Recipes
+    </a>
+    <a
+      href="/account/settings"
+      cdkMenuItem
+      class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 text-start transition"
+    >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Settings icon"
+        fontIcon="settings"
+        class="scale-75"
+      ></mat-icon>
+      Settings
+    </a>
+    <div class="border-dark-500/50 border-b"></div>
+    <button
+      cdkMenuItem
+      (click)="logout()"
+      class="hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded px-3 py-2 transition"
+    >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Logout icon"
+        fontIcon="logout"
+        class="scale-75"
+      ></mat-icon>
+      Logout
+    </button>
+  </div>
+</ng-template>
