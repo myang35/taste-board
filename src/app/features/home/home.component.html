@@ -1,6 +1,6 @@
 <div>
   <section class="from-orange/10 via-warm/5 to-green/10 bg-gradient-to-br">
-    <div class="container mx-auto flex gap-8 px-4 py-20">
+    <div class="container mx-auto flex flex-col gap-8 px-4 py-20 lg:flex-row">
       <div class="flex-1 space-y-4">
         <h1 class="text-4xl font-bold lg:text-6xl">
           Share Your <span class="text-orange">Culinary</span> Journey
@@ -9,7 +9,7 @@
           Discover amazing recipes, create your own masterpieces, and join a
           community of passionate food lovers from around the world.
         </p>
-        <div class="flex gap-4">
+        <div class="flex flex-col gap-4 sm:flex-row">
           <a
             href="/browse"
             class="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 rounded-lg px-6 py-2 text-sm transition"
@@ -26,11 +26,13 @@
           </a>
         </div>
       </div>
-      <div class="flex flex-1 gap-4">
-        <div class="mb-6 flex-1">
+      <div
+        class="mx-auto flex max-w-80 flex-1 flex-col gap-4 sm:max-w-none sm:flex-row"
+      >
+        <div class="mr-8 max-w-80 flex-1 sm:mr-0 sm:mb-6">
           <app-recipe-card [recipe]="heroRecipes?.[0]"></app-recipe-card>
         </div>
-        <div class="mt-6 flex-1">
+        <div class="ml-8 max-w-80 flex-1 sm:mt-6 sm:ml-0">
           <app-recipe-card [recipe]="heroRecipes?.[1]"></app-recipe-card>
         </div>
       </div>
@@ -48,7 +50,7 @@
           TasteBoard has all the tools you need.
         </p>
       </div>
-      <div class="flex gap-8">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div
           class="flex flex-1 flex-col items-center gap-4 rounded-lg p-4 shadow-lg"
         >
@@ -107,7 +109,7 @@
 
   <section>
     <div class="container mx-auto space-y-12 px-4 py-20">
-      <div class="flex items-center justify-between gap-8">
+      <div class="flex flex-col items-center justify-between gap-8 sm:flex-row">
         <div class="space-y-4">
           <h2 class="text-3xl font-bold lg:text-4xl">Trending Recipes</h2>
           <p class="text-muted-foreground">
@@ -121,18 +123,18 @@
           View All <mat-icon fontIcon="trending_up" class="scale-75"></mat-icon>
         </a>
       </div>
-      <div class="flex gap-8">
+      <div class="flex gap-4 overflow-x-auto lg:gap-8">
         <app-recipe-card
           [recipe]="trendingRecipes?.[0]"
-          class="w-full"
+          class="w-full min-w-48"
         ></app-recipe-card>
         <app-recipe-card
           [recipe]="trendingRecipes?.[1]"
-          class="w-full"
+          class="w-full min-w-48"
         ></app-recipe-card>
         <app-recipe-card
           [recipe]="trendingRecipes?.[2]"
-          class="w-full"
+          class="w-full min-w-48"
         ></app-recipe-card>
       </div>
     </div>
