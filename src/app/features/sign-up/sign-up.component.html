@@ -25,11 +25,11 @@
       }
       <div class="flex flex-col gap-1">
         <label for="name" class="text-sm font-medium select-none"
-          >Full Name</label
+          >Display Name</label
         >
         <div class="relative">
           <mat-icon
-            fontIcon="person"
+            fontIcon="label"
             class="absolute top-0 bottom-0 left-2 my-auto scale-75"
           ></mat-icon>
           <input
@@ -38,7 +38,7 @@
             formControlName="name"
             class="placeholder:text-muted-foreground w-full rounded-lg border p-2 pl-10"
             [class]="{ 'border-danger': inputErrorMessages().name }"
-            placeholder="Full name"
+            placeholder="Enter your display name"
             required
           />
         </div>
@@ -50,26 +50,28 @@
         }
       </div>
       <div class="flex flex-col gap-1">
-        <label for="email" class="text-sm font-medium select-none">Email</label>
+        <label for="username" class="text-sm font-medium select-none"
+          >Username</label
+        >
         <div class="relative">
           <mat-icon
-            fontIcon="email"
+            fontIcon="person"
             class="absolute top-0 bottom-0 left-2 my-auto scale-75"
           ></mat-icon>
           <input
-            id="email"
-            type="email"
-            formControlName="email"
+            id="username"
+            type="username"
+            formControlName="username"
             class="placeholder:text-muted-foreground w-full rounded-lg border p-2 pl-10"
-            [class]="{ 'border-danger': inputErrorMessages().email }"
-            placeholder="Enter your email"
+            [class]="{ 'border-danger': inputErrorMessages().username }"
+            placeholder="Enter your username"
             required
           />
         </div>
-        @if (inputErrorMessages().email) {
+        @if (inputErrorMessages().username) {
           <p class="text-danger flex items-center gap-1 text-sm">
             <mat-icon fontIcon="error" class="scale-75"></mat-icon>
-            {{ inputErrorMessages().email }}
+            {{ inputErrorMessages().username }}
           </p>
         }
       </div>

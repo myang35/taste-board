@@ -3,16 +3,16 @@
 >
   <div class="flex flex-col">
     <div class="flex items-center gap-2">
-      <mat-icon fontIcon="email"></mat-icon>
-      <h3 class="text-2xl font-medium">Email Address</h3>
+      <mat-icon fontIcon="person"></mat-icon>
+      <h3 class="text-2xl font-medium">Username</h3>
     </div>
     <p class="text-muted-foreground text-sm">
-      Current email: <span class="font-medium">{{ user()?.email }}</span>
+      Current username: <span class="font-medium">{{ user()?.username }}</span>
     </p>
   </div>
   <form
     [formGroup]="form"
-    (ngSubmit)="updateEmail()"
+    (ngSubmit)="updateUsername()"
     class="flex flex-col gap-4"
   >
     @if (formErrorMessage()) {
@@ -24,21 +24,21 @@
       </p>
     }
     <div class="flex flex-col gap-1">
-      <label for="email" class="text-sm font-medium">New Email Address</label>
+      <label for="email" class="text-sm font-medium">New Username</label>
       <input
         type="text"
-        id="email"
-        formControlName="newEmail"
-        placeholder="Enter new email address"
+        id="username"
+        formControlName="newUsername"
+        placeholder="Enter new username"
         required
         maxlength="256"
         class="rounded-lg border px-3 py-2 text-sm"
-        [class]="{ 'border-danger': inputErrorMessages().newEmail }"
+        [class]="{ 'border-danger': inputErrorMessages().newUsername }"
       />
-      @if (inputErrorMessages().newEmail) {
+      @if (inputErrorMessages().newUsername) {
         <p class="text-danger flex items-center gap-1 text-sm">
           <mat-icon fontIcon="error" class="scale-75"></mat-icon>
-          {{ inputErrorMessages().newEmail }}
+          {{ inputErrorMessages().newUsername }}
         </p>
       }
     </div>
@@ -77,7 +77,7 @@
       type="submit"
       class="bg-primary hover:bg-primary/90 text-primary-foreground w-full rounded-lg p-2 text-sm font-medium transition"
     >
-      Update Email
+      Update Username
     </button>
   </form>
 </div>

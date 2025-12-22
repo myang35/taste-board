@@ -17,12 +17,12 @@ export class AuthService {
 
   user = signal<User | undefined>(undefined);
 
-  login(credentials: { email: string; password: string }) {
+  login(credentials: { username: string; password: string }) {
     return this.http
       .post<AuthResponse>(
         `${environment.apiUrl}/auth/login`,
         {
-          email: credentials.email,
+          username: credentials.username,
           password: credentials.password,
         },
         {
@@ -36,7 +36,7 @@ export class AuthService {
       );
   }
 
-  signup(data: { name: string; email: string; password: string }) {
+  signup(data: { name: string; username: string; password: string }) {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, data, {
         withCredentials: true,

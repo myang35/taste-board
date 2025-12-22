@@ -16,14 +16,14 @@ export class UserService {
     return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
   }
 
-  updateEmail(params: { newEmail: string; password: string }) {
+  updateUsername(params: { newUsername: string; password: string }) {
     const user = this.authService.user();
     if (!user) {
-      throw new Error('User must be logged in to update email');
+      throw new Error('User must be logged in to update username');
     }
     return this.http
-      .patch<User>(`${environment.apiUrl}/users/${user.id}/email`, {
-        newEmail: params.newEmail,
+      .patch<User>(`${environment.apiUrl}/users/${user.id}/username`, {
+        newUsername: params.newUsername,
         password: params.password,
       })
       .pipe(
@@ -36,7 +36,7 @@ export class UserService {
   updatePassword(params: { newPassword: string; currentPassword: string }) {
     const user = this.authService.user();
     if (!user) {
-      throw new Error('User must be logged in to update email');
+      throw new Error('User must be logged in to update password');
     }
     return this.http.patch<User>(
       `${environment.apiUrl}/users/${user.id}/password`,

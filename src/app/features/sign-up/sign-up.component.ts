@@ -19,7 +19,7 @@ export class SignUpComponent {
 
   protected signupForm = this.formBuilder.group({
     name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.maxLength(256)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]],
   });
@@ -28,7 +28,7 @@ export class SignUpComponent {
   protected formErrorMessage = signal('');
   protected inputErrorMessages = signal<{
     name?: string;
-    email?: string;
+    username?: string;
     password?: string;
     confirmPassword?: string;
   }>({});
@@ -41,16 +41,17 @@ export class SignUpComponent {
     this.formErrorMessage.set('');
     this.inputErrorMessages.set({});
 
-    const { name, email, password, confirmPassword } = this.signupForm.controls;
+    const { name, username, password, confirmPassword } =
+      this.signupForm.controls;
 
     if (name.hasError('required')) {
       this.inputErrorMessages().name = 'Required';
     }
-    if (email.hasError('required')) {
-      this.inputErrorMessages().email = 'Required';
+    if (username.hasError('required')) {
+      this.inputErrorMessages().username = 'Required';
     }
-    if (email.hasError('email')) {
-      this.inputErrorMessages().email = 'Invalid format';
+    if (username.hasError('username')) {
+      this.inputErrorMessages().username = 'Invalid format';
     }
     if (password.hasError('required')) {
       this.inputErrorMessages().password = 'Required';
@@ -74,7 +75,7 @@ export class SignUpComponent {
     this.authService
       .signup({
         name: name.value!,
-        email: email.value!,
+        username: username.value!,
         password: password.value!,
       })
       .subscribe({

@@ -19,27 +19,27 @@ export class ChangeEmailFormComponent {
 
   protected user = this.authService.user;
   protected form = this.formBuilder.group({
-    newEmail: ['', [Validators.required, Validators.maxLength(256)]],
+    newUsername: ['', [Validators.required, Validators.maxLength(256)]],
     password: ['', [Validators.required, Validators.maxLength(256)]],
   });
   protected formErrorMessage = signal('');
   protected inputErrorMessages = signal<{
-    newEmail?: string;
+    newUsername?: string;
     password?: string;
   }>({});
   protected showPassword = signal(false);
 
-  updateEmail() {
+  updateUsername() {
     this.formErrorMessage.set('');
     this.inputErrorMessages.set({});
 
-    const { newEmail, password } = this.form.controls;
+    const { newUsername, password } = this.form.controls;
 
-    if (newEmail.hasError('required')) {
-      this.inputErrorMessages().newEmail = 'Required';
-    } else if (newEmail.hasError('maxlength')) {
-      this.inputErrorMessages().newEmail =
-        'Email cannot be over 256 characters';
+    if (newUsername.hasError('required')) {
+      this.inputErrorMessages().newUsername = 'Required';
+    } else if (newUsername.hasError('maxlength')) {
+      this.inputErrorMessages().newUsername =
+        'Username cannot be over 256 characters';
     }
 
     if (password.hasError('required')) {
@@ -55,8 +55,8 @@ export class ChangeEmailFormComponent {
     }
 
     this.userService
-      .updateEmail({
-        newEmail: newEmail.value!,
+      .updateUsername({
+        newUsername: newUsername.value!,
         password: password.value!,
       })
       .subscribe({
