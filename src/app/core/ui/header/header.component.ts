@@ -14,8 +14,4 @@ export class HeaderComponent {
 
   protected user = this.authService.user;
   protected showMenu = signal(false);
-
-  logout() {
-    this.authService.logout().subscribe();
-  }
 }
