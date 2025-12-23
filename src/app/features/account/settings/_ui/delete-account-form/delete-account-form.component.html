@@ -1,0 +1,69 @@
+<div class="flex flex-col gap-2 rounded-lg border p-4">
+  <h2 class="text-danger text-2xl font-bold">Delete Account</h2>
+  <p>Once you delete your account, you cannot get it back.</p>
+  <button
+    (click)="showConfirmModal.set(true)"
+    class="bg-danger text-danger-foreground hover:bg-danger/90 w-fit rounded-lg px-3 py-1 transition"
+  >
+    Delete your account
+  </button>
+</div>
+
+@if (showConfirmModal()) {
+  <div class="fixed inset-0 bg-black/50">
+    <div
+      class="bg-background fixed inset-0 m-auto flex h-fit w-sm max-w-screen flex-col gap-4 rounded-xl p-4"
+    >
+      <div class="flex justify-between">
+        <h2 class="text-2xl font-bold">Are you sure?</h2>
+        <button
+          (click)="showConfirmModal.set(false)"
+          class="hover:bg-accent flex size-8 items-center justify-center rounded-lg"
+        >
+          <mat-icon fontIcon="close"></mat-icon>
+        </button>
+      </div>
+      <p>
+        Your account will be
+        <span class="font-bold">permanently deleted</span>. Please be certain
+        before confirming your action.
+      </p>
+      <p>To verify, enter your username below.</p>
+      <form
+        [formGroup]="form"
+        (ngSubmit)="deleteAccount()"
+        class="flex flex-col gap-4"
+      >
+        @if (formErrorMessage()) {
+          <p
+            class="border-danger text-danger bg-danger/10 rounded-lg border px-3 py-2"
+          >
+            {{ formErrorMessage() }}
+          </p>
+        }
+        <div class="flex flex-col">
+          <label for="username">Username:</label>
+          <input
+            id="username"
+            name="username"
+            formControlName="username"
+            type="text"
+            maxlength="256"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+            placeholder="Enter username to verify"
+            class="w-full min-w-4 rounded-lg border px-2 py-1"
+          />
+        </div>
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="bg-danger text-danger-foreground not-disabled:hover:bg-danger/90 rounded-lg px-3 py-2 disabled:cursor-default disabled:opacity-50"
+        >
+          Delete Account
+        </button>
+      </form>
+    </div>
+  </div>
+}
